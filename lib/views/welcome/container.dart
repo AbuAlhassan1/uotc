@@ -2,13 +2,17 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:uotc/views/welcome/page_one.dart';
+import 'package:uotc/views/welcome/welcome_to_uot.dart';
 import '../../translations/locale_keys.g.dart';
 import '../common/custom_text.dart';
 import '../common/index_pointer.dart';
 import 'package:rive/rive.dart';
 
 import '../common/scroll_behavior.dart';
+import 'make_new_friends.dart';
+import 'make_unforgettable_memories.dart';
+import 'put_your_mark.dart';
+import 'share_your_moments.dart';
 
 class WelcomeScreenContainer extends StatefulWidget {
   const WelcomeScreenContainer({super.key});
@@ -19,7 +23,9 @@ class WelcomeScreenContainer extends StatefulWidget {
 
 class _WelcomeScreenContainerState extends State<WelcomeScreenContainer> {
 
-  final PageController pageViewController = PageController();
+  final PageController pageViewController = PageController(
+    keepPage: true
+  );
 
   double top = 50;
   double rotation = 0;
@@ -33,6 +39,14 @@ class _WelcomeScreenContainerState extends State<WelcomeScreenContainer> {
     Colors.brown.withOpacity(0.5),
     Colors.pink.shade200.withOpacity(0.5),
     Colors.deepPurpleAccent.withOpacity(0.5),
+  ];
+
+  List<Widget> pages = [
+    const WelcomeToUOT(),
+    const MakeNewFriends(),
+    const PutYourMark(),
+    const MakeUnforgettableMemories(),
+    const ShareYourMoments(),
   ];
 
   @override
@@ -99,7 +113,7 @@ class _WelcomeScreenContainerState extends State<WelcomeScreenContainer> {
                 text = i % 2 == 0 ? LocaleKeys.welcomeToUniversityOfTechnology : LocaleKeys.enjoyStudyingOnUOTCampus;
               }),
               itemBuilder: (context, i) {
-                return const PageOne();
+                return pages[i];
               },
             ),
           ),

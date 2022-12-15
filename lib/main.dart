@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:uotc/views/lobby/lobby.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'constants.dart';
 import 'views/common/navigation_transition.dart';
 import 'views/common/scroll_behavior.dart';
 import 'views/welcome/container.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         return ScrollConfiguration(
           behavior: MyBehavior(),
           child: MaterialApp(
+            navigatorKey: mainNavKey,
             debugShowCheckedModeBanner: false,
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
@@ -64,6 +66,16 @@ class MyApp extends StatelessWidget {
                 case '/welcome':
                   page = createRoute(
                     const WelcomeScreenContainer(),
+                    settings,
+                    begin: const Offset(0, 0),
+                    end: const Offset(0, 0),
+                  );
+                  break;
+                case '/register':
+                  page = createRoute(
+                    const Scaffold(
+                      backgroundColor: Colors.red,
+                    ),
                     settings,
                     begin: const Offset(0, 0),
                     end: const Offset(0, 0),
