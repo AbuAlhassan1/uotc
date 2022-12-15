@@ -8,6 +8,7 @@ abstract class  LocaleKeys {
   static const previous = 'previous';
   static const login = 'login';
   static const register = 'register';
+  static const signup = 'signup';
   static const meetNewFriends = 'meetNewFriends';
   static const meetNewFriendsDesc = 'meetNewFriendsDesc';
   static const putYourMarkOnTheCampus = 'putYourMarkOnTheCampus';
@@ -16,5 +17,8 @@ abstract class  LocaleKeys {
   static const makeUnforgettableMemoriesDesc = 'makeUnforgettableMemoriesDesc';
   static const shareYourMoments = 'shareYourMoments';
   static const shareYourMomentDesc = 'shareYourMomentDesc';
+  static const email = 'email';
+  static const password = 'password';
+  static const or = 'or';
 
 }

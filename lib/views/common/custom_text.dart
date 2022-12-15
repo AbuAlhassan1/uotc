@@ -58,4 +58,42 @@ class CustomText {
     );
   }
 
+  static TextStyle createCustomTajawalTextStyle(
+    {
+      required Color color,
+      required double fontSize,
+      required TextOverflow overflow,
+      required FontWeight weight,
+    }
+  ){
+
+    return GoogleFonts.tajawal(
+      textStyle: TextStyle(
+        color: color,
+        fontSize: fontSize.sp,
+        overflow: overflow,
+        fontWeight: weight
+      )
+    );
+  }
+
+  static TextStyle createCustomElMessiriTextStyle(
+    {
+      required Color color,
+      required double fontSize,
+      required TextOverflow overflow,
+      required FontWeight weight,
+    }
+  ){
+
+    return GoogleFonts.elMessiri(
+      textStyle: TextStyle(
+        color: color,
+        fontSize: fontSize.sp,
+        overflow: overflow,
+        fontWeight: weight
+      )
+    );
+  }
+
 }

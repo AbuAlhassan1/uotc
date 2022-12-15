@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:uotc/views/lobby/lobby.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'constants.dart';
 import 'views/common/navigation_transition.dart';
 import 'views/common/scroll_behavior.dart';
+import 'views/register/register.dart';
 import 'views/welcome/container.dart';
 
 // Use This Command To Generate Transitions
@@ -59,7 +62,7 @@ class MyApp extends StatelessWidget {
                   page = createRoute(
                     const Lobby(),
                     settings,
-                    begin: const Offset(0, 0),
+                    begin: const Offset(1, 0),
                     end: const Offset(0, 0),
                   );
                   break;
@@ -67,17 +70,15 @@ class MyApp extends StatelessWidget {
                   page = createRoute(
                     const WelcomeScreenContainer(),
                     settings,
-                    begin: const Offset(0, 0),
+                    begin: const Offset(1, 0),
                     end: const Offset(0, 0),
                   );
                   break;
                 case '/register':
                   page = createRoute(
-                    const Scaffold(
-                      backgroundColor: Colors.red,
-                    ),
+                    const Login(),
                     settings,
-                    begin: const Offset(0, 0),
+                    begin: const Offset(1, 0),
                     end: const Offset(0, 0),
                   );
                   break;

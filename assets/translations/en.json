@@ -6,6 +6,7 @@
     "previous": "Previous",
     "login": "Login",
     "register": "Register",
+    "signup": "Signup",
     "meetNewFriends": "Meet new friends",
     "meetNewFriendsDesc": "Did you know? friends you make in college are the best kind of friends",
     "putYourMarkOnTheCampus": "Put your mark on the campus",
@@ -13,5 +14,8 @@
     "makeUnforgettableMemories": "Make unforgettable memories",
     "makeUnforgettableMemoriesDesc": "Capture your best memories in one place, one community",
     "shareYourMoments": "Share your moments",
-    "shareYourMomentDesc": "Share your happiness, achievements, and even your falls"
+    "shareYourMomentDesc": "Share your happiness, achievements, and even your falls",
+    "email": "Email",
+    "password": "Password",
+    "or": "Or"
 }
