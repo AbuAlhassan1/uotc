@@ -1,14 +1,29 @@
-import 'dart:ui';
+import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:uotc/translations/locale_keys.g.dart';
 import '../common/custom_text.dart';
 import '../common/text_fields_and_buttons.dart';
-import 'package:animate_gradient/animate_gradient.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+
+  int colorFactor = 150;
+
+  @override
+  void initState() {
+    super.initState();
+    Timer.periodic(const Duration(seconds: 4), (timer) {
+      setState(() => colorFactor = colorFactor == 150 ? 50 : 150);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,16 +75,17 @@ class Login extends StatelessWidget {
           
             Align(
               alignment: const Alignment(0, 1),
-              child: Container(
+              child: AnimatedContainer(
+                duration: const Duration(seconds: 3),
                 width: width,
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Colors.transparent,
-                      Colors.transparent,
-                      Colors.deepPurple.withOpacity(0.6),
-                      Colors.blue.withOpacity(0.8),
+                      Color(0x00000000),
+                      Color(0x00000000),
+                      Color.fromRGBO(103, 58, 183, 1).withOpacity(0.6),
+                      Color.fromRGBO(33, colorFactor, 243, 1).withOpacity(0.8),
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -183,7 +199,7 @@ class Login extends StatelessWidget {
       ],
     );
   }
-  
+
   Widget buildLoginContent(double width, double height){
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -266,5 +282,4 @@ class Login extends StatelessWidget {
       ],
     );
   }
-
 }
