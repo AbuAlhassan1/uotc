@@ -19,6 +19,8 @@ dependencies:
   google_fonts: ^3.0.1
   rive: ^0.9.1
   animate_gradient: ^0.0.2
+  avoid_keyboard: ^0.3.0
+  keyboard_visibility_pro: ^0.0.1
 
 dev_dependencies:
   flutter_test:
