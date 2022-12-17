@@ -75,101 +75,13 @@ class Login extends StatelessWidget {
                     end: Alignment.bottomCenter,
                   )
                 ),
-                child: ClipRRect(borderRadius: BorderRadius.circular(0),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 10.h),
-                          child: CustomText.createCustomTajawalText(
-                            text: 'مرحبا بك في يوتك',
-                            align: TextAlign.center,
-                            color: Colors.white,
-                            fontSize: 25,
-                            overflow: TextOverflow.visible,
-                            weight: FontWeight.w300
-                          ).tr(),
-                        ),
-
-                        CustomText.createCustomTajawalText(
-                          text: 'انشأ حساب و شارك لحضاتك مع زملائك',
-                          align: TextAlign.center,
-                          color: Colors.white.withOpacity(0.7),
-                          fontSize: 16,
-                          overflow: TextOverflow.visible,
-                          weight: FontWeight.w300
-                        ).tr(),
-
-                        MyTextField(
-                          hint: 'اسم المستخدم',
-                          margin: EdgeInsets.symmetric(vertical: 10.h),
-                        ),
-                        
-                        MyTextField(
-                          hint: LocaleKeys.email.tr(),
-                          margin: EdgeInsets.symmetric(vertical: 10.h),
-                        ),
-
-                        MyTextField(
-                          hint: LocaleKeys.password.tr(),
-                          isPassword: true,
-                          margin: EdgeInsets.symmetric(vertical: 10.h),
-                        ),
-                        MyTextField(
-                          hint: 'تأكيد كلمة المرور',
-                          isPassword: true,
-                          margin: EdgeInsets.symmetric(vertical: 10.h),
-                        ),
-                        
-                        ButtonOne(
-                          color: Colors.transparent,
-                          margin: EdgeInsets.symmetric(vertical: 20.h),
-                          padding: EdgeInsets.symmetric(vertical: 0.h),
-                          height: 45,
-                          shap: CustomText.createCustomTajawalText(
-                            text: LocaleKeys.register,
-                            align: TextAlign.center,
-                            color: Colors.white,
-                            fontSize: 20,
-                            overflow: TextOverflow.visible,
-                            weight: FontWeight.bold
-                          ).tr(),
-                          onTap: (){},
-                        ),
-                      
-                        Padding(
-                          padding: EdgeInsets.only(bottom: height * 0.05),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CustomText.createCustomTajawalText(
-                                text: 'لديك حساب بالفعل ؟',
-                                align: TextAlign.center,
-                                color: Colors.white.withOpacity(0.7),
-                                fontSize: 16,
-                                overflow: TextOverflow.visible,
-                                weight: FontWeight.normal
-                              ).tr(),
-                              SizedBox(width: 5.w,),
-                              CustomText.createCustomTajawalText(
-                                text: 'تسجيل الدخول',
-                                align: TextAlign.center,
-                                color: Colors.white,
-                                fontSize: 16,
-                                overflow: TextOverflow.visible,
-                                weight: FontWeight.bold
-                              ).tr(),
-                            ],
-                          ),
-                        )
-                      
-                      ],
-                    ),
-                  ),
-                ),
+                child: PageView(
+                  // physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    buildRegisterContent(width, height),
+                    buildLoginContent(width, height),
+                  ],
+                )
               ),
             )
           ],
@@ -177,4 +89,182 @@ class Login extends StatelessWidget {
       ),
     );
   }
+
+  Widget buildRegisterContent(double width, double height){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+
+        Padding(
+          padding: EdgeInsets.only(bottom: 10.h),
+          child: CustomText.createCustomTajawalText(
+            text: 'مرحبا بك في يوتك',
+            align: TextAlign.center,
+            color: Colors.white,
+            fontSize: 25,
+            overflow: TextOverflow.visible,
+            weight: FontWeight.w300
+          ).tr(),
+        ),
+
+        CustomText.createCustomTajawalText(
+          text: 'انشأ حساب و شارك لحضاتك مع زملائك',
+          align: TextAlign.center,
+          color: Colors.white.withOpacity(0.7),
+          fontSize: 16,
+          overflow: TextOverflow.visible,
+          weight: FontWeight.w300
+        ).tr(),
+
+        MyTextField(
+          hint: 'اسم المستخدم',
+          margin: EdgeInsets.symmetric(vertical: 10.h),
+        ),
+
+        MyTextField(
+          hint: LocaleKeys.email.tr(),
+          margin: EdgeInsets.symmetric(vertical: 10.h),
+        ),
+
+        MyTextField(
+          hint: LocaleKeys.password.tr(),
+          isPassword: true,
+          margin: EdgeInsets.symmetric(vertical: 10.h),
+        ),
+
+        MyTextField(
+          hint: 'تأكيد كلمة المرور',
+          isPassword: true,
+          margin: EdgeInsets.symmetric(vertical: 10.h),
+        ),
+
+        ButtonOne(
+          color: Colors.transparent,
+          margin: EdgeInsets.symmetric(vertical: 20.h),
+          padding: EdgeInsets.symmetric(vertical: 0.h),
+          height: 45,
+          shap: CustomText.createCustomTajawalText(
+            text: LocaleKeys.register,
+            align: TextAlign.center,
+            color: Colors.white,
+            fontSize: 20,
+            overflow: TextOverflow.visible,
+            weight: FontWeight.bold
+          ).tr(),
+          onTap: (){},
+        ),
+
+        Padding(
+          padding: EdgeInsets.only(bottom: height * 0.05),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomText.createCustomTajawalText(
+                text: 'لديك حساب بالفعل ؟',
+                align: TextAlign.center,
+                color: Colors.white.withOpacity(0.7),
+                fontSize: 16,
+                overflow: TextOverflow.visible,
+                weight: FontWeight.normal
+              ).tr(),
+              SizedBox(width: 5.w,),
+              CustomText.createCustomTajawalText(
+                text: 'تسجيل الدخول',
+                align: TextAlign.center,
+                color: Colors.white,
+                fontSize: 16,
+                overflow: TextOverflow.visible,
+                weight: FontWeight.bold
+              ).tr(),
+            ],
+          ),
+        )
+
+      ],
+    );
+  }
+  
+  Widget buildLoginContent(double width, double height){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+
+        Padding(
+          padding: EdgeInsets.only(bottom: 10.h),
+          child: CustomText.createCustomTajawalText(
+            text: 'مرحبا بك',
+            align: TextAlign.center,
+            color: Colors.white,
+            fontSize: 25,
+            overflow: TextOverflow.visible,
+            weight: FontWeight.w300
+          ).tr(),
+        ),
+
+        CustomText.createCustomTajawalText(
+          text: 'انشأ حساب و شارك لحضاتك مع زملائك',
+          align: TextAlign.center,
+          color: Colors.white.withOpacity(0.7),
+          fontSize: 16,
+          overflow: TextOverflow.visible,
+          weight: FontWeight.w300
+        ).tr(),
+
+        MyTextField(
+          hint: LocaleKeys.email.tr(),
+          margin: EdgeInsets.symmetric(vertical: 10.h),
+        ),
+
+        MyTextField(
+          hint: LocaleKeys.password.tr(),
+          isPassword: true,
+          margin: EdgeInsets.symmetric(vertical: 10.h),
+        ),
+
+        ButtonOne(
+          color: Colors.transparent,
+          margin: EdgeInsets.symmetric(vertical: 20.h),
+          padding: EdgeInsets.symmetric(vertical: 0.h),
+          height: 45,
+          shap: CustomText.createCustomTajawalText(
+            text: LocaleKeys.login,
+            align: TextAlign.center,
+            color: Colors.white,
+            fontSize: 20,
+            overflow: TextOverflow.visible,
+            weight: FontWeight.bold
+          ).tr(),
+          onTap: (){},
+        ),
+
+        Padding(
+          padding: EdgeInsets.only(bottom: height * 0.05),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomText.createCustomTajawalText(
+                text: 'ليس لديك حساب ؟',
+                align: TextAlign.center,
+                color: Colors.white.withOpacity(0.7),
+                fontSize: 16,
+                overflow: TextOverflow.visible,
+                weight: FontWeight.normal
+              ).tr(),
+              SizedBox(width: 5.w,),
+              CustomText.createCustomTajawalText(
+                text: 'انشاء حساب',
+                align: TextAlign.center,
+                color: Colors.white,
+                fontSize: 16,
+                overflow: TextOverflow.visible,
+                weight: FontWeight.bold
+              ).tr(),
+            ],
+          ),
+        )
+
+      ],
+    );
+  }
+
 }
