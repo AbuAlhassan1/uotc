@@ -224,7 +224,7 @@ class _WelcomeScreenContainerState extends State<WelcomeScreenContainer> {
                           onTap: () {
                             index != 4 ?
                             pageViewController.nextPage(duration: const Duration(milliseconds: 800), curve: Curves.easeInOutCubicEmphasized)
-                            : mainNavKey.currentState!.pushNamed('/register');
+                            : NavKeys.mainNavKey.currentState!.pushNamed('/register');
                           },
                           borderRadius: BorderRadius.circular(100),
                           child: Row(

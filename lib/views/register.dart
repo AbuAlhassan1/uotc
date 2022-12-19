@@ -55,6 +55,7 @@ class _LoginState extends State<Login> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        backgroundColor: Colors.black,
         resizeToAvoidBottomInset: false,
         body: KeyboardVisibility(
           onChanged: (bool isVisible) {
@@ -66,10 +67,12 @@ class _LoginState extends State<Login> {
               // Sparkling Background -- S t a r t --
               Positioned(
                 top: 0,
-                child: Container(
-                  color: Colors.transparent,
+                child: SizedBox(
                   height: height, width: width,
-                  child: Image.asset('assets/gif/Motion-graphics-Geya-Shvecova.gif', fit: BoxFit.cover,),
+                  child: Opacity(
+                    opacity: 0.3,
+                    child: Image.asset('assets/gif/Motion-graphics-Geya-Shvecova.gif', fit: BoxFit.cover,)
+                  ),
                 ),
               ),
               // Sparkling Background -- E n d --
@@ -295,7 +298,7 @@ class _LoginState extends State<Login> {
             overflow: TextOverflow.visible,
             weight: FontWeight.bold
           ).tr(),
-          onTap: () => mainNavKey.currentState!.pushNamed('/'),
+          onTap: () => NavKeys.mainNavKey.currentState!.pushNamed('/'),
         ),
 
         Padding(

@@ -1,13 +1,11 @@
 // ignore_for_file: must_be_immutable
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:uotc/views/common/custom_text.dart';
 
 class MyTextField extends StatefulWidget {
-  MyTextField({
+  const MyTextField({
     required this.focusNode,
     required this.hint,
     required this.margin,

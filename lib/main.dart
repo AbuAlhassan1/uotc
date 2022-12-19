@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:uotc/views/lobby/lobby.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'constants.dart';
 import 'views/common/navigation_transition.dart';
 import 'views/common/scroll_behavior.dart';
+import 'views/lobby.dart';
 import 'views/register.dart';
 import 'views/welcome/container.dart';
 
@@ -50,14 +48,14 @@ class MyApp extends StatelessWidget {
         return ScrollConfiguration(
           behavior: MyBehavior(),
           child: MaterialApp(
-            navigatorKey: mainNavKey,
+            navigatorKey: NavKeys.mainNavKey,
             debugShowCheckedModeBanner: false,
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
             initialRoute: '/welcome',
             onGenerateRoute: (settings) {
-              Route page;
+              Route? page;
               
               switch (settings.name) {
                 case '/':
@@ -84,15 +82,15 @@ class MyApp extends StatelessWidget {
                     end: const Offset(0, 0),
                   );
                   break;
-                default:
-                  page = createRoute(
-                    const Lobby(),
-                    settings,
-                    begin: Offset(begin, 0),
-                    end: const Offset(0, 0),
-                  );
-                  break;
               }
+
+              page = page ?? createRoute(
+                const WelcomeScreenContainer(),
+                settings,
+                begin: Offset(begin, 0),
+                end: const Offset(0, 0),
+              );
+
               return page;
             },
           ),
