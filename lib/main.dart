@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'constants.dart';
 import 'views/common/navigation_transition.dart';
 import 'views/common/scroll_behavior.dart';
-import 'views/register/register.dart';
+import 'views/register.dart';
 import 'views/welcome/container.dart';
 
 // Use This Command To Generate Transitions
@@ -36,9 +36,11 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   final PageStorageKey storageKey = const PageStorageKey('pageKey');
-
+  
   @override
   Widget build(BuildContext context) {
+
+    double begin = context.locale.countryCode == 'en' ? 1 : -1;
     
     return ScreenUtilInit(
       designSize: const Size(360, 690),
@@ -62,7 +64,7 @@ class MyApp extends StatelessWidget {
                   page = createRoute(
                     const Lobby(),
                     settings,
-                    begin: const Offset(1, 0),
+                    begin: Offset(begin, 0),
                     end: const Offset(0, 0),
                   );
                   break;
@@ -70,7 +72,7 @@ class MyApp extends StatelessWidget {
                   page = createRoute(
                     const WelcomeScreenContainer(),
                     settings,
-                    begin: const Offset(1, 0),
+                    begin: Offset(begin, 0),
                     end: const Offset(0, 0),
                   );
                   break;
@@ -78,7 +80,7 @@ class MyApp extends StatelessWidget {
                   page = createRoute(
                     const Login(),
                     settings,
-                    begin: const Offset(1, 0),
+                    begin: Offset(begin, 0),
                     end: const Offset(0, 0),
                   );
                   break;
@@ -86,12 +88,11 @@ class MyApp extends StatelessWidget {
                   page = createRoute(
                     const Lobby(),
                     settings,
-                    begin: const Offset(0, 0),
+                    begin: Offset(begin, 0),
                     end: const Offset(0, 0),
                   );
                   break;
               }
-              
               return page;
             },
           ),

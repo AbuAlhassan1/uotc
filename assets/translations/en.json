@@ -5,6 +5,7 @@
     "next": "Next",
     "previous": "Previous",
     "login": "Login",
+    "login_": "Log in",
     "register": "Register",
     "signup": "Signup",
     "meetNewFriends": "Meet new friends",
@@ -17,5 +18,13 @@
     "shareYourMomentDesc": "Share your happiness, achievements, and even your falls",
     "email": "Email",
     "password": "Password",
-    "or": "Or"
+    "or": "Or",
+    "welcomeToUOTC": "Welcome to U O T C",
+    "createAnAccountAndShareYorMomentsWithYourColleagues": "Create an account and share yor moments with your colleagues",
+    "welcome": "Welcome",
+    "dontHaveAnAccount": "Don't have an account ?",
+    "createAccount": "Create account",
+    "username": "Username",
+    "confirmPassword": "Confirm password",
+    "skip": "Skip"
 }

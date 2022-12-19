@@ -1,10 +1,11 @@
 {
     "helloWorld": "مرحبا بالعالم",
-    "welcomeToUniversityOfTechnology": "مرحبا بك في الجامعة التكنولوجة",
+    "welcomeToUniversityOfTechnology": "مرحباً بك في الجامعة التكنولوجة",
     "enjoyStudyingOnUOTCampus": "استمتع بالدراسة داخل الحرم الجامعي",
     "next": "التالي",
     "previous": "السابق",
     "login": "الدخول",
+    "login_": "تسجيل الدخول",
     "register": "التسجيل",
     "signup": "تسجيل",
     "meetNewFriends": "التقي بأصدقاء جُدد",
@@ -17,5 +18,14 @@
     "shareYourMomentDesc": "شارك سعادتك و إنجازاتك و حتى لحضات تعثرك",
     "email": "البريد الالكتروني",
     "password": "كلمة المرور",
-    "or": "او"
+    "or": "او",
+    "welcomeToUOTC": "مرحباً بك في يوتك",
+    "createAnAccountAndShareYorMomentsWithYourColleagues": "انشأ حساب و شارك لحظاتك مع زملائك",
+    "welcome": "مرحباً بك",
+    "dontHaveAnAccount": "ليس لديك حساب ؟",
+    "alreadyHaveAnAccount": "لديك حساب بالفعل ؟",
+    "createAccount": "انشأ حساب",
+    "username": "اسم المستخدم",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "skip": "تخطي"
 }

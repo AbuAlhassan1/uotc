@@ -1,4 +1,6 @@
 // ignore_for_file: must_be_immutable
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -107,7 +109,7 @@ class ButtonOne extends StatefulWidget {
     required this.height,
   });
 
-  final Function onTap;
+  final void Function() onTap;
   final EdgeInsets margin;
   final EdgeInsets padding;
   final Widget shap;
@@ -123,6 +125,8 @@ class _ButtonOneState extends State<ButtonOne> {
   bool isLoading = false;
   double opacity = 0;
 
+
+  int x() => 0; 
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +146,7 @@ class _ButtonOneState extends State<ButtonOne> {
             setState(() {});
           });
         }
-        widget.onTap;
+        widget.onTap();
       },
       child: Container(
         width: width/1.5, height: widget.height,
@@ -161,19 +165,13 @@ class _ButtonOneState extends State<ButtonOne> {
             AnimatedOpacity(
               opacity: 1 - opacity,
               duration: const Duration(milliseconds: 300),
-              child: Center(child: widget.shap,)
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 3.h),
+                  child: widget.shap,
+                ),
+              )
             ),
-            // ClipRRect(
-            //   borderRadius: BorderRadius.circular(50),
-            //   child: AnimatedOpacity(
-            //     opacity: opacity,
-            //     duration: const Duration(milliseconds: 300),
-            //     child: SizedBox(
-            //       height: double.infinity, width: double.infinity,
-            //       child: Image.asset('assets/gif/neaarty.gif', fit: BoxFit.cover)
-            //     ),
-            //   )
-            // ),
             ClipRRect(
               borderRadius: BorderRadius.circular(50),
               child: AnimatedOpacity(
@@ -181,7 +179,7 @@ class _ButtonOneState extends State<ButtonOne> {
                 duration: const Duration(milliseconds: 300),
                 child: SizedBox(
                   height: double.infinity, width: double.infinity,
-                  child: Image.asset('assets/gif/117626c76127e7e2d9fac3382f8b84eb2.gif', fit: BoxFit.contain)
+                  child: Image.asset('assets/gif/67e437ea72dc17270017806dbfcd9ef92.gif', fit: BoxFit.contain)
                 ),
               )
             ),

@@ -7,6 +7,7 @@ abstract class  LocaleKeys {
   static const next = 'next';
   static const previous = 'previous';
   static const login = 'login';
+  static const login_ = 'login_';
   static const register = 'register';
   static const signup = 'signup';
   static const meetNewFriends = 'meetNewFriends';
@@ -20,5 +21,14 @@ abstract class  LocaleKeys {
   static const email = 'email';
   static const password = 'password';
   static const or = 'or';
+  static const welcomeToUOTC = 'welcomeToUOTC';
+  static const createAnAccountAndShareYorMomentsWithYourColleagues = 'createAnAccountAndShareYorMomentsWithYourColleagues';
+  static const welcome = 'welcome';
+  static const dontHaveAnAccount = 'dontHaveAnAccount';
+  static const alreadyHaveAnAccount = 'alreadyHaveAnAccount';
+  static const createAccount = 'createAccount';
+  static const username = 'username';
+  static const confirmPassword = 'confirmPassword';
+  static const skip = 'skip';
 
 }

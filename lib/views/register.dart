@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:keyboard_visibility_pro/keyboard_visibility_pro.dart';
 import 'package:uotc/translations/locale_keys.g.dart';
-import '../common/custom_text.dart';
-import '../common/text_fields_and_buttons.dart';
+import '../constants.dart';
+import 'common/custom_text.dart';
+import 'common/text_fields_and_buttons.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -172,7 +173,7 @@ class _LoginState extends State<Login> {
         // Header Text -- E n d --
     
         MyTextField(
-          hint: 'اسم المستخدم',
+          hint: LocaleKeys.username.tr(),
           focusNode: usernameFocusNode,
           margin: EdgeInsets.symmetric(vertical: 10.h),
         ),
@@ -191,7 +192,7 @@ class _LoginState extends State<Login> {
         ),
     
         MyTextField(
-          hint: 'تأكيد كلمة المرور',
+          hint: LocaleKeys.confirmPassword.tr(),
           focusNode: confirmPasswordFocusNode,
           isPassword: true,
           margin: EdgeInsets.symmetric(vertical: 10.h),
@@ -201,12 +202,12 @@ class _LoginState extends State<Login> {
           color: Colors.transparent,
           margin: EdgeInsets.symmetric(vertical: 20.h),
           padding: EdgeInsets.symmetric(vertical: 0.h),
-          height: 45,
+          height: 30.h,
           shap: CustomText.createCustomTajawalText(
             text: LocaleKeys.register,
             align: TextAlign.center,
             color: Colors.white,
-            fontSize: 20,
+            fontSize: 18,
             overflow: TextOverflow.visible,
             weight: FontWeight.bold
           ).tr(),
@@ -219,7 +220,7 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomText.createCustomTajawalText(
-                text: 'لديك حساب بالفعل ؟',
+                text: LocaleKeys.alreadyHaveAnAccount.tr(),
                 align: TextAlign.center,
                 color: Colors.white.withOpacity(0.7),
                 fontSize: 16,
@@ -230,7 +231,7 @@ class _LoginState extends State<Login> {
               GestureDetector(
                 onTap: () => registerationPageController.animateToPage(1, duration: const Duration(milliseconds: 400), curve: Curves.easeInOutCubic),
                 child: CustomText.createCustomTajawalText(
-                  text: 'تسجيل الدخول',
+                  text: LocaleKeys.login_,
                   align: TextAlign.center,
                   color: Colors.white,
                   fontSize: 16,
@@ -257,7 +258,7 @@ class _LoginState extends State<Login> {
         Padding(
           padding: EdgeInsets.only(bottom: 10.h),
           child: CustomText.createCustomTajawalText(
-            text: 'مرحبا بك',
+            text: LocaleKeys.welcome.tr(),
             align: TextAlign.center,
             color: Colors.white,
             fontSize: 25,
@@ -265,19 +266,7 @@ class _LoginState extends State<Login> {
             weight: FontWeight.w300
           ).tr(),
         )
-        : const SizedBox(),
-
-        !isTyping ?
-        CustomText.createCustomTajawalText(
-          text: 'انشأ حساب و شارك لحضاتك مع زملائك',
-          align: TextAlign.center,
-          color: Colors.white.withOpacity(0.7),
-          fontSize: 16,
-          overflow: TextOverflow.visible,
-          weight: FontWeight.w300
-        ).tr()
-        : SizedBox(height: 40.h),
-        // Header Text -- E n d --
+        : SizedBox(height: 40.h,),
 
         MyTextField(
           hint: LocaleKeys.email.tr(),
@@ -291,21 +280,21 @@ class _LoginState extends State<Login> {
           isPassword: true,
           margin: EdgeInsets.symmetric(vertical: 10.h),
         ),
-
+    
         ButtonOne(
           color: Colors.transparent,
           margin: EdgeInsets.symmetric(vertical: 20.h),
           padding: EdgeInsets.symmetric(vertical: 0.h),
-          height: 45,
+          height: 30.h,
           shap: CustomText.createCustomTajawalText(
             text: LocaleKeys.login,
             align: TextAlign.center,
             color: Colors.white,
-            fontSize: 20,
+            fontSize: 18,
             overflow: TextOverflow.visible,
             weight: FontWeight.bold
           ).tr(),
-          onTap: (){},
+          onTap: () => mainNavKey.currentState!.pushNamed('/'),
         ),
 
         Padding(
@@ -314,7 +303,7 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomText.createCustomTajawalText(
-                text: 'ليس لديك حساب ؟',
+                text: LocaleKeys.dontHaveAnAccount,
                 align: TextAlign.center,
                 color: Colors.white.withOpacity(0.7),
                 fontSize: 16,
@@ -325,7 +314,7 @@ class _LoginState extends State<Login> {
               GestureDetector(
                 onTap: () => registerationPageController.animateToPage(0, duration: const Duration(milliseconds: 400), curve: Curves.easeInOutCubic),
                 child: CustomText.createCustomTajawalText(
-                  text: 'انشاء حساب',
+                  text: LocaleKeys.createAccount,
                   align: TextAlign.center,
                   color: Colors.white,
                   fontSize: 16,
