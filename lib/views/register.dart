@@ -62,7 +62,7 @@ class _LoginState extends State<Login> {
           },
           child: Stack(
             children: [
-        
+
               // Sparkling Background -- S t a r t --
               Positioned(
                 top: 0,
@@ -73,7 +73,7 @@ class _LoginState extends State<Login> {
                 ),
               ),
               // Sparkling Background -- E n d --
-        
+
               // Uotc Title -- S t a r t --
               !isTyping ?
               Positioned(
@@ -102,7 +102,7 @@ class _LoginState extends State<Login> {
               )
               : const SizedBox(),
               // Uotc Title -- E n d --
-        
+
               // Page Content -- S t a r t --
               Align(
                 alignment: const Alignment(0, 1),
@@ -133,6 +133,7 @@ class _LoginState extends State<Login> {
                 ),
               ),
               // Page Content -- E n d --
+
             ],
           ),
         )
