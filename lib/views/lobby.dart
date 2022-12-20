@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
+import 'common/app_bar.dart';
 import 'common/bottom_navigation_bar.dart';
 import 'common/colors.dart';
 import 'common/navigation_transition.dart';
@@ -27,7 +28,7 @@ class Lobby extends StatelessWidget {
               switch (settings.name) {
                 case '/home':
                   page = createRoute(
-                    const Home(),
+                    Home(),
                     settings,
                     begin: Offset(begin, 0),
                     end: const Offset(0, 0),
@@ -60,7 +61,7 @@ class Lobby extends StatelessWidget {
               }
 
               page = page ?? createRoute(
-                const Home(),
+                Home(),
                 settings,
                 begin: Offset(begin, 0),
                 end: const Offset(0, 0),
@@ -69,7 +70,6 @@ class Lobby extends StatelessWidget {
               return page;
             },
           ),
-          const UotcBottomNavigationBar(),
         ],
       ),
     );

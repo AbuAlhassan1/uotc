@@ -298,7 +298,7 @@ class _LoginState extends State<Login> {
             overflow: TextOverflow.visible,
             weight: FontWeight.bold
           ).tr(),
-          onTap: () => NavKeys.mainNavKey.currentState!.pushNamed('/'),
+          onTap: () => NavKeys.mainNavKey.currentState!.pushReplacementNamed('/lobby'),
         ),
 
         Padding(

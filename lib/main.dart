@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
               Route? page;
               
               switch (settings.name) {
-                case '/':
+                case '/lobby':
                   page = createRoute(
                     const Lobby(),
                     settings,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:uotc/views/common/colors.dart';
+// import 'package:uotc/views/common/colors.dart';
 
 class UotcBottomNavigationBar extends StatelessWidget {
   const UotcBottomNavigationBar({super.key});
@@ -18,7 +18,7 @@ class UotcBottomNavigationBar extends StatelessWidget {
       child: Container(
         width: width, height: 60,
         padding: EdgeInsets.symmetric(horizontal: 40.w),
-        color: UotcColors.offBlack,
+        color: Colors.transparent,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(
