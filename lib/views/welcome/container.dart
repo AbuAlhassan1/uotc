@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:uotc/constants.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uotc/views/welcome/welcome_to_uot.dart';
 import '../../translations/locale_keys.g.dart';
 import '../common/custom_text.dart';
@@ -224,7 +224,8 @@ class _WelcomeScreenContainerState extends State<WelcomeScreenContainer> {
                           onTap: () {
                             index != 4 ?
                             pageViewController.nextPage(duration: const Duration(milliseconds: 800), curve: Curves.easeInOutCubicEmphasized)
-                            : NavKeys.mainNavKey.currentState!.pushNamed('/register');
+                            // : NavKeys.mainNavKey.currentState!.pushReplacementNamed('/register');
+                            : context.go('/register');
                           },
                           borderRadius: BorderRadius.circular(100),
                           child: Row(

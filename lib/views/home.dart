@@ -1,15 +1,6 @@
-import 'dart:developer';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:uotc/views/common/colors.dart';
 import 'package:uotc/views/common/post_0.1.dart';
-
-import 'common/custom_text.dart';
-import 'common/index_pointer.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -42,19 +33,23 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
 
     // Variables -- S t a r t --
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    // double height = MediaQuery.of(context).size.height;
+    // double width = MediaQuery.of(context).size.width;
     // Variables -- E n d --
 
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: PageView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return const PostOne();
-        },
-      )
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.black,
+        body: PageView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            return PostOne(postIndex: index,);
+          },
+        )
+      ),
     );
   }
 }

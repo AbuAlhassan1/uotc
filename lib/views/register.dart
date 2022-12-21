@@ -1,21 +1,22 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:keyboard_visibility_pro/keyboard_visibility_pro.dart';
 import 'package:uotc/translations/locale_keys.g.dart';
-import '../constants.dart';
 import 'common/custom_text.dart';
 import 'common/text_fields_and_buttons.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
 
   PageController registerationPageController = PageController(
     keepPage: true
@@ -52,94 +53,100 @@ class _LoginState extends State<Login> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        resizeToAvoidBottomInset: false,
-        body: KeyboardVisibility(
-          onChanged: (bool isVisible) {
-            setState(() => isTyping = isVisible);
-          },
-          child: Stack(
-            children: [
-
-              // Sparkling Background -- S t a r t --
-              Positioned(
-                top: 0,
-                child: SizedBox(
-                  height: height, width: width,
-                  child: Opacity(
-                    opacity: 0.3,
-                    child: Image.asset('assets/gif/Motion-graphics-Geya-Shvecova.gif', fit: BoxFit.cover,)
+    return WillPopScope(
+      onWillPop: () async {
+        log('register page');
+        return false;
+      },
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          backgroundColor: Colors.black,
+          resizeToAvoidBottomInset: false,
+          body: KeyboardVisibility(
+            onChanged: (bool isVisible) {
+              setState(() => isTyping = isVisible);
+            },
+            child: Stack(
+              children: [
+    
+                // Sparkling Background -- S t a r t --
+                Positioned(
+                  top: 0,
+                  child: SizedBox(
+                    height: height, width: width,
+                    child: Opacity(
+                      opacity: 0.3,
+                      child: Image.asset('assets/gif/Motion-graphics-Geya-Shvecova.gif', fit: BoxFit.cover,)
+                    ),
                   ),
                 ),
-              ),
-              // Sparkling Background -- E n d --
-
-              // Uotc Title -- S t a r t --
-              !isTyping ?
-              Positioned(
-                top: 0,
-                child: SizedBox(
-                  height: height, width: width,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SafeArea(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: height * 0.08),
-                          child: CustomText.createCustomTajawalText(
-                            text: 'U   O   T   C',
-                            align: TextAlign.center,
-                            color: Colors.white,
-                            fontSize: 40,
-                            overflow: TextOverflow.visible,
-                            weight: FontWeight.w300
+                // Sparkling Background -- E n d --
+    
+                // Uotc Title -- S t a r t --
+                !isTyping ?
+                Positioned(
+                  top: 0,
+                  child: SizedBox(
+                    height: height, width: width,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SafeArea(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: height * 0.08),
+                            child: CustomText.createCustomTajawalText(
+                              text: 'U   O   T   C',
+                              align: TextAlign.center,
+                              color: Colors.white,
+                              fontSize: 40,
+                              overflow: TextOverflow.visible,
+                              weight: FontWeight.w300
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-              : const SizedBox(),
-              // Uotc Title -- E n d --
-
-              // Page Content -- S t a r t --
-              Align(
-                alignment: const Alignment(0, 1),
-                child: AnimatedContainer(
-                  duration: const Duration(seconds: 3),
-                  width: width,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        const Color(0x00000000),
-                        const Color(0x00000000),
-                        const Color.fromRGBO(103, 58, 183, 1).withOpacity(0.6),
-                        Color.fromRGBO(33, colorFactor, 243, 1).withOpacity(0.8),
                       ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                )
+                : const SizedBox(),
+                // Uotc Title -- E n d --
+    
+                // Page Content -- S t a r t --
+                Align(
+                  alignment: const Alignment(0, 1),
+                  child: AnimatedContainer(
+                    duration: const Duration(seconds: 3),
+                    width: width,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          const Color(0x00000000),
+                          const Color(0x00000000),
+                          const Color.fromRGBO(103, 58, 183, 1).withOpacity(0.6),
+                          Color.fromRGBO(33, colorFactor, 243, 1).withOpacity(0.8),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      )
+                    ),
+                    child: PageView(
+                      controller: registerationPageController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        buildRegisterContent(width, height),
+                        buildLoginContent(width, height),
+                      ],
                     )
                   ),
-                  child: PageView(
-                    controller: registerationPageController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      buildRegisterContent(width, height),
-                      buildLoginContent(width, height),
-                    ],
-                  )
                 ),
-              ),
-              // Page Content -- E n d --
-
-            ],
-          ),
-        )
+                // Page Content -- E n d --
+    
+              ],
+            ),
+          )
+        ),
       ),
     );
   }
@@ -298,7 +305,7 @@ class _LoginState extends State<Login> {
             overflow: TextOverflow.visible,
             weight: FontWeight.bold
           ).tr(),
-          onTap: () => NavKeys.mainNavKey.currentState!.pushReplacementNamed('/lobby'),
+          onTap: () => context.go('/lobby') // NavKeys.mainNavKey.currentState!.pushReplacementNamed('/lobby'),
         ),
 
         Padding(

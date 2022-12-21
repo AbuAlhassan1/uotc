@@ -134,16 +134,16 @@ class _ButtonOneState extends State<ButtonOne> {
 
     return GestureDetector(
       onTap: () async{
-        if( !isLoading ){
-          isLoading = !isLoading;
-          opacity = isLoading ? 1 : 0;
-          setState(() {});
-          await Future.delayed(const Duration(seconds: 4), () {
-            isLoading = !isLoading;
-            opacity = isLoading ? 1 : 0;
-            setState(() {});
-          });
-        }
+        // if( !isLoading ){
+        //   isLoading = !isLoading;
+        //   opacity = isLoading ? 1 : 0;
+        //   setState(() {});
+        //   await Future.delayed(const Duration(seconds: 4), () {
+        //     isLoading = !isLoading;
+        //     opacity = isLoading ? 1 : 0;
+        //     setState(() {});
+        //   });
+        // }
         widget.onTap();
       },
       child: Container(
