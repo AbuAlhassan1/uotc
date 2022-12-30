@@ -23,6 +23,9 @@ dependencies:
   keyboard_visibility_pro: ^0.0.1
   go_router: ^6.0.0
   image_fade: ^0.6.2
+  get: ^4.6.5
+  http: ^0.13.5
+  flutter_secure_storage: ^7.0.1
 
 dev_dependencies:
   flutter_test:

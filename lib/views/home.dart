@@ -11,6 +11,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  final PageController postController = PageController(
+    viewportFraction: 1
+  );
+
   final List<Color> colors = [
     const Color(0xFF7f6dfe),
     const Color(0xFFfec3dc),
@@ -43,6 +47,7 @@ class _HomeState extends State<Home> {
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.black,
         body: PageView.builder(
+          controller: postController,
           scrollDirection: Axis.vertical,
           itemCount: 10,
           itemBuilder: (context, index) {

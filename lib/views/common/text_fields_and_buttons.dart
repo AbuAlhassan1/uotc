@@ -7,6 +7,7 @@ import 'package:uotc/views/common/custom_text.dart';
 class MyTextField extends StatefulWidget {
   const MyTextField({
     required this.focusNode,
+    required this.controller,
     required this.hint,
     required this.margin,
     this.isPassword,
@@ -14,6 +15,7 @@ class MyTextField extends StatefulWidget {
   });
   
   final FocusNode focusNode;
+  final TextEditingController controller;
   final String hint;
   final EdgeInsets margin;
   final bool? isPassword;
@@ -43,6 +45,7 @@ class _MyTextFieldState extends State<MyTextField> {
       margin: widget.margin,
       child: TextField(
         focusNode: widget.focusNode,
+        controller: widget.controller,
         autofocus: false,
         obscureText: obscureText,
         style: CustomText.createCustomTajawalTextStyle(

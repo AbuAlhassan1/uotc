@@ -3,9 +3,12 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart' hide Trans;
 import 'package:go_router/go_router.dart';
 import 'package:keyboard_visibility_pro/keyboard_visibility_pro.dart';
 import 'package:uotc/translations/locale_keys.g.dart';
+import '../controllers/register_controller.dart';
+import '../controllers/toast_controller.dart';
 import 'common/custom_text.dart';
 import 'common/text_fields_and_buttons.dart';
 
@@ -18,19 +21,25 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
 
-  PageController registerationPageController = PageController(
-    keepPage: true
-  );
+  RegisterStateController registerStateController = Get.put(RegisterStateController());
+  ToastStateController toastController = Get.find();
+  PageController registerationPageController = PageController(keepPage: true);
   late Timer interval;
   int colorFactor = 150;
   bool isTyping = false;
 
   FocusNode usernameFocusNode = FocusNode(debugLabel: 'username');
+  TextEditingController usernameController = TextEditingController();
   FocusNode emailFocusNode = FocusNode(debugLabel: 'email');
+  TextEditingController emailController = TextEditingController();
   FocusNode passwordFocusNode = FocusNode(debugLabel: 'password');
+  TextEditingController passwordController = TextEditingController();
   FocusNode confirmPasswordFocusNode = FocusNode(debugLabel: 'confirmPassword');
+  TextEditingController confirmPasswordController = TextEditingController();
   FocusNode loginEmailFocusNode = FocusNode(debugLabel: 'loginEmail');
+  TextEditingController loginEmailController = TextEditingController();
   FocusNode loginPasswordFocusNode = FocusNode(debugLabel: 'loginPassword');
+  TextEditingController loginPasswordController = TextEditingController();
 
 
   @override
@@ -76,7 +85,7 @@ class _RegisterState extends State<Register> {
                   child: SizedBox(
                     height: height, width: width,
                     child: Opacity(
-                      opacity: 0.3,
+                      opacity: 0.25,
                       child: Image.asset('assets/gif/Motion-graphics-Geya-Shvecova.gif', fit: BoxFit.cover,)
                     ),
                   ),
@@ -84,33 +93,23 @@ class _RegisterState extends State<Register> {
                 // Sparkling Background -- E n d --
     
                 // Uotc Title -- S t a r t --
-                !isTyping ?
-                Positioned(
-                  top: 0,
-                  child: SizedBox(
-                    height: height, width: width,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SafeArea(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: height * 0.08),
-                            child: CustomText.createCustomTajawalText(
-                              text: 'U   O   T   C',
-                              align: TextAlign.center,
-                              color: Colors.white,
-                              fontSize: 40,
-                              overflow: TextOverflow.visible,
-                              weight: FontWeight.w300
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-                : const SizedBox(),
-                // Uotc Title -- E n d --
+                // !isTyping ?
+                // Align(
+                //   alignment: const Alignment(0, -0.9),
+                //   child: SafeArea(
+                //     child: CustomText.createCustomTajawalText(
+                //       text: 'U      O      T      C',
+                //       align: TextAlign.center,
+                //       color: Colors.white,
+                //       fontSize: 30,
+                //       overflow: TextOverflow.visible,
+                //       weight: FontWeight.w100,
+                //       screenHeight: height
+                //     ),
+                //   ),
+                // )
+                // : const SizedBox(),
+                // // Uotc Title -- E n d --
     
                 // Page Content -- S t a r t --
                 Align(
@@ -122,10 +121,11 @@ class _RegisterState extends State<Register> {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          const Color(0x00000000),
-                          const Color(0x00000000),
-                          const Color.fromRGBO(103, 58, 183, 1).withOpacity(0.6),
-                          Color.fromRGBO(33, colorFactor, 243, 1).withOpacity(0.8),
+                          Colors.transparent,
+                          Colors.transparent,
+                          // Colors.transparent,
+                          Colors.pink.withOpacity(0.1),
+                          Colors.pink.withOpacity(0.4),
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -166,7 +166,8 @@ class _RegisterState extends State<Register> {
             color: Colors.white,
             fontSize: 25,
             overflow: TextOverflow.visible,
-            weight: FontWeight.w300
+            weight: FontWeight.w300,
+            screenHeight: height
           ).tr(),
         )
         : SizedBox(height: 40.h,),
@@ -178,36 +179,49 @@ class _RegisterState extends State<Register> {
           color: Colors.white.withOpacity(0.7),
           fontSize: 16,
           overflow: TextOverflow.visible,
-          weight: FontWeight.w300
+          weight: FontWeight.w300,
+          screenHeight: height
         ).tr()
         : const SizedBox(),
         // Header Text -- E n d --
-    
+
+        // Username TextField -- S t a r t --
         MyTextField(
           hint: LocaleKeys.username.tr(),
+          controller: usernameController,
           focusNode: usernameFocusNode,
           margin: EdgeInsets.symmetric(vertical: 10.h),
         ),
-    
+        // Username TextField -- E n d --
+
+        // Email TextField -- S t a r t --
         MyTextField(
           hint: LocaleKeys.email.tr(),
+          controller: emailController,
           focusNode: emailFocusNode,
           margin: EdgeInsets.symmetric(vertical: 10.h),
         ),
-    
+        // Email TextField -- E n d --
+
+        // Password TextField -- S t a r t --
         MyTextField(
           hint: LocaleKeys.password.tr(),
+          controller: passwordController,
           focusNode: passwordFocusNode,
           isPassword: true,
           margin: EdgeInsets.symmetric(vertical: 10.h),
         ),
-    
+        // Password TextField -- E n d --
+
+        // Confirm Password TextField -- S t a r t --
         MyTextField(
           hint: LocaleKeys.confirmPassword.tr(),
+          controller: confirmPasswordController,
           focusNode: confirmPasswordFocusNode,
           isPassword: true,
           margin: EdgeInsets.symmetric(vertical: 10.h),
         ),
+        // Confirm Password TextField -- E n d --
     
         ButtonOne(
           color: Colors.transparent,
@@ -220,9 +234,17 @@ class _RegisterState extends State<Register> {
             color: Colors.white,
             fontSize: 18,
             overflow: TextOverflow.visible,
-            weight: FontWeight.bold
+            weight: FontWeight.bold,
+            screenHeight: height
           ).tr(),
-          onTap: () {},
+          onTap: () async {
+            await registerStateController.register(
+              username: usernameController.text,
+              email: emailController.text,
+              password: passwordController.text,
+            );
+            // toastController.showToast();
+          },
         ),
     
         Padding(
@@ -236,7 +258,8 @@ class _RegisterState extends State<Register> {
                 color: Colors.white.withOpacity(0.7),
                 fontSize: 16,
                 overflow: TextOverflow.visible,
-                weight: FontWeight.normal
+                weight: FontWeight.normal,
+                screenHeight: height
               ).tr(),
               SizedBox(width: 5.w,),
               GestureDetector(
@@ -247,7 +270,8 @@ class _RegisterState extends State<Register> {
                   color: Colors.white,
                   fontSize: 16,
                   overflow: TextOverflow.visible,
-                  weight: FontWeight.bold
+                  weight: FontWeight.bold,
+                  screenHeight: height
                 ).tr(),
               ),
             ],
@@ -274,19 +298,22 @@ class _RegisterState extends State<Register> {
             color: Colors.white,
             fontSize: 25,
             overflow: TextOverflow.visible,
-            weight: FontWeight.w300
+            weight: FontWeight.w300,
+            screenHeight: height
           ).tr(),
         )
         : SizedBox(height: 40.h,),
 
         MyTextField(
           hint: LocaleKeys.email.tr(),
+          controller: loginEmailController,
           focusNode: loginEmailFocusNode,
           margin: EdgeInsets.symmetric(vertical: 10.h),
         ),
 
         MyTextField(
           hint: LocaleKeys.password.tr(),
+          controller: loginPasswordController,
           focusNode: loginPasswordFocusNode,
           isPassword: true,
           margin: EdgeInsets.symmetric(vertical: 10.h),
@@ -303,7 +330,8 @@ class _RegisterState extends State<Register> {
             color: Colors.white,
             fontSize: 18,
             overflow: TextOverflow.visible,
-            weight: FontWeight.bold
+            weight: FontWeight.bold,
+            screenHeight: height
           ).tr(),
           onTap: () => context.go('/lobby') // NavKeys.mainNavKey.currentState!.pushReplacementNamed('/lobby'),
         ),
@@ -319,7 +347,8 @@ class _RegisterState extends State<Register> {
                 color: Colors.white.withOpacity(0.7),
                 fontSize: 16,
                 overflow: TextOverflow.visible,
-                weight: FontWeight.normal
+                weight: FontWeight.normal,
+                screenHeight: height
               ).tr(),
               SizedBox(width: 5.w,),
               GestureDetector(
@@ -330,7 +359,8 @@ class _RegisterState extends State<Register> {
                   color: Colors.white,
                   fontSize: 16,
                   overflow: TextOverflow.visible,
-                  weight: FontWeight.bold
+                  weight: FontWeight.bold,
+                  screenHeight: height
                 ).tr(),
               ),
             ],

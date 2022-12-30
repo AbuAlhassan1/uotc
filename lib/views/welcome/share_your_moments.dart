@@ -10,7 +10,7 @@ class ShareYourMoments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    // double height = MediaQuery.of(context).size.height;
+    double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -31,7 +31,8 @@ class ShareYourMoments extends StatelessWidget {
                 fontSize: 30,
                 overflow: TextOverflow.visible,
                 weight: FontWeight.bold,
-                maxLines: 2
+                maxLines: 2,
+                screenHeight: height
               ).tr(),
             ),
             
@@ -42,7 +43,8 @@ class ShareYourMoments extends StatelessWidget {
               fontSize: 20,
               overflow: TextOverflow.visible,
               weight: FontWeight.w100,
-              maxLines: 2
+              maxLines: 2,
+              screenHeight: height
             ).tr()
           ],
         ),

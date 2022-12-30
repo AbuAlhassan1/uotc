@@ -12,6 +12,7 @@ class CustomText {
       required TextOverflow overflow,
       required TextAlign align,
       required FontWeight weight,
+      required double screenHeight,
       int? maxLines
     }
   ){
@@ -23,7 +24,7 @@ class CustomText {
       style: GoogleFonts.elMessiri(
         textStyle: TextStyle(
           color: color,
-          fontSize: fontSize.sp,
+          fontSize: screenHeight < 600 ? fontSize.sp * 0.8 : fontSize.sp,
           overflow: overflow,
           fontWeight: weight
         )
@@ -39,6 +40,7 @@ class CustomText {
       required TextOverflow overflow,
       required TextAlign align,
       required FontWeight weight,
+      required double screenHeight,
       int? maxLines
     }
   ){
@@ -50,7 +52,7 @@ class CustomText {
       style: GoogleFonts.tajawal(
         textStyle: TextStyle(
           color: color,
-          fontSize: fontSize.sp,
+          fontSize: screenHeight < 600 ? fontSize.sp * 0.8 : fontSize.sp,
           overflow: overflow,
           fontWeight: weight
         )

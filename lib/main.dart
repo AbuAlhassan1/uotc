@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'controllers/toast_controller.dart';
 import 'views/common/scroll_behavior.dart';
 import 'views/home.dart';
 import 'views/register.dart';
@@ -37,6 +39,7 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final PageStorageKey storageKey = const PageStorageKey('pageKey');
+  ToastStateController toastController = Get.put(ToastStateController());
 
   final router = GoRouter(
     initialLocation: '/welcome',
@@ -69,23 +72,36 @@ class MyApp extends StatelessWidget {
               child: const Scaffold()
             ),
           ),
-          GoRoute(
-            path: 'profile',
-            pageBuilder: (context, state) => MaterialPage(
-              child: Scaffold(
-                key: state.pageKey,
-                backgroundColor: Colors.red,
-                body: Center(
-                  child: Material(
-                    color: Colors.black,
-                    child: TextButton(
-                      onPressed: () => context.pop(),
-                      child: const Text('back'),
-                    ),
-                  ),
+          ShellRoute(
+            pageBuilder: (BuildContext context, GoRouterState state, Widget child) {
+              return MaterialPage(
+                child: Scaffold(
+                  body: child,
+                  /* ... */
+                  bottomNavigationBar: Container(color: Colors.red, height: 100,),
                 ),
+              );
+            },
+            routes: <RouteBase>[
+              GoRoute(
+                path: 'details',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const Scaffold();
+                },
               ),
-            ),
+              GoRoute(
+                path: 'gg',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const Scaffold();
+                },
+              ),
+              GoRoute(
+                path: 'bb',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const Scaffold();
+                },
+              ),
+            ],
           ),
           GoRoute(
             path: 'settings',
@@ -120,14 +136,55 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return ScrollConfiguration(
           behavior: MyBehavior(),
-          child: MaterialApp.router(
-            // routeInformationParser: router.routeInformationParser,
-            // routerDelegate: router.routerDelegate,
-            supportedLocales: context.supportedLocales,
-            localizationsDelegates: context.localizationDelegates,
+          child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            locale: context.locale,
-            routerConfig: router,
+            home: Stack(
+              children: [
+                MaterialApp.router(
+                  supportedLocales: context.supportedLocales,
+                  localizationsDelegates: context.localizationDelegates,
+                  debugShowCheckedModeBanner: false,
+                  locale: context.locale,
+                  routerConfig: router,
+                ),
+                Obx(
+                  () => 
+                    AnimatedAlign(
+                      alignment: Alignment(0, toastController.toastAlignment.value),
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOutCubicEmphasized,
+                      child: SafeArea(
+                        child: Material(color: Colors.transparent,
+                          child: Container(
+                            height: 100, width: double.infinity,
+                            margin: EdgeInsets.all(20.w),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Colors.white.withOpacity(0.7),
+                                  Colors.white.withOpacity(0.5),
+                                  Colors.white.withOpacity(0.5),
+                                  Colors.white.withOpacity(0.5),
+                                  Colors.white.withOpacity(0.5),
+                                ]
+                              ),
+                              borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: Center(
+                              child: Text(
+                                toastController.description.value
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                )
+              ],
+            ),
           )
           // child: MaterialApp(
           //   navigatorKey: NavKeys.mainNavKey,

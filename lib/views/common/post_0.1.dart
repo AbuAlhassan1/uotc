@@ -44,13 +44,14 @@ class _PostOneState extends State<PostOne> {
     double width = MediaQuery.of(context).size.width;
     // Variables -- E n d --
 
+    log(height.toString());
+
     return Stack(
       key: PageStorageKey<int>(widget.postIndex),
       children: [
         Container(
           height: height,
           padding: EdgeInsets.only(bottom: 20.h),
-          clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: Colors.black,
             borderRadius: BorderRadius.circular(0.sp)
@@ -64,56 +65,56 @@ class _PostOneState extends State<PostOne> {
                   children: [
 
                     // Images Slider -- S t a r t --
-                    SizedBox(
-                      child: PageView.builder(
-                        controller: imageSliderController,
-                        itemCount: 5,
-                        onPageChanged: (index) => setState(() => imageIndex = index),
-                        itemBuilder: (context, index) {
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 40.sp),
+                      child: SizedBox(
+                        child: PageView.builder(
+                          controller: imageSliderController,
+                          itemCount: 5,
+                          onPageChanged: (index) => setState(() => imageIndex = index),
+                          itemBuilder: (context, index) {
 
-                          return Container(
-                            width: width,
-                            padding: EdgeInsets.symmetric(horizontal: 0.w),
-                            margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.w),
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(0.sp)
-                            ),
-                            child: ImageFade(
-                              fit: BoxFit.cover,
-                              image: const AssetImage('assets/jpg/study_one.jpg'),
-                              loadingBuilder: (context, progress, chunkEvent) => Center(
-                                child: Padding(
-                                  padding: EdgeInsets.all(20.sp),
-                                  child: const CircularProgressIndicator(color: Colors.grey),
-                                )
+                            return Container(
+                              width: width,
+                              padding: EdgeInsets.symmetric(horizontal: 0.w),
+                              margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.w),
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.sp)
                               ),
-                            )
-                          );
-                        },
+                              child: ImageFade(
+                                fit: BoxFit.cover,
+                                image: const AssetImage('assets/jpg/275246698_643562353599990_4357863837767632622_n.jpg'),
+                                loadingBuilder: (context, progress, chunkEvent) => Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(20.sp),
+                                    child: const CircularProgressIndicator(color: Colors.grey),
+                                  )
+                                ),
+                              )
+                            );
+                          },
+                        ),
                       ),
                     ),
                     // Images Slider -- E n d --
 
                     // Index Pointer -- S t a r t --
                     imageIndex != null ?
-                    Align(
-                      alignment: const Alignment(0, 0.9),
+                    Positioned(
+                      bottom: 15.h, left: 0, right: 0,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
                             color: Colors.transparent,
                             padding: EdgeInsets.symmetric(horizontal: 30.w),
-                            child: SizedBox(
-                              width: 100.w,
-                              child: sliderIndex(
-                                index: imageIndex!,
-                                indexColor: Colors.blue,
-                                otherColor: Colors.black.withOpacity(0.6),
-                                numOfPages: 5,
-                                size: 7.sp
-                              ),
+                            child: sliderIndex(
+                              index: imageIndex!,
+                              indexColor: Colors.pink,
+                              otherColor: Colors.white.withOpacity(0.6),
+                              numOfPages: 5,
+                              size: 7.sp
                             ),
                           ),
                         ],
@@ -122,10 +123,11 @@ class _PostOneState extends State<PostOne> {
                     // Index Pointer -- E n d --
                     
                     // Avatar [ Post Auther Image ] -- S t a r t --
-                    Align(
-                      alignment: const Alignment(0, 1.2),
+                    PositionedDirectional(
+                      // alignment: const Alignment(0.9, 1.3),
+                      bottom: 0, start: 20.w,
                       child: GestureDetector(
-                        onTap: () => context.go('/lobby/profile'),
+                        onTap: () => context.go('/lobby/details'),
                         child: Container(
                           padding: EdgeInsets.all(5.h),
                           clipBehavior: Clip.antiAlias,
@@ -138,10 +140,10 @@ class _PostOneState extends State<PostOne> {
                             ]
                           ),
                           child: CircleAvatar(
-                            radius: 30.sp,
+                            radius: 40.sp,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(100),
-                              child: Image.asset('assets/png/avatar.jpg', fit: BoxFit.cover,)
+                              child: Image.asset('assets/jpg/223138735_4167662076620280_7307821253933789535_n (2).jpg', fit: BoxFit.cover,)
                             ),
                           ),
                         ),
@@ -154,103 +156,94 @@ class _PostOneState extends State<PostOne> {
               // Post Header -- E n d --
 
               // Post Info Section -- S t a r t --
-              Expanded(
-                child: Container(
-                  width: width,
-                  padding: EdgeInsets.only(top: 40.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Post Title -- S t a r t --
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 10.h, left: 20.w, right: 20.w),
-                        child: CustomText.createCustomElMessiriText(
-                          text: 'مجرد كتابة لتجربة الشكل',
-                          align: TextAlign.start,
-                          color: Colors.white,
-                          fontSize: 20,
-                          overflow: TextOverflow.visible,
-                          weight: FontWeight.bold,
-                          maxLines: 2
-                        ).tr(),
-                      ),
-                      // Post Title -- E n d --
+              Container(
+                width: width,
+                padding: EdgeInsets.only(top: 20.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
 
-                      // Post Description -- S t a r t --
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 10.h, left: 20.w, right: 20.w),
-                        child: CustomText.createCustomTajawalText(
-                          text: "هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة",
-                          align: TextAlign.start,
-                          color: Colors.white,
-                          fontSize: 16,
-                          overflow: TextOverflow.visible,
-                          weight: FontWeight.w300,
-                          maxLines: 3
-                        ).tr(),
-                      ),
-                      // Post Description -- E n d --
-
-                      // Post Comments -- S t a r t --
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: List.generate(
-                            10,
-                            (index) => const CommentCard()
-                          ),
+                    // Post Description -- S t a r t --
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                      child: CustomText.createCustomTajawalText(
+                        text: "هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة",
+                        align: TextAlign.start,
+                        color: Colors.white,
+                        fontSize: 16,
+                        overflow: TextOverflow.visible,
+                        weight: FontWeight.w200,
+                        maxLines: 3,
+                        screenHeight: height
+                      ).tr(),
+                    ),
+                    // Post Description -- E n d --
+                    
+                    Container(
+                      width: width,
+                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                      color: Colors.transparent,
+                      child: Wrap(
+                        children: List.generate(
+                          5,
+                          (index) => Container(
+                            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                            margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 0.5
+                              ),
+                              borderRadius: BorderRadius.circular(20)
+                            ),
+                            child: CustomText.createCustomTajawalText(
+                              text: ' $indexسفرة',
+                              align: TextAlign.start,
+                              color: Colors.white,
+                              fontSize: 16,
+                              overflow: TextOverflow.visible,
+                              weight: FontWeight.w300,
+                              maxLines: 2,
+                              screenHeight: height
+                            ).tr(),
+                          )
                         ),
                       ),
-                      // Post Comments -- E n d --
-                    ],
-                  ),
+                    ),
+
+                    // Post Comments -- S t a r t --
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: List.generate(
+                          10,
+                          (index) => const FittedBox(child: CommentCard())
+                        ),
+                      ),
+                    ),
+                    // Post Comments -- E n d --
+                  ],
                 ),
               ),
               // Post Info Section -- E n d --
 
-              // Post Interaction Bar -- S t a r t --
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
-                      height: 35.sp, width: 35.sp,
-                      color: Colors.transparent,
-                      child: SvgPicture.asset('assets/svg/heart_solid.svg', color: Colors.red,),
+                    MyTextField(
+                      focusNode: commentFocusNode,
+                      controller: TextEditingController(),
+                      hint: 'اكتب تعليقاً',
+                      margin: const EdgeInsets.symmetric(),
+                      isPassword: false,
                     ),
-                    SizedBox(width: 5.w,),
-                    CustomText.createCustomTajawalText(
-                      text: "( 16 )",
-                      align: TextAlign.start,
-                      color: Colors.white.withOpacity(0.8),
-                      fontSize: 20,
-                      overflow: TextOverflow.ellipsis,
-                      weight: FontWeight.w400,
-                      maxLines: 3
-                    ).tr(),
-                    SizedBox(width: 15.w,),
-                    Container(
-                      height: 30.sp, width: 30.sp,
-                      color: Colors.transparent,
-                      child: SvgPicture.asset('assets/svg/paper-plane.svg', color: Colors.white,),
-                    ),
-
-                    // Expanded(
-                    //   child: AvoidKeyboard(
-                    //     child: MyTextField(
-                    //       focusNode: commentFocusNode,
-                    //       hint: 'تعليق',
-                    //       isPassword: false,
-                    //       margin: EdgeInsets.symmetric(horizontal: 10.w),
-                    //     ),
-                    //   ),
-                    // )
                   ],
                 ),
               )
-              // Post Interaction Bar -- E n d --
             ],
           ),
         ),

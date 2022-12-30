@@ -19,30 +19,31 @@ class CommentCard extends StatelessWidget {
 
     return Container(
       width: width - 60.w,
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
       margin: EdgeInsets.symmetric(horizontal: 10.w),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: UotcColors.offBlack,
-        // borderRadius: BorderRadius.circular(10.sp)
+        borderRadius: BorderRadius.circular(5.sp)
       ),
       child: Row(
         children: [
           // Comment [ User Image ] -- S t a r t --
           Padding(
-            padding: EdgeInsetsDirectional.only(end: 20.w),
+            padding: EdgeInsetsDirectional.only(end: 15.w),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  width: 70.sp, height: 70.sp,
+                  width: 55.sp,
                   clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: AspectRatio(
                     aspectRatio: 1,
-                    child: Image.asset('assets/png/avatar.jpg', fit: BoxFit.cover,)
+                    child: Image.asset('assets/png/avatar.jpg', fit: BoxFit.cover)
                   ),
                 ),
               ],
@@ -55,6 +56,7 @@ class CommentCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 // Comment [ User Name & Date Time ] -- S t a r t --
                 Padding(
                   padding: EdgeInsets.only(bottom: 5.h),
@@ -65,19 +67,21 @@ class CommentCard extends StatelessWidget {
                           text: 'حيدر يوسف ',
                           align: TextAlign.start,
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 14,
                           overflow: TextOverflow.ellipsis,
                           weight: FontWeight.bold,
-                          maxLines: 3
+                          maxLines: 3,
+                          screenHeight: height
                         ).tr(),
                         CustomText.createCustomTajawalText(
                           text: '. قبل 5 دقائق',
                           align: TextAlign.start,
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 14,
                           overflow: TextOverflow.ellipsis,
                           weight: FontWeight.normal,
-                          maxLines: 3
+                          maxLines: 3,
+                          screenHeight: height
                         ).tr(),
                       ],
                     ),
@@ -92,10 +96,11 @@ class CommentCard extends StatelessWidget {
                     text: "هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى",
                     align: TextAlign.start,
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: 12,
                     overflow: TextOverflow.ellipsis,
                     weight: FontWeight.w400,
-                    maxLines: 3
+                    maxLines: 2,
+                    screenHeight: height
                   ).tr(),
                 ),
                 // Comment Text -- E n d --
@@ -103,6 +108,7 @@ class CommentCard extends StatelessWidget {
                 // Comment Interaction Bar -- S t a r t --
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
                       padding: EdgeInsetsDirectional.only(end: 5.w),
@@ -113,34 +119,36 @@ class CommentCard extends StatelessWidget {
                         fontSize: 14,
                         overflow: TextOverflow.ellipsis,
                         weight: FontWeight.w400,
-                        maxLines: 3
+                        maxLines: 3,
+                        screenHeight: height
                       ).tr(),
                     ),
                     Row(
                       children: [
-                        CustomText.createCustomTajawalText(
-                          text: "( 16 )",
-                          align: TextAlign.start,
-                          color: Colors.white.withOpacity(0.8),
-                          fontSize: 14,
-                          overflow: TextOverflow.ellipsis,
-                          weight: FontWeight.w400,
-                          maxLines: 3
-                        ).tr(),
-                        Container(
-                          height: 18.sp,
-                          padding: EdgeInsetsDirectional.only(end: 10.w),
-                          child: SvgPicture.asset('assets/svg/heart_solid.svg', color: Colors.red,),
+                        Padding(
+                          padding: EdgeInsets.only(top: 5.h),
+                          child: CustomText.createCustomTajawalText(
+                            text: "( 21 )",
+                            align: TextAlign.center,
+                            color: Colors.white.withOpacity(0.8),
+                            fontSize: 14,
+                            overflow: TextOverflow.ellipsis,
+                            weight: FontWeight.w400,
+                            maxLines: 1,
+                            screenHeight: height
+                          ).tr(),
                         ),
+                        SizedBox(width: 10.w,),
                         SizedBox(
-                          height: 16.sp,
-                          child: SvgPicture.asset('assets/svg/paper-plane.svg', color: Colors.white,),
+                          height: 16.sp, width: 16.sp,
+                          child: SvgPicture.asset('assets/svg/heart_solid.svg', color: Colors.pink,),
                         ),
                       ],
                     )
                   ],
                 )
                 // Comment Interaction Bar -- E n d --
+
               ],
             )
           ),

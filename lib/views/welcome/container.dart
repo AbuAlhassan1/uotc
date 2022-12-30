@@ -33,11 +33,11 @@ class _WelcomeScreenContainerState extends State<WelcomeScreenContainer> {
   int index = 0;
   String text = LocaleKeys.welcomeToUniversityOfTechnology;
   List<Color> colors = [
-    Colors.lightBlueAccent.withOpacity(0.05),
-    Colors.lightBlueAccent.withOpacity(0.07),
-    Colors.lightBlueAccent.withOpacity(0.05),
-    Colors.lightBlueAccent.withOpacity(0.07),
-    Colors.lightBlueAccent.withOpacity(0.05),
+    Colors.pink.withOpacity(0.05),
+    Colors.pink.withOpacity(0.06),
+    Colors.pink.withOpacity(0.05),
+    Colors.pink.withOpacity(0.06),
+    Colors.pink.withOpacity(0.05),
   ];
   List<Widget> pages = [
     const WelcomeToUOT(),
@@ -172,7 +172,8 @@ class _WelcomeScreenContainerState extends State<WelcomeScreenContainer> {
                           fontSize: 20,
                           overflow: TextOverflow.visible,
                           weight: FontWeight.bold,
-                          maxLines: 2
+                          maxLines: 2,
+                          screenHeight: height
                         ).tr(),
                       ),
                     )
@@ -209,7 +210,8 @@ class _WelcomeScreenContainerState extends State<WelcomeScreenContainer> {
                                   fontSize: 20,
                                   overflow: TextOverflow.visible,
                                   weight: FontWeight.bold,
-                                  maxLines: 2
+                                  maxLines: 2,
+                                  screenHeight: height
                                 ).tr(),
                               ),
                             ],
@@ -240,7 +242,8 @@ class _WelcomeScreenContainerState extends State<WelcomeScreenContainer> {
                                   fontSize: 20,
                                   overflow: TextOverflow.visible,
                                   weight: FontWeight.bold,
-                                  maxLines: 2
+                                  maxLines: 2,
+                                  screenHeight: height
                                 ).tr(),
                               ),
                             ],
