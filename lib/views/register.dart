@@ -24,7 +24,6 @@ class _RegisterState extends State<Register> {
   RegisterStateController registerStateController = Get.put(RegisterStateController());
   ToastStateController toastController = Get.find();
   PageController registerationPageController = PageController(keepPage: true);
-  late Timer interval;
   int colorFactor = 150;
   bool isTyping = false;
 
@@ -41,21 +40,6 @@ class _RegisterState extends State<Register> {
   FocusNode loginPasswordFocusNode = FocusNode(debugLabel: 'loginPassword');
   TextEditingController loginPasswordController = TextEditingController();
 
-
-  @override
-  void initState() {
-    super.initState();
-    interval = Timer.periodic(const Duration(seconds: 4), (timer) {
-      setState(() => colorFactor = colorFactor == 150 ? 50 : 150);
-    });
-  }
-
-  @override
-  void dispose() {
-    interval.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
 
@@ -68,7 +52,7 @@ class _RegisterState extends State<Register> {
         return false;
       },
       child: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: Scaffold(
           backgroundColor: Colors.black,
           resizeToAvoidBottomInset: false,
@@ -222,7 +206,7 @@ class _RegisterState extends State<Register> {
           margin: EdgeInsets.symmetric(vertical: 10.h),
         ),
         // Confirm Password TextField -- E n d --
-    
+
         ButtonOne(
           color: Colors.transparent,
           margin: EdgeInsets.symmetric(vertical: 20.h),
@@ -238,15 +222,21 @@ class _RegisterState extends State<Register> {
             screenHeight: height
           ).tr(),
           onTap: () async {
-            await registerStateController.register(
-              username: usernameController.text,
-              email: emailController.text,
-              password: passwordController.text,
-            );
-            // toastController.showToast();
+            if( passwordController.text == confirmPasswordController.text ) {
+              await registerStateController.register(
+                username: usernameController.text,
+                email: emailController.text,
+                password: passwordController.text,
+              );
+            } else {
+              toastController.showToast(
+                desc: {'message': 'Password and confirm password must match'},
+                type: 'error'
+              );
+            }
           },
         ),
-    
+
         Padding(
           padding: EdgeInsets.only(bottom: height * 0.05),
           child: Row(
@@ -277,7 +267,7 @@ class _RegisterState extends State<Register> {
             ],
           ),
         )
-    
+
       ],
     );
   }
@@ -333,7 +323,7 @@ class _RegisterState extends State<Register> {
             weight: FontWeight.bold,
             screenHeight: height
           ).tr(),
-          onTap: () => context.go('/lobby') // NavKeys.mainNavKey.currentState!.pushReplacementNamed('/lobby'),
+          onTap: () async => context.go('/lobby')
         ),
 
         Padding(
@@ -370,5 +360,4 @@ class _RegisterState extends State<Register> {
       ],
     );
   }
-
 }

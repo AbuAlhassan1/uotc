@@ -5,4 +5,4 @@ class NavKeys {
   static final GlobalKey<NavigatorState> lobbyNavKey = GlobalKey<NavigatorState>(debugLabel: 'lobbyNavKey');
 }
 
-const String debugApiUrl = 'http://192.168.1.100:8000/api/';
+const String debugApiUrl = 'http://192.168.1.106:8000/api/';

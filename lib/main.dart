@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'controllers/toast_controller.dart';
 import 'views/common/scroll_behavior.dart';
+import 'views/common/toast_widget.dart';
 import 'views/home.dart';
 import 'views/register.dart';
 import 'views/welcome/container.dart';
@@ -122,6 +125,16 @@ class MyApp extends StatelessWidget {
     ),
   ); 
   
+  Widget buildToasts(){
+    String toast = '';
+    int count = 1;
+    toastController.description.value.forEach((key, value) {
+      toast += toastController.description.value.length == count ? value : '$value \n';
+      count++;
+    });
+    return Toast(text: toast, type: 'success');
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -148,91 +161,25 @@ class MyApp extends StatelessWidget {
                   routerConfig: router,
                 ),
                 Obx(
-                  () => 
+                  () =>
                     AnimatedAlign(
                       alignment: Alignment(0, toastController.toastAlignment.value),
-                      duration: const Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 1000),
                       curve: Curves.easeInOutCubicEmphasized,
-                      child: SafeArea(
-                        child: Material(color: Colors.transparent,
-                          child: Container(
-                            height: 100, width: double.infinity,
-                            margin: EdgeInsets.all(20.w),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Colors.white.withOpacity(0.7),
-                                  Colors.white.withOpacity(0.5),
-                                  Colors.white.withOpacity(0.5),
-                                  Colors.white.withOpacity(0.5),
-                                  Colors.white.withOpacity(0.5),
-                                ]
-                              ),
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                            child: Center(
-                              child: Text(
-                                toastController.description.value
-                              ),
-                            ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: SafeArea(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [buildToasts()]
                           ),
-                        ),
+                        )
                       ),
                     ),
                 )
               ],
             ),
           )
-          // child: MaterialApp(
-          //   navigatorKey: NavKeys.mainNavKey,
-          //   debugShowCheckedModeBanner: false,
-          //   localizationsDelegates: context.localizationDelegates,
-          //   supportedLocales: context.supportedLocales,
-          //   locale: context.locale,
-          //   initialRoute: '/welcome',
-          //   onGenerateRoute: (settings) {
-          //     Route? page;
-              
-          //     switch (settings.name) {
-          //       case '/lobby':
-          //         page = createRoute(
-          //           const Lobby(),
-          //           settings,
-          //           begin: Offset(begin, 0),
-          //           end: const Offset(0, 0),
-          //         );
-          //         break;
-          //       case '/welcome':
-          //         page = createRoute(
-          //           const WelcomeScreenContainer(),
-          //           settings,
-          //           begin: Offset(begin, 0),
-          //           end: const Offset(0, 0),
-          //         );
-          //         break;
-          //       case '/register':
-          //         page = createRoute(
-          //           const Login(),
-          //           settings,
-          //           begin: Offset(begin, 0),
-          //           end: const Offset(0, 0),
-          //         );
-          //         break;
-          //     }
-
-          //     page = page ?? createRoute(
-          //       const WelcomeScreenContainer(),
-          //       settings,
-          //       begin: Offset(begin, 0),
-          //       end: const Offset(0, 0),
-          //     );
-
-          //     return page;
-          //   },
-          // ),
         );
       },
     );

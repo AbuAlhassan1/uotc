@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:http/http.dart' as http;
 import '../constants.dart';
 
@@ -16,7 +15,7 @@ class Remote{
     http.Response? response;
 
     try{
-      response = await client.post(uri, headers: header, body: jsonEncode(body));
+      response = await client.post(uri, headers: header, body: jsonEncode(body)).timeout(const Duration(seconds: 3));
     }catch(e){
       return null;
     }

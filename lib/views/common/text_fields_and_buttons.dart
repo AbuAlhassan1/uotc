@@ -110,7 +110,7 @@ class ButtonOne extends StatefulWidget {
     required this.height,
   });
 
-  final void Function() onTap;
+  final Future<void> Function() onTap;
   final EdgeInsets margin;
   final EdgeInsets padding;
   final Widget shap;
@@ -126,9 +126,6 @@ class _ButtonOneState extends State<ButtonOne> {
   bool isLoading = false;
   double opacity = 0;
 
-
-  int x() => 0; 
-
   @override
   Widget build(BuildContext context) {
 
@@ -137,17 +134,15 @@ class _ButtonOneState extends State<ButtonOne> {
 
     return GestureDetector(
       onTap: () async{
-        // if( !isLoading ){
-        //   isLoading = !isLoading;
-        //   opacity = isLoading ? 1 : 0;
-        //   setState(() {});
-        //   await Future.delayed(const Duration(seconds: 4), () {
-        //     isLoading = !isLoading;
-        //     opacity = isLoading ? 1 : 0;
-        //     setState(() {});
-        //   });
-        // }
-        widget.onTap();
+        if( !isLoading ){
+          isLoading = !isLoading;
+          opacity = isLoading ? 1 : 0;
+          setState(() {});
+          await widget.onTap();
+          isLoading = !isLoading;
+          opacity = isLoading ? 1 : 0;
+          setState(() {});
+        }
       },
       child: Container(
         width: width/1.5, height: widget.height,
