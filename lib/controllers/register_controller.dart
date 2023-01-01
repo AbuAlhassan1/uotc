@@ -24,16 +24,32 @@ class RegisterStateController extends GetxController{
         }
       );
       if(response != null){
-        log(response.body.toString());
-        toastController.showToast(
-          desc: jsonDecode(response.body),
-          type: 'success'
-        );
+        if(response.statusCode == 201){
+          toastController.showToast(
+            desc: jsonDecode(response.body)['message'],
+            type: 'success',
+            seconds: 5
+          );
+        }else{
+          String text = '';
+          int count = 1;
+          Map<dynamic, dynamic> map = jsonDecode(response.body);
+          map.forEach((key, value) {
+            text += count > 1 ? '\n$value' : value;
+            count++;
+          });
+          toastController.showToast(
+            desc: text,
+            type: 'error',
+            seconds: 5
+          );
+        }
       }
       else{
         toastController.showToast(
-          desc: {'message': 'Somthing went wrong'},
-          type: 'success'
+          desc: 'Somthing went wrong',
+          type: 'error',
+          seconds: 5
         );
       }
       await Future.delayed(const Duration(seconds: 3));

@@ -123,17 +123,7 @@ class MyApp extends StatelessWidget {
         ),
       )
     ),
-  ); 
-  
-  Widget buildToasts(){
-    String toast = '';
-    int count = 1;
-    toastController.description.value.forEach((key, value) {
-      toast += toastController.description.value.length == count ? value : '$value \n';
-      count++;
-    });
-    return Toast(text: toast, type: 'success');
-  }
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -166,15 +156,7 @@ class MyApp extends StatelessWidget {
                       alignment: Alignment(0, toastController.toastAlignment.value),
                       duration: const Duration(milliseconds: 1000),
                       curve: Curves.easeInOutCubicEmphasized,
-                      child: Material(
-                        color: Colors.transparent,
-                        child: SafeArea(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [buildToasts()]
-                          ),
-                        )
-                      ),
+                      child: const Toast()
                     ),
                 )
               ],

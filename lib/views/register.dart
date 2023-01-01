@@ -62,7 +62,7 @@ class _RegisterState extends State<Register> {
             },
             child: Stack(
               children: [
-    
+
                 // Sparkling Background -- S t a r t --
                 Positioned(
                   top: 0,
@@ -94,7 +94,19 @@ class _RegisterState extends State<Register> {
                 // )
                 // : const SizedBox(),
                 // // Uotc Title -- E n d --
-    
+
+                Positioned(
+                  top: -50, left: 0, right: 0,
+                  child: Container(
+                    color: Colors.transparent,
+                    width: width + 50,
+                    child: Align(
+                      alignment: const Alignment(-1, -1),
+                      child: Image.asset('assets/png/earth.png',fit: BoxFit.fitWidth),
+                    ),
+                  ),
+                ),
+
                 // Page Content -- S t a r t --
                 Align(
                   alignment: const Alignment(0, 1),
@@ -230,10 +242,12 @@ class _RegisterState extends State<Register> {
               );
             } else {
               toastController.showToast(
-                desc: {'message': 'Password and confirm password must match'},
-                type: 'error'
+                desc: 'Password and confirm password must match',
+                type: 'error',
+                seconds: 5
               );
             }
+            log(toastController.description.value);
           },
         ),
 

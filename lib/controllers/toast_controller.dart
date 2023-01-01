@@ -15,6 +15,7 @@ class ToastStateController extends GetxController{
         ]
       ),
       'text-color': Colors.green,
+      'sub-text': 'You are good to go',
       'icon': 'assets/svg/fi-rr-check.svg'
     },
     'error': {
@@ -27,6 +28,7 @@ class ToastStateController extends GetxController{
         ]
       ),
       'text-color': Colors.red,
+      'sub-text': 'Retry after correcting the error',
       'icon': 'assets/svg/cross-small.svg'
     },
     'reminder': {
@@ -39,32 +41,31 @@ class ToastStateController extends GetxController{
         ]
       ),
       'text-color': Colors.yellow,
+      'sub-text': 'Retry after correcting the error',
       'icon': 'assets/svg/cross-small.svg'
     },
   };
   RxInt toastCount = 0.obs;
-  RxString currentType = ''.obs;
-  RxMap description = {}.obs;
+  RxString currentType = 'error'.obs;
+  RxString description = ''.obs;
   RxDouble toastAlignment = ((1.5) * (-1)).obs;
   RxBool isToastOnScreen = false.obs;
 
   void showToast({
-    required Map desc,
+    required String desc,
     required String type,
+    required int seconds,
   }) async {
-    log(isToastOnScreen.value.toString());
     if(!isToastOnScreen.value){
       isToastOnScreen.value = true;
-      log(isToastOnScreen.value.toString());
-      description.value = desc;
       description.value = desc;
       toastAlignment.value = -1;
-      await Future.delayed(const Duration(seconds: 3), () {
+      await Future.delayed(Duration(seconds: seconds), () {
         toastAlignment.value = -5;
         isToastOnScreen.value = false;
       });
-      await Future.delayed(const Duration(milliseconds: 800), () => description.value = {},);
+      await Future.delayed(const Duration(milliseconds: 800), () => description.value = '',);
     }
-    log(isToastOnScreen.value.toString());
+    // log(isToastOnScreen.value.toString());
   }
 }

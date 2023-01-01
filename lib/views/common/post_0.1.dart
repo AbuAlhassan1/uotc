@@ -44,8 +44,6 @@ class _PostOneState extends State<PostOne> {
     double width = MediaQuery.of(context).size.width;
     // Variables -- E n d --
 
-    log(height.toString());
-
     return Stack(
       key: PageStorageKey<int>(widget.postIndex),
       children: [
