@@ -26,6 +26,7 @@ class _RegisterState extends State<Register> {
   PageController registerationPageController = PageController(keepPage: true);
   int colorFactor = 150;
   bool isTyping = false;
+  double earthPosition = -200;
 
   FocusNode usernameFocusNode = FocusNode(debugLabel: 'username');
   TextEditingController usernameController = TextEditingController();
@@ -39,6 +40,15 @@ class _RegisterState extends State<Register> {
   TextEditingController loginEmailController = TextEditingController();
   FocusNode loginPasswordFocusNode = FocusNode(debugLabel: 'loginPassword');
   TextEditingController loginPasswordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      () => setState(() => earthPosition = -150),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +68,10 @@ class _RegisterState extends State<Register> {
           resizeToAvoidBottomInset: false,
           body: KeyboardVisibility(
             onChanged: (bool isVisible) {
-              setState(() => isTyping = isVisible);
+              setState(() {
+                isTyping = isVisible;
+                earthPosition = isVisible? - 400 : - 150;
+              });
             },
             child: Stack(
               children: [
@@ -69,7 +82,7 @@ class _RegisterState extends State<Register> {
                   child: SizedBox(
                     height: height, width: width,
                     child: Opacity(
-                      opacity: 0.25,
+                      opacity: 0.1,
                       child: Image.asset('assets/gif/Motion-graphics-Geya-Shvecova.gif', fit: BoxFit.cover,)
                     ),
                   ),
@@ -95,11 +108,13 @@ class _RegisterState extends State<Register> {
                 // : const SizedBox(),
                 // // Uotc Title -- E n d --
 
-                Positioned(
-                  top: -50, left: 0, right: 0,
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 2500),
+                  curve: Curves.easeInOutCubicEmphasized,
+                  top: earthPosition, left: -100, right: -100,
                   child: Container(
                     color: Colors.transparent,
-                    width: width + 50,
+                    // width: width + 200,
                     child: Align(
                       alignment: const Alignment(-1, -1),
                       child: Image.asset('assets/png/earth.png',fit: BoxFit.fitWidth),
@@ -119,9 +134,10 @@ class _RegisterState extends State<Register> {
                         colors: [
                           Colors.transparent,
                           Colors.transparent,
-                          // Colors.transparent,
-                          Colors.pink.withOpacity(0.1),
-                          Colors.pink.withOpacity(0.4),
+                          Colors.transparent,
+                          const Color(0xFF518eb9).withOpacity(0.3),
+                          const Color(0xFF518eb9).withOpacity(0.4),
+                          // Colors.orange.withOpacity(0.4),
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,

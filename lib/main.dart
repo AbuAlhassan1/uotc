@@ -8,6 +8,7 @@ import 'controllers/toast_controller.dart';
 import 'views/common/scroll_behavior.dart';
 import 'views/common/toast_widget.dart';
 import 'views/home.dart';
+import 'views/lobby.dart';
 import 'views/register.dart';
 import 'views/welcome/container.dart';
 import 'package:go_router/go_router.dart';
@@ -61,59 +62,47 @@ class MyApp extends StatelessWidget {
           child: const Register()
         ),
       ),
-      GoRoute(
-        path: '/lobby',
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: const Home()
-        ),
-        routes: [
+      ShellRoute(
+        pageBuilder: (BuildContext context, GoRouterState state, Widget myChild) {
+          return MaterialPage(
+            key: state.pageKey,
+            child: HiddenDrawer(
+              myChild: myChild,
+            )
+          );
+        },
+        routes: <RouteBase>[
           GoRoute(
-            path: 'gg',
+            path: '/lobby',
             pageBuilder: (context, state) => MaterialPage(
               key: state.pageKey,
-              child: const Scaffold()
+              child: const Home()
             ),
           ),
-          ShellRoute(
-            pageBuilder: (BuildContext context, GoRouterState state, Widget child) {
-              return MaterialPage(
-                child: Scaffold(
-                  body: child,
-                  /* ... */
-                  bottomNavigationBar: Container(color: Colors.red, height: 100,),
-                ),
+          GoRoute(
+            path: '/details',
+            builder: (BuildContext context, GoRouterState state) {
+              return const Scaffold(
+                backgroundColor: Colors.red,
               );
             },
-            routes: <RouteBase>[
-              GoRoute(
-                path: 'details',
-                builder: (BuildContext context, GoRouterState state) {
-                  return const Scaffold();
-                },
-              ),
-              GoRoute(
-                path: 'gg',
-                builder: (BuildContext context, GoRouterState state) {
-                  return const Scaffold();
-                },
-              ),
-              GoRoute(
-                path: 'bb',
-                builder: (BuildContext context, GoRouterState state) {
-                  return const Scaffold();
-                },
-              ),
-            ],
           ),
           GoRoute(
-            path: 'settings',
+            path: '/bb',
+            builder: (BuildContext context, GoRouterState state) {
+              return const Scaffold(
+                backgroundColor: Colors.orange,
+              );
+            },
+          ),
+          GoRoute(
+            path: '/settings',
             pageBuilder: (context, state) => MaterialPage(
               key: state.pageKey,
               child: const Scaffold(backgroundColor: Colors.blue,)
             ),
           ),
-        ]
+        ],
       ),
     ],
     errorPageBuilder: (context, state) => MaterialPage(

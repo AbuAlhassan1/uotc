@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:uotc/services/remote.dart';
 import 'toast_controller.dart';
@@ -13,7 +12,13 @@ class RegisterStateController extends GetxController{
     required String email,
     required String password,
   }) async {
+    List<String> messages = [];
     if(!isRegisterLoading.value){
+      if(username.isEmpty){ messages.add('Username is required'); }
+      if(email.isEmpty){ messages.add('Email is required'); }
+      if(password.isEmpty){ messages.add('Password is required'); }
+      // if(messages.length > 0){ toastController.showToast(desc: desc, type: type, seconds: seconds); }
+
       isRegisterLoading.value = true;
       var response = await Remote.apiCall(
         path: 'user/create-user',

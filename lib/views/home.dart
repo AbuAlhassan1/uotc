@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:uotc/views/common/post_0.1.dart';
+
+import 'common/post_0.1.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -47,6 +48,7 @@ class _HomeState extends State<Home> {
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.black,
         body: PageView.builder(
+          physics: const BouncingScrollPhysics(),
           controller: postController,
           scrollDirection: Axis.vertical,
           itemCount: 10,
