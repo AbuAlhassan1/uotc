@@ -235,9 +235,10 @@ class _RegisterState extends State<Register> {
         ),
         // Confirm Password TextField -- E n d --
 
+        // Register Button -- S t a r t --
         ButtonOne(
           color: Colors.transparent,
-          margin: EdgeInsets.symmetric(vertical: 20.h),
+          margin: EdgeInsets.symmetric(vertical: 10.h),
           padding: EdgeInsets.symmetric(vertical: 0.h),
           height: 30.h,
           shap: CustomText.createCustomTajawalText(
@@ -265,6 +266,47 @@ class _RegisterState extends State<Register> {
             }
             log(toastController.description.value);
           },
+        ),
+        // Register Button -- E n d --
+
+        // Divider -- S t a r t --
+        SizedBox(
+          width: width/1.5,
+          child: Row(
+            children: [
+              Expanded(child: Container(height: 1.h, color: Colors.grey.withOpacity(0.5))),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5.w),
+                child: CustomText.createCustomTajawalText(
+                  text: LocaleKeys.or,
+                  align: TextAlign.center,
+                  color: Colors.white,
+                  fontSize: 12,
+                  overflow: TextOverflow.visible,
+                  weight: FontWeight.w300,
+                  screenHeight: height
+                ).tr(),
+              ),
+              Expanded(child: Container(height: 1.h, color: Colors.grey.withOpacity(0.5)))
+            ],
+          ),
+        ),
+        // Divider -- E n d --
+        
+        ButtonOne(
+          height: 30.h,
+          margin: EdgeInsets.symmetric(vertical: 10.h),
+          borderColor: Colors.red,
+          shap: CustomText.createCustomTajawalText(
+            text: 'Google',
+            align: TextAlign.center,
+            color: Colors.white,
+            fontSize: 18,
+            overflow: TextOverflow.visible,
+            weight: FontWeight.bold,
+            screenHeight: height
+          ).tr(),
+          onTap: () async {},
         ),
 
         Padding(

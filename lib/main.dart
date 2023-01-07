@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +12,8 @@ import 'views/welcome/container.dart';
 import 'package:go_router/go_router.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 // Use This Command To Generate Transitions
 // flutter pub run easy_localization:generate -S "assets/translations" -O "lib/translations" -o "locale_keys.g.dart" -f keys
@@ -22,6 +22,8 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   usePathUrlStrategy();
 
@@ -43,7 +45,7 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final PageStorageKey storageKey = const PageStorageKey('pageKey');
-  ToastStateController toastController = Get.put(ToastStateController());
+  final ToastStateController toastController = Get.put(ToastStateController());
 
   final router = GoRouter(
     initialLocation: '/welcome',

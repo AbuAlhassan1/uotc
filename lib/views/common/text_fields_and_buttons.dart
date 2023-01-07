@@ -100,21 +100,23 @@ class _MyTextFieldState extends State<MyTextField> {
 }
 
 class ButtonOne extends StatefulWidget {
-  const ButtonOne({
+  ButtonOne({
     super.key,
+    this.margin = const EdgeInsets.symmetric(),
+    this.padding = const EdgeInsets.symmetric(),
+    this.color = Colors.transparent,
+    this.borderColor = Colors.white,
     required this.onTap,
-    required this.margin,
-    required this.padding,
     required this.shap,
-    required this.color,
     required this.height,
   });
 
-  final Future<void> Function() onTap;
-  final EdgeInsets margin;
-  final EdgeInsets padding;
+  EdgeInsets? margin;
+  EdgeInsets? padding;
+  Color color;
+  Color borderColor;
   final Widget shap;
-  final Color color;
+  final Future<void> Function() onTap;
   final double height;
 
   @override
@@ -152,7 +154,7 @@ class _ButtonOneState extends State<ButtonOne> {
         decoration: BoxDecoration(
           color: widget.color,
           border: Border.all(
-            color: Colors.white
+            color: widget.borderColor
           ),
           borderRadius: BorderRadius.circular(50)
         ),

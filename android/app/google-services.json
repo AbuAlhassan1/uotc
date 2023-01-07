@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "982356263031",
+    "project_id": "uotc-20",
+    "storage_bucket": "uotc-20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982356263031:android:4f93f310d549cbd51a0672",
+        "android_client_info": {
+          "package_name": "com.example.uotc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "982356263031-r3kavf3fefbv3pb49qjsp9gas84jlddc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC98tRGRp4EwX1sVO4uYI27uuZaGE0Avnc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "982356263031-r3kavf3fefbv3pb49qjsp9gas84jlddc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
