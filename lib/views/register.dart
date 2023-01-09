@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart' hide Trans;
@@ -11,6 +12,7 @@ import '../controllers/register_controller.dart';
 import '../controllers/toast_controller.dart';
 import 'common/custom_text.dart';
 import 'common/text_fields_and_buttons.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -40,6 +42,23 @@ class _RegisterState extends State<Register> {
   TextEditingController loginEmailController = TextEditingController();
   FocusNode loginPasswordFocusNode = FocusNode(debugLabel: 'loginPassword');
   TextEditingController loginPasswordController = TextEditingController();
+
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
 
   @override
   void initState() {
@@ -306,7 +325,7 @@ class _RegisterState extends State<Register> {
             weight: FontWeight.bold,
             screenHeight: height
           ).tr(),
-          onTap: () async {},
+          onTap: () async => signInWithGoogle(),
         ),
 
         Padding(
