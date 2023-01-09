@@ -35,11 +35,11 @@ class CustomText {
   static Text createCustomTajawalText(
     {
       required String text,
-      required Color color,
       required double fontSize,
-      required TextOverflow overflow,
-      required TextAlign align,
-      required FontWeight weight,
+      Color color = Colors.black,
+      TextOverflow overflow = TextOverflow.visible,
+      TextAlign align = TextAlign.start,
+      FontWeight weight = FontWeight.normal,
       required double screenHeight,
       int? maxLines
     }
@@ -62,10 +62,10 @@ class CustomText {
 
   static TextStyle createCustomTajawalTextStyle(
     {
-      required Color color,
       required double fontSize,
-      required TextOverflow overflow,
-      required FontWeight weight,
+      Color color = Colors.black,
+      TextOverflow overflow = TextOverflow.visible,
+      FontWeight weight = FontWeight.normal,
     }
   ){
 
@@ -81,10 +81,10 @@ class CustomText {
 
   static TextStyle createCustomElMessiriTextStyle(
     {
-      required Color color,
       required double fontSize,
-      required TextOverflow overflow,
-      required FontWeight weight,
+      Color color = Colors.black,
+      TextOverflow overflow = TextOverflow.visible,
+      FontWeight weight = FontWeight.normal,
     }
   ){
 

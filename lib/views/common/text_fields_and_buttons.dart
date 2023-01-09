@@ -1,11 +1,16 @@
 // ignore_for_file: must_be_immutable
+import 'dart:developer';
+import 'package:async/async.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:uotc/translations/locale_keys.g.dart';
+import 'package:uotc/views/common/colors.dart';
 import 'package:uotc/views/common/custom_text.dart';
 
-class MyTextField extends StatefulWidget {
-  const MyTextField({
+class RegisterTextField extends StatefulWidget {
+  const RegisterTextField({
     required this.focusNode,
     required this.controller,
     required this.hint,
@@ -21,10 +26,9 @@ class MyTextField extends StatefulWidget {
   final bool? isPassword;
 
   @override
-  State<MyTextField> createState() => _MyTextFieldState();
+  State<RegisterTextField> createState() => _RegisterTextFieldState();
 }
-
-class _MyTextFieldState extends State<MyTextField> {
+class _RegisterTextFieldState extends State<RegisterTextField> {
 
   late bool obscureText;
   
@@ -122,7 +126,6 @@ class ButtonOne extends StatefulWidget {
   @override
   State<ButtonOne> createState() => _ButtonOneState();
 }
-
 class _ButtonOneState extends State<ButtonOne> {
 
   bool isLoading = false;
@@ -140,7 +143,22 @@ class _ButtonOneState extends State<ButtonOne> {
           isLoading = !isLoading;
           opacity = isLoading ? 1 : 0;
           setState(() {});
-          await widget.onTap();
+          log('before');
+          CancelableOperation operation = CancelableOperation.fromFuture(
+            widget.onTap(),
+            onCancel: () => log('canceled'),
+          );
+          // await widget.onTap();
+          try{
+            await operation.value;
+          }catch(e){
+            log('error: $e');
+          }
+          Future.delayed(
+            const Duration(seconds: 3),
+            () => operation.cancel(),
+          );
+          log('after');
           isLoading = !isLoading;
           opacity = isLoading ? 1 : 0;
           setState(() {});
@@ -183,6 +201,53 @@ class _ButtonOneState extends State<ButtonOne> {
             ),
           ],
         )
+      ),
+    );
+  }
+}
+
+class PostCommentTextField extends StatelessWidget {
+  const PostCommentTextField({
+    super.key,
+    required this.controller,
+    required this.focusNode,
+    this.margin = const EdgeInsets.all(0)
+  });
+
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final EdgeInsets margin;
+  
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: margin,
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 0.h),
+      decoration: BoxDecoration(
+        color: UotcColors.offBlack,
+        border: Border.all(
+          color: Colors.white.withOpacity(0.1),
+          width: 0.5
+        ),
+        borderRadius: BorderRadius.circular(8.sp)
+      ),
+      child: TextField(
+        controller: controller,
+        focusNode: focusNode,
+        style: CustomText.createCustomTajawalTextStyle(
+          fontSize: 14,
+          color: Colors.white,
+          weight: FontWeight.w300
+        ),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintStyle: CustomText.createCustomElMessiriTextStyle(
+            fontSize: 14,
+            color: Colors.white.withOpacity(0.6),
+            weight: FontWeight.w300
+          ),
+          hintText: LocaleKeys.writeAComment.tr(),
+        ),
       ),
     );
   }

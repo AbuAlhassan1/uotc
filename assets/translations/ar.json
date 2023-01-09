@@ -27,5 +27,6 @@
     "createAccount": "انشأ حساب",
     "username": "اسم المستخدم",
     "confirmPassword": "تأكيد كلمة المرور",
-    "skip": "تخطي"
+    "skip": "تخطي",
+    "writeAComment": "اكتب تعليقاً"
 }

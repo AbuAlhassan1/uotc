@@ -51,6 +51,18 @@ class ToastStateController extends GetxController{
   RxDouble toastAlignment = ((1.5) * (-1)).obs;
   RxBool isToastOnScreen = false.obs;
 
+  // Special -- S t a r t --
+  RxDouble storiesPosition = 0.0.obs;
+  RxDouble navMenuButtonPosition = 0.0.obs;
+  RxBool isStoriesHidden = false.obs;
+  // Special -- E n d --
+
+  @override
+  void onInit() {
+    super.onInit();
+    // hideShowStories(0);
+  }
+
   void showToast({
     required String desc,
     required String type,
@@ -66,6 +78,35 @@ class ToastStateController extends GetxController{
       });
       await Future.delayed(const Duration(milliseconds: 800), () => description.value = '',);
     }
-    // log(isToastOnScreen.value.toString());
+  }
+
+  alignNavBtn(double position){
+    navMenuButtonPosition.value = position;
+  }
+
+  void hideShowStories(double position){
+    log('clicked');
+    if (isStoriesHidden.value){
+      storiesPosition.value = 0;
+      navMenuButtonPosition.value = position * (-1);
+      isStoriesHidden.value = !isStoriesHidden.value;
+    }else{
+      storiesPosition.value = position;
+      navMenuButtonPosition.value = 0;
+      isStoriesHidden.value = !isStoriesHidden.value;
+    }
+    log(storiesPosition.value.toString());
+  }
+
+  void hideStories(double position){
+    storiesPosition.value = position;
+    navMenuButtonPosition.value = 0;
+    isStoriesHidden.value = true;
+  }
+
+  void showStories(double position){
+    storiesPosition.value = 0;
+    navMenuButtonPosition.value = position * (-1);
+    isStoriesHidden.value = false;
   }
 }

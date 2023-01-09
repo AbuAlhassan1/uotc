@@ -30,5 +30,6 @@ abstract class  LocaleKeys {
   static const username = 'username';
   static const confirmPassword = 'confirmPassword';
   static const skip = 'skip';
+  static const writeAComment = 'writeAComment';
 
 }

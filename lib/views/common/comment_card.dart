@@ -20,10 +20,14 @@ class CommentCard extends StatelessWidget {
     return Container(
       width: width - 60.w,
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-      margin: EdgeInsets.symmetric(horizontal: 10.w),
+      margin: EdgeInsetsDirectional.only(start: 20.w),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: UotcColors.offBlack,
+        border: Border.all(
+          color: Colors.white.withOpacity(0.1),
+          width: 0.5
+        ),
         borderRadius: BorderRadius.circular(5.sp)
       ),
       child: Row(
@@ -141,7 +145,7 @@ class CommentCard extends StatelessWidget {
                         SizedBox(width: 10.w,),
                         SizedBox(
                           height: 16.sp, width: 16.sp,
-                          child: SvgPicture.asset('assets/svg/heart_solid.svg', color: Colors.pink,),
+                          child: SvgPicture.asset('assets/svg/heart_solid.svg', color: Colors.red,),
                         ),
                       ],
                     )

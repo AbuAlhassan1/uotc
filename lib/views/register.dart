@@ -43,12 +43,14 @@ class _RegisterState extends State<Register> {
   FocusNode loginPasswordFocusNode = FocusNode(debugLabel: 'loginPassword');
   TextEditingController loginPasswordController = TextEditingController();
 
-  Future<UserCredential> signInWithGoogle() async {
+  Future<bool?> signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    // googleAuth!.idToken;
 
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
@@ -56,8 +58,16 @@ class _RegisterState extends State<Register> {
       idToken: googleAuth?.idToken,
     );
 
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    // // Once signed in, return the UserCredential
+    UserCredential user = await FirebaseAuth.instance.signInWithCredential(credential);
+    // log(credential.idToken.toString()+ ' asdasd');
+    // log(user.credential!.token.toString()+ ' asdasd');
+    String idToken = await user.user!.getIdToken();
+    log('$idToken asdasd');
+
+    await GoogleSignIn().signOut();
+    // log(user.credential.toString());
+    // return user;
   }
 
   @override
@@ -217,7 +227,7 @@ class _RegisterState extends State<Register> {
         // Header Text -- E n d --
 
         // Username TextField -- S t a r t --
-        MyTextField(
+        RegisterTextField(
           hint: LocaleKeys.username.tr(),
           controller: usernameController,
           focusNode: usernameFocusNode,
@@ -226,7 +236,7 @@ class _RegisterState extends State<Register> {
         // Username TextField -- E n d --
 
         // Email TextField -- S t a r t --
-        MyTextField(
+        RegisterTextField(
           hint: LocaleKeys.email.tr(),
           controller: emailController,
           focusNode: emailFocusNode,
@@ -235,7 +245,7 @@ class _RegisterState extends State<Register> {
         // Email TextField -- E n d --
 
         // Password TextField -- S t a r t --
-        MyTextField(
+        RegisterTextField(
           hint: LocaleKeys.password.tr(),
           controller: passwordController,
           focusNode: passwordFocusNode,
@@ -245,7 +255,7 @@ class _RegisterState extends State<Register> {
         // Password TextField -- E n d --
 
         // Confirm Password TextField -- S t a r t --
-        MyTextField(
+        RegisterTextField(
           hint: LocaleKeys.confirmPassword.tr(),
           controller: confirmPasswordController,
           focusNode: confirmPasswordFocusNode,
@@ -385,14 +395,14 @@ class _RegisterState extends State<Register> {
         )
         : SizedBox(height: 40.h,),
 
-        MyTextField(
+        RegisterTextField(
           hint: LocaleKeys.email.tr(),
           controller: loginEmailController,
           focusNode: loginEmailFocusNode,
           margin: EdgeInsets.symmetric(vertical: 10.h),
         ),
 
-        MyTextField(
+        RegisterTextField(
           hint: LocaleKeys.password.tr(),
           controller: loginPasswordController,
           focusNode: loginPasswordFocusNode,

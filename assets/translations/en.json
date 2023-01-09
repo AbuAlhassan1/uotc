@@ -26,5 +26,6 @@
     "createAccount": "Create account",
     "username": "Username",
     "confirmPassword": "Confirm password",
-    "skip": "Skip"
+    "skip": "Skip",
+    "writeAComment": "Write a comment"
 }
