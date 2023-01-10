@@ -6,12 +6,12 @@ import 'package:get/get.dart';
 class ToastStateController extends GetxController{
   Map<String, dynamic> types = {
     'success': {
-      'color': LinearGradient(
+      'color': const LinearGradient(
         colors: [
-          Colors.green.withOpacity(0.2),
-          Colors.green.withOpacity(0.1),
-          Colors.transparent,
-          Colors.transparent,
+          Colors.white,
+          Colors.white,
+          Colors.white,
+          Colors.white,
         ]
       ),
       'text-color': Colors.green,
@@ -19,12 +19,12 @@ class ToastStateController extends GetxController{
       'icon': 'assets/svg/fi-rr-check.svg'
     },
     'error': {
-      'color': LinearGradient(
+      'color': const LinearGradient(
         colors: [
-          Colors.red.withOpacity(0.2),
-          Colors.red.withOpacity(0.1),
-          Colors.transparent,
-          Colors.transparent,
+          Colors.white,
+          Colors.white,
+          Colors.white,
+          Colors.white,
         ]
       ),
       'text-color': Colors.red,
@@ -32,12 +32,12 @@ class ToastStateController extends GetxController{
       'icon': 'assets/svg/cross-small.svg'
     },
     'reminder': {
-      'color': LinearGradient(
+      'color': const LinearGradient(
         colors: [
-          Colors.yellow.withOpacity(0.2),
-          Colors.yellow.withOpacity(0.1),
-          Colors.transparent,
-          Colors.transparent,
+          Colors.white,
+          Colors.white,
+          Colors.white,
+          Colors.white,
         ]
       ),
       'text-color': Colors.yellow,
@@ -64,13 +64,10 @@ class ToastStateController extends GetxController{
     navMenuButtonPosition.value = -140;
   }
 
-  void showToast({
-    required String desc,
-    required String type,
-    required int seconds,
-  }) async {
+  void showToast({ required String desc, required String type, required int seconds }) async {
     if(!isToastOnScreen.value){
       isToastOnScreen.value = true;
+      currentType.value = type;
       description.value = desc;
       toastAlignment.value = -1;
       await Future.delayed(Duration(seconds: seconds), () {
@@ -81,7 +78,7 @@ class ToastStateController extends GetxController{
     }
   }
 
-  alignNavBtn(double position){
+  void alignNavBtn(double position){
     navMenuButtonPosition.value = position;
   }
 
@@ -110,4 +107,5 @@ class ToastStateController extends GetxController{
     navMenuButtonPosition.value = position * (-1);
     isStoriesHidden.value = false;
   }
+
 }

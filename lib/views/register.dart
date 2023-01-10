@@ -285,20 +285,21 @@ class _RegisterState extends State<Register> {
             screenHeight: height
           ).tr(),
           onTap: () async {
-            if( passwordController.text == confirmPasswordController.text ) {
-              await registerStateController.register(
-                username: usernameController.text,
-                email: emailController.text,
-                password: passwordController.text,
-              );
-            } else {
-              toastController.showToast(
-                desc: 'Password and confirm password must match',
-                type: 'error',
-                seconds: 5
-              );
-            }
-            log(toastController.description.value);
+            // if( passwordController.text == confirmPasswordController.text ) {
+            //   await registerStateController.registerAsGuest(
+            //     username: usernameController.text,
+            //     email: emailController.text,
+            //     password: passwordController.text,
+            //   );
+            // } else {
+            //   toastController.showToast(
+            //     desc: 'Password and confirm password must match',
+            //     type: 'error',
+            //     seconds: 5
+            //   );
+            // }
+            // log(toastController.description.value);
+            // registerStateController.test();
           },
         ),
         // Register Button -- E n d --
@@ -435,7 +436,13 @@ class _RegisterState extends State<Register> {
             weight: FontWeight.bold,
             screenHeight: height
           ).tr(),
-          onTap: () async => context.go('/lobby')
+          onTap: () async {
+            // context.go('/lobby');
+            await registerStateController.loginAsGuest(
+              emailOrUsername: loginEmailController.text,
+              password: loginPasswordController.text
+            );
+          }
         ),
 
         Padding(

@@ -1,16 +1,19 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:uotc/services/remote.dart';
+import 'package:uotc/services/secure_storage.dart';
 import 'toast_controller.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class RegisterStateController extends GetxController{
   ToastStateController toastController = Get.find();
   RxBool isRegisterLoading = false.obs;
   RxString userIdToken = "".obs;
 
-  Future<void> register({ required String username, required String email, required String password }) async {
+  Future<void> registerAsGuest({ required String username, required String email, required String password }) async {
     List<String> messages = [];
     if(!isRegisterLoading.value){
       if(username.isEmpty){ messages.add('Username is required'); }
@@ -119,14 +122,91 @@ class RegisterStateController extends GetxController{
           type: 'error',
           seconds: 4
         );
+      }else if(response.statusCode == 201){
+        toastController.showToast(
+          desc: "تم انشاء حسابك بنجاح",
+          type: 'success',
+          seconds: 4
+        );
+
+        Map body = jsonDecode(response.body);
+        log(body["access-token"]);
+        SecureStorage.storeMap(
+          key: "tokens",
+          map: body
+        );
       }
     }
     else{
       toastController.showToast(
         desc: "يجب ان تختار احدى حساباتك للمتابعة",
-        type: 'error',
+        type: 'reminder',
         seconds: 4
       );
     }
+  }
+
+  Future<void> loginAsGuest({required emailOrUsername, required password}) async {
+    if( !isRegisterLoading.value ){
+
+      isRegisterLoading.value = true;
+
+      var response = await Remote.apiCall(
+        path: "user/login-guest",
+        body: {
+          "email_or_username": emailOrUsername,
+          "password": password
+        }
+      );
+
+      if( response != null ){
+        log(response.body);
+        if(response.statusCode == 200){
+          await SecureStorage.storeMap(
+            key: "tokens",
+            map: jsonDecode(response.body)
+          );
+          toastController.showToast(
+            desc: "اهلاً بك في يوتك",
+            type: 'success',
+            seconds: 4
+          );
+        }else if(response.statusCode == 400){
+          toastController.showToast(
+            desc: "اسم المستخدم او البريد و كلمة المرور مطلوبتين",
+            type: 'error',
+            seconds: 4
+          );
+        }else if(response.statusCode == 403){
+          toastController.showToast(
+            desc: "اسم المستخدم او البريد و كلمة المرور, احدهما خاطأ",
+            type: 'error',
+            seconds: 4
+          );
+        }else if(response.statusCode == 500){
+          toastController.showToast(
+            desc: "حدث خطأ ما, اعد المحاولة",
+            type: 'error',
+            seconds: 4
+          );
+        }
+      }else{
+        toastController.showToast(
+          desc: "حدث خطأ ما, اعد المحاولة",
+          type: 'error',
+          seconds: 4
+        );
+      }
+      isRegisterLoading.value = false;
+    }
+  }
+
+  test(){
+    String myToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzMzOTE1NzcuMTk2MDA0LCJpZCI6Ijg2NTEwNWI1LTVmYzktNDFhZS1hYWRmLTRlOGZiMGYyMDliMSJ9.1BQHQewvq37BNClZTRiQYJw8HojeXAS_qM7561_eGE4";
+    Map tokenInfo = JwtDecoder.decode(myToken);
+    log(tokenInfo.toString());
+    double exp = tokenInfo['exp'];
+    var date = DateTime.fromMillisecondsSinceEpoch(exp.toInt() * 1000);
+    log(date.toString());
   }
 }

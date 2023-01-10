@@ -147,7 +147,7 @@ class MyApp extends StatelessWidget {
                       alignment: Alignment(0, toastController.toastAlignment.value),
                       duration: const Duration(milliseconds: 1000),
                       curve: Curves.easeInOutCubicEmphasized,
-                      child: const Toast()
+                      child: Toast(currentType: toastController.currentType.value,)
                     ),
                 )
               ],
