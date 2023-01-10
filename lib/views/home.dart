@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,13 +29,15 @@ class _HomeState extends State<Home> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [
       SystemUiOverlay.bottom
     ]);
-    postController.addListener(() {
-      if( postController.offset < 30 ){
-        toastController.showStories(-75.h);
-      }else{
-        toastController.hideStories(-75.h);
-      }
-    });
+    // postController.addListener(() {
+    //   if( postController.offset < 30 ){
+    //     toastController.showStories(-75.h);
+    //   }else{
+    //     toastController.hideStories(-75.h);
+    //   }
+    // });
+    log('home init asdasdasd');
+    Future.delayed(const Duration(seconds: 1), () => setState(() => toastController.showStories(-75.h)),);
   }
 
   @override

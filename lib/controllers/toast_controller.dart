@@ -60,7 +60,8 @@ class ToastStateController extends GetxController{
   @override
   void onInit() {
     super.onInit();
-    // hideShowStories(0);
+    storiesPosition.value = -140;
+    navMenuButtonPosition.value = -140;
   }
 
   void showToast({

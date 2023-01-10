@@ -35,14 +35,17 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
   // Animation Stuff -- E n d --
 
   bool ignoringPointer = false;
+  double statusBarPosition = -15.h;
 
   @override
-  void initState(){ super.initState();
+  void initState(){
+    super.initState();
     controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 300), reverseDuration: const Duration(milliseconds: 300));
     animation = Tween<Offset>(begin: Offset.zero, end: const Offset(0.5, 0)).animate(CurvedAnimation(parent: controller, curve: Curves.easeInOutSine));
     sAnimation = Tween<double>(begin: 1, end: 0.9).animate(controller);
     borderRadiusAnimation = Tween<double>(begin: 5, end: 20).animate(CurvedAnimation(parent: controller, curve: Curves.linear));
     toastController.alignNavBtn(75.h);
+    Future.delayed(const Duration(milliseconds: 1000), () => setState(() => statusBarPosition = 0),);
   }
 
   @override
@@ -154,8 +157,10 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
         ),
 
         // User Status Bar -- S t a r t --
-        Positioned(
-          bottom: 0,
+        AnimatedPositioned(
+          duration: const Duration(milliseconds: 2800),
+          curve: Curves.easeInOutCubicEmphasized,
+          bottom: statusBarPosition,
           child: FittedBox(
             child: Container(
               height: 15.h, width: width,

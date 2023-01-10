@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,6 +15,11 @@ class Toast extends StatefulWidget {
 
 class _ToastState extends State<Toast> {
   final ToastStateController toastController = Get.find();
+  
+  List<Widget> buildToast(String langCode, List<Widget> widgets){
+    if(langCode == "ar"){ return widgets.reversed.toList(); }
+    else{ return widgets; }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +31,7 @@ class _ToastState extends State<Toast> {
       child: Container(
         width: width * 0.9,
         margin: EdgeInsets.only(top: 5.h),
-        padding: EdgeInsets.symmetric(vertical: 15.h),
+        padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 20.w),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -38,52 +44,64 @@ class _ToastState extends State<Toast> {
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(width: 20.w),
-            Container(
-              height: 30.sp,
-              width: 30.sp,
-              padding: EdgeInsets.all(5.sp),
-              decoration: BoxDecoration(
-                color: toastController.types[toastController.currentType.value]['text-color'],
-                borderRadius: BorderRadius.circular(50)
+          children: buildToast(
+            context.locale.languageCode,
+            [
+              // Toast Message -- S t a r t --
+              Expanded(
+                child: Obx(
+                  () => Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: context.locale.languageCode == "en" ?
+                    CrossAxisAlignment.end : CrossAxisAlignment.start,
+                    children: [
+                      CustomText.createCustomTajawalText(
+                        text: toastController.description.value,
+                        align: context.locale.languageCode == "en" ?
+                        TextAlign.end : TextAlign.start,
+                        color: toastController.types[toastController.currentType.value]['text-color'],
+                        fontSize: 14,
+                        overflow: TextOverflow.ellipsis,
+                        weight: FontWeight.bold,
+                        screenHeight: height,
+                        maxLines: 5
+                      ),
+                      CustomText.createCustomTajawalText(
+                        text: toastController.types[toastController.currentType.value]['sub-text'],
+                        align: context.locale.languageCode == "en" ?
+                        TextAlign.end : TextAlign.start,
+                        color: Colors.grey.withOpacity(0.8),
+                        fontSize: 14,
+                        overflow: TextOverflow.ellipsis,
+                        weight: FontWeight.bold,
+                        screenHeight: height,
+                        maxLines: 1
+                      ).tr(),
+                    ],
+                  ),
+                )
               ),
-              child: SvgPicture.asset(toastController.types[toastController.currentType.value]['icon'], color: Colors.white),
-            ),
-            SizedBox(width: 20.w),
-            Expanded(
-              child: Obx(
-                () => Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText.createCustomTajawalText(
-                      text: toastController.description.value,
-                      align: TextAlign.start,
-                      color: toastController.types[toastController.currentType.value]['text-color'],
-                      fontSize: 14,
-                      overflow: TextOverflow.ellipsis,
-                      weight: FontWeight.bold,
-                      screenHeight: height,
-                      maxLines: 5
-                    ),
-                    CustomText.createCustomTajawalText(
-                      text: toastController.types[toastController.currentType.value]['sub-text'],
-                      align: TextAlign.start,
-                      color: Colors.grey.withOpacity(0.8),
-                      fontSize: 14,
-                      overflow: TextOverflow.ellipsis,
-                      weight: FontWeight.bold,
-                      screenHeight: height,
-                      maxLines: 1
-                    ),
-                  ],
+              // Toast Message -- E n d --
+
+              SizedBox(width: 20.w),
+
+              // Toast Icon -- S t a r t --
+              Container(
+                height: 30.sp,
+                width: 30.sp,
+                padding: EdgeInsets.all(5.sp),
+                decoration: BoxDecoration(
+                  color: toastController.types[toastController.currentType.value]['text-color'],
+                  borderRadius: BorderRadius.circular(50)
                 ),
-              )
-            ),
-          ],
+                child: SvgPicture.asset(toastController.types[toastController.currentType.value]['icon'], color: Colors.white),
+              ),
+              // Toast Icon -- E n d --
+            ]
+          )
+          
+          ,
         )
       ),
     );

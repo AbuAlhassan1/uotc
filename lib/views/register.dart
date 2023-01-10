@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart' hide Trans;
@@ -12,7 +11,6 @@ import '../controllers/register_controller.dart';
 import '../controllers/toast_controller.dart';
 import 'common/custom_text.dart';
 import 'common/text_fields_and_buttons.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -42,33 +40,6 @@ class _RegisterState extends State<Register> {
   TextEditingController loginEmailController = TextEditingController();
   FocusNode loginPasswordFocusNode = FocusNode(debugLabel: 'loginPassword');
   TextEditingController loginPasswordController = TextEditingController();
-
-  Future<bool?> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-
-    // googleAuth!.idToken;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    // // Once signed in, return the UserCredential
-    UserCredential user = await FirebaseAuth.instance.signInWithCredential(credential);
-    // log(credential.idToken.toString()+ ' asdasd');
-    // log(user.credential!.token.toString()+ ' asdasd');
-    String idToken = await user.user!.getIdToken();
-    log('$idToken asdasd');
-
-    await GoogleSignIn().signOut();
-    // log(user.credential.toString());
-    // return user;
-  }
 
   @override
   void initState() {
@@ -164,8 +135,8 @@ class _RegisterState extends State<Register> {
                           Colors.transparent,
                           Colors.transparent,
                           Colors.transparent,
-                          const Color(0xFF518eb9).withOpacity(0.3),
-                          const Color(0xFF518eb9).withOpacity(0.4),
+                          const Color(0xFF518eb9).withOpacity(0.02),
+                          const Color(0xFF518eb9).withOpacity(0.08),
                           // Colors.orange.withOpacity(0.4),
                         ],
                         begin: Alignment.topCenter,
@@ -183,7 +154,6 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 // Page Content -- E n d --
-    
               ],
             ),
           )
@@ -226,14 +196,49 @@ class _RegisterState extends State<Register> {
         : const SizedBox(),
         // Header Text -- E n d --
 
-        // Username TextField -- S t a r t --
-        RegisterTextField(
-          hint: LocaleKeys.username.tr(),
-          controller: usernameController,
-          focusNode: usernameFocusNode,
-          margin: EdgeInsets.symmetric(vertical: 10.h),
+        // Register With Google -- S t a r t --
+        ButtonOne(
+          height: 30.h,
+          margin: EdgeInsets.symmetric(vertical: 15.h),
+          borderColor: Colors.red,
+          shap: CustomText.createCustomTajawalText(
+            text: 'Google',
+            align: TextAlign.center,
+            color: Colors.white,
+            fontSize: 18,
+            overflow: TextOverflow.visible,
+            weight: FontWeight.bold,
+            screenHeight: height
+          ).tr(),
+          onTap: () async {
+            await registerStateController.registerWithGoogle();
+          },
         ),
-        // Username TextField -- E n d --
+        // Register With Google -- E n d --
+
+        // Divider -- S t a r t --
+        SizedBox(
+          width: width/1.5,
+          child: Row(
+            children: [
+              Expanded(child: Container(height: 1.h, color: Colors.grey.withOpacity(0.5))),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                child: CustomText.createCustomTajawalText(
+                  text: LocaleKeys.or,
+                  align: TextAlign.center,
+                  color: Colors.white,
+                  fontSize: 12,
+                  overflow: TextOverflow.visible,
+                  weight: FontWeight.w300,
+                  screenHeight: height
+                ).tr(),
+              ),
+              Expanded(child: Container(height: 1.h, color: Colors.grey.withOpacity(0.5)))
+            ],
+          ),
+        ),
+        // Divider -- E n d --
 
         // Email TextField -- S t a r t --
         RegisterTextField(
@@ -267,7 +272,7 @@ class _RegisterState extends State<Register> {
         // Register Button -- S t a r t --
         ButtonOne(
           color: Colors.transparent,
-          margin: EdgeInsets.symmetric(vertical: 10.h),
+          margin: EdgeInsets.symmetric(vertical: 15.h),
           padding: EdgeInsets.symmetric(vertical: 0.h),
           height: 30.h,
           shap: CustomText.createCustomTajawalText(
@@ -298,46 +303,7 @@ class _RegisterState extends State<Register> {
         ),
         // Register Button -- E n d --
 
-        // Divider -- S t a r t --
-        SizedBox(
-          width: width/1.5,
-          child: Row(
-            children: [
-              Expanded(child: Container(height: 1.h, color: Colors.grey.withOpacity(0.5))),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.w),
-                child: CustomText.createCustomTajawalText(
-                  text: LocaleKeys.or,
-                  align: TextAlign.center,
-                  color: Colors.white,
-                  fontSize: 12,
-                  overflow: TextOverflow.visible,
-                  weight: FontWeight.w300,
-                  screenHeight: height
-                ).tr(),
-              ),
-              Expanded(child: Container(height: 1.h, color: Colors.grey.withOpacity(0.5)))
-            ],
-          ),
-        ),
-        // Divider -- E n d --
-        
-        ButtonOne(
-          height: 30.h,
-          margin: EdgeInsets.symmetric(vertical: 10.h),
-          borderColor: Colors.red,
-          shap: CustomText.createCustomTajawalText(
-            text: 'Google',
-            align: TextAlign.center,
-            color: Colors.white,
-            fontSize: 18,
-            overflow: TextOverflow.visible,
-            weight: FontWeight.bold,
-            screenHeight: height
-          ).tr(),
-          onTap: () async => signInWithGoogle(),
-        ),
-
+        // Already Have an Account Signin [ Hint Text ] -- S t a r t --
         Padding(
           padding: EdgeInsets.only(bottom: height * 0.05),
           child: Row(
@@ -368,6 +334,7 @@ class _RegisterState extends State<Register> {
             ],
           ),
         )
+        // Already Have an Account Signin [ Hint Text ] -- E n d --
 
       ],
     );
@@ -395,6 +362,50 @@ class _RegisterState extends State<Register> {
         )
         : SizedBox(height: 40.h,),
 
+        // Register With Google -- S t a r t --
+        ButtonOne(
+          height: 30.h,
+          margin: EdgeInsets.symmetric(vertical: 15.h),
+          borderColor: Colors.red,
+          shap: CustomText.createCustomTajawalText(
+            text: 'Google',
+            align: TextAlign.center,
+            color: Colors.white,
+            fontSize: 18,
+            overflow: TextOverflow.visible,
+            weight: FontWeight.bold,
+            screenHeight: height
+          ).tr(),
+          onTap: () async {
+            await registerStateController.registerWithGoogle();
+          },
+        ),
+        // Register With Google -- E n d --
+
+        // Divider -- S t a r t --
+        SizedBox(
+          width: width/1.5,
+          child: Row(
+            children: [
+              Expanded(child: Container(height: 1.h, color: Colors.grey.withOpacity(0.5))),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                child: CustomText.createCustomTajawalText(
+                  text: LocaleKeys.or,
+                  align: TextAlign.center,
+                  color: Colors.white,
+                  fontSize: 12,
+                  overflow: TextOverflow.visible,
+                  weight: FontWeight.w300,
+                  screenHeight: height
+                ).tr(),
+              ),
+              Expanded(child: Container(height: 1.h, color: Colors.grey.withOpacity(0.5)))
+            ],
+          ),
+        ),
+        // Divider -- E n d --
+
         RegisterTextField(
           hint: LocaleKeys.email.tr(),
           controller: loginEmailController,
@@ -412,7 +423,7 @@ class _RegisterState extends State<Register> {
     
         ButtonOne(
           color: Colors.transparent,
-          margin: EdgeInsets.symmetric(vertical: 20.h),
+          margin: EdgeInsets.symmetric(vertical: 15.h),
           padding: EdgeInsets.symmetric(vertical: 0.h),
           height: 30.h,
           shap: CustomText.createCustomTajawalText(
