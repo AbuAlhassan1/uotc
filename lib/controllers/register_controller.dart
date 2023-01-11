@@ -12,6 +12,83 @@ class RegisterStateController extends GetxController{
   ToastStateController toastController = Get.find();
   RxBool isRegisterLoading = false.obs;
   RxString userIdToken = "".obs;
+  RxBool isSignedIn = false.obs;
+
+  @override
+  void onInit() async {
+    super.onInit();
+    isSignedIn.value = await checkIfSignedIn();
+  }
+
+  bool checkTokenIfExpired({required String token}){
+    Map tokenInfo = JwtDecoder.decode(token);
+    double exp = tokenInfo['exp'];
+    DateTime nowDate = DateTime.now();
+    DateTime expDate = DateTime.fromMillisecondsSinceEpoch(exp.toInt() * 1000);
+
+    int isExpired = nowDate.compareTo(expDate);
+
+    log(expDate.toString());
+
+    if ( isExpired < 0 ){ return false; }
+    else if ( isExpired > 0 ){ return true; }
+    else { return false; }
+  }
+
+  Future<bool> checkIfSignedIn() async {
+    String? jsonTokens = await SecureStorage.readOneValue(key: "tokens");
+    if(jsonTokens == null){
+      return false;
+    }
+    Map tokens = jsonDecode(jsonTokens);
+    String accessToken = tokens['access-token'];
+    String refreshToken = tokens['refresh-token'];
+    
+    log(refreshToken);
+
+    if( checkTokenIfExpired(token: accessToken) ){
+      // Check If The Saved Refresh Token Is Expired?
+      // If Not Get Another Access Token By That Refresh Token.
+      // And If It's Expired Then Send The User To The Login Screen To Log in Again.
+      if ( checkTokenIfExpired(token: refreshToken) ){
+        toastController.showToast(
+          desc: "انتهت الجلسة, قم بتسجيل الدخول مرة اخرى",
+          type: 'error',
+          seconds: 4
+        );
+        return false;
+      }else {
+        var response = await Remote.apiCall(path: "user/get-access-token?refresh_token=$refreshToken");
+        if(response == null){
+          toastController.showToast(
+            desc: "انتهت الجلسة, قم بتسجيل الدخول مرة اخرى",
+            type: 'error',
+            seconds: 4
+          );
+          return false;
+        }else{
+          if(response.statusCode == 200){
+            await SecureStorage.storeMap(
+              key: "tokens",
+              map: jsonDecode(response.body)
+            );
+            return true;
+          }else{
+            toastController.showToast(
+              desc: "انتهت الجلسة, قم بتسجيل الدخول مرة اخرى",
+              type: 'error',
+              seconds: 4
+            );
+            return false;
+          }
+        }
+      }
+    }else{
+      return true;
+    }
+
+    // log(checkTokenIfExpired(token: jsonDecode(jsonTokens)['access-token']).toString());
+  }
 
   Future<void> registerAsGuest({ required String username, required String email, required String password }) async {
     List<String> messages = [];
@@ -122,6 +199,13 @@ class RegisterStateController extends GetxController{
           type: 'error',
           seconds: 4
         );
+      }else if(response.statusCode == 500){
+        log("status code is equals to 500.000000000000000000");
+        toastController.showToast(
+          desc: "حدث خطأ ما, اعد المحاولة",
+          type: 'error',
+          seconds: 4
+        );
       }else if(response.statusCode == 201){
         toastController.showToast(
           desc: "تم انشاء حسابك بنجاح",
@@ -131,10 +215,11 @@ class RegisterStateController extends GetxController{
 
         Map body = jsonDecode(response.body);
         log(body["access-token"]);
-        SecureStorage.storeMap(
+        await SecureStorage.storeMap(
           key: "tokens",
           map: body
         );
+        isSignedIn.value = true;
       }
     }
     else{
@@ -201,12 +286,56 @@ class RegisterStateController extends GetxController{
     }
   }
 
-  test(){
-    String myToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzMzOTE1NzcuMTk2MDA0LCJpZCI6Ijg2NTEwNWI1LTVmYzktNDFhZS1hYWRmLTRlOGZiMGYyMDliMSJ9.1BQHQewvq37BNClZTRiQYJw8HojeXAS_qM7561_eGE4";
-    Map tokenInfo = JwtDecoder.decode(myToken);
-    log(tokenInfo.toString());
-    double exp = tokenInfo['exp'];
-    var date = DateTime.fromMillisecondsSinceEpoch(exp.toInt() * 1000);
-    log(date.toString());
+  Future<void> loginWithGoogle() async {
+    // Triger The Google Sign in Flow -- S t a r t --
+    bool isOk = await getGoogleUserIdToken();
+
+    if( isOk ){
+      var response = await Remote.apiCall(
+        path: 'user/login-with-google?id_token=${userIdToken.value}',
+      );
+
+      if( response == null){
+        toastController.showToast(
+          desc: "حدث خطأ ما, اعد المحاولة",
+          type: 'error',
+          seconds: 5
+        );
+      }else if(response.statusCode == 409){
+        toastController.showToast(
+          desc: "انت لديك حساب بالفعل مرتبط بهذا البريد الالكترني",
+          type: 'error',
+          seconds: 5
+        );
+      }else if(response.statusCode == 500){
+        log("status code is equals to 500.000000000000000000");
+        toastController.showToast(
+          desc: "حدث خطأ ما, اعد المحاولة",
+          type: 'error',
+          seconds: 5
+        );
+      }else if(response.statusCode == 200){
+        toastController.showToast(
+          desc: "اهلا بك في يوتك",
+          type: 'success',
+          seconds: 5
+        );
+
+        Map body = jsonDecode(response.body);
+        log(body["access-token"]);
+        await SecureStorage.storeMap(
+          key: "tokens",
+          map: body
+        );
+        isSignedIn.value = true;
+      }
+    }
+    else{
+      toastController.showToast(
+        desc: "يجب ان تختار احدى حساباتك للمتابعة",
+        type: 'reminder',
+        seconds: 5
+      );
+    }
   }
 }

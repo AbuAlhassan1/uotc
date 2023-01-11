@@ -258,27 +258,29 @@ class _WelcomeScreenContainerState extends State<WelcomeScreenContainer> {
             // Next & Back Button -- E n d --
 
             // Index Indecator -- S t a r t --
-            Align(
-              alignment: const Alignment(0, 0.8),
-              child: Container(
-                width: width /3,
-                padding: EdgeInsets.symmetric(vertical: 5.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.8),
-                      blurRadius: 10,
-                      spreadRadius: -5
-                    )
-                  ]
-                ),
-                child: sliderIndex(
-                  index: index,
-                  indexColor: Colors.white.withOpacity(0.95),
-                  numOfPages: 5,
-                  otherColor: Colors.blueGrey.withOpacity(0.8),
-                  size: 7.sp
+            IgnorePointer(
+              child: Align(
+                alignment: const Alignment(0, 0.8),
+                child: Container(
+                  width: width /3,
+                  padding: EdgeInsets.symmetric(vertical: 5.h),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.8),
+                        blurRadius: 10,
+                        spreadRadius: -5
+                      )
+                    ]
+                  ),
+                  child: sliderIndex(
+                    index: index,
+                    indexColor: Colors.white.withOpacity(0.95),
+                    numOfPages: 5,
+                    otherColor: Colors.blueGrey.withOpacity(0.8),
+                    size: 7.sp
+                  ),
                 ),
               ),
             ),

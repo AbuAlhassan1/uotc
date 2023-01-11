@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'controllers/register_controller.dart';
 import 'controllers/toast_controller.dart';
 import 'views/common/scroll_behavior.dart';
 import 'views/common/toast_widget.dart';
@@ -46,75 +48,89 @@ class MyApp extends StatelessWidget {
 
   final PageStorageKey storageKey = const PageStorageKey('pageKey');
   final ToastStateController toastController = Get.put(ToastStateController());
+  final RegisterStateController registerStateController = Get.put(RegisterStateController());
 
-  final router = GoRouter(
-    initialLocation: '/welcome',
-    routes: [
-      GoRoute(
-        path: '/welcome',
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: const WelcomeScreenContainer()
-        ),
-      ),
-      GoRoute(
-        path: '/register',
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: const Register()
-        ),
-      ),
-      ShellRoute(
-        pageBuilder: (BuildContext context, GoRouterState state, Widget myChild) {
-          return MaterialPage(
+  GoRouter buildRouter() {
+    return GoRouter(
+      initialLocation: '/welcome',
+      redirect: (context, state) {
+        bool isSignedIn = registerStateController.isSignedIn.value;
+        bool isSigningIn;
+        if( state.location == "/register" ||state.location == "/welcome" ){ isSigningIn = true; }
+        else{ isSigningIn = false; }
+        log("Is Signing In $isSigningIn");
+        log("Is Signed In State ${registerStateController.isSignedIn.value}");
+        if( isSignedIn && isSigningIn ) {return "/lobby";}
+        if( !isSignedIn && !isSigningIn ) {return "/welcome";}
+        return null;
+      },
+      routes: [
+        GoRoute(
+          path: '/welcome',
+          pageBuilder: (context, state) => MaterialPage(
             key: state.pageKey,
-            child: HiddenDrawer(
-              myChild: myChild,
-            )
-          );
-        },
-        routes: <RouteBase>[
-          GoRoute(
-            path: '/lobby',
-            pageBuilder: (context, state) => MaterialPage(
-              key: state.pageKey,
-              child: const Home()
-            ),
+            child: const WelcomeScreenContainer()
           ),
-          GoRoute(
-            path: '/details',
-            builder: (BuildContext context, GoRouterState state) {
-              return const Scaffold(
-                backgroundColor: Colors.red,
-              );
-            },
-          ),
-          GoRoute(
-            path: '/bb',
-            builder: (BuildContext context, GoRouterState state) {
-              return const Scaffold(
-                backgroundColor: Colors.orange,
-              );
-            },
-          ),
-          GoRoute(
-            path: '/settings',
-            pageBuilder: (context, state) => MaterialPage(
-              key: state.pageKey,
-              child: const Scaffold(backgroundColor: Colors.blue,)
-            ),
-          ),
-        ],
-      ),
-    ],
-    errorPageBuilder: (context, state) => MaterialPage(
-      child: Scaffold(
-        body: Center(
-          child: Text(state.error.toString()),
         ),
-      )
-    ),
-  );
+        GoRoute(
+          path: '/register',
+          pageBuilder: (context, state) => MaterialPage(
+            key: state.pageKey,
+            child: const Register()
+          ),
+        ),
+        ShellRoute(
+          pageBuilder: (BuildContext context, GoRouterState state, Widget myChild) {
+            return MaterialPage(
+              key: state.pageKey,
+              child: HiddenDrawer(
+                myChild: myChild,
+              )
+            );
+          },
+          routes: <RouteBase>[
+            GoRoute(
+              path: '/lobby',
+              pageBuilder: (context, state) => MaterialPage(
+                key: state.pageKey,
+                child: const Home()
+              ),
+            ),
+            GoRoute(
+              path: '/details',
+              builder: (BuildContext context, GoRouterState state) {
+                return const Scaffold(
+                  backgroundColor: Colors.red,
+                );
+              },
+            ),
+            GoRoute(
+              path: '/bb',
+              builder: (BuildContext context, GoRouterState state) {
+                return const Scaffold(
+                  backgroundColor: Colors.orange,
+                );
+              },
+            ),
+            GoRoute(
+              path: '/settings',
+              pageBuilder: (context, state) => MaterialPage(
+                key: state.pageKey,
+                child: const Scaffold(backgroundColor: Colors.blue,)
+              ),
+            ),
+          ],
+        ),
+      ],
+      errorPageBuilder: (context, state) => MaterialPage(
+        child: Scaffold(
+          body: Center(
+            child: Text(state.error.toString()),
+          ),
+        )
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,17 +155,14 @@ class MyApp extends StatelessWidget {
                   localizationsDelegates: context.localizationDelegates,
                   debugShowCheckedModeBanner: false,
                   locale: context.locale,
-                  routerConfig: router,
+                  routerConfig: buildRouter(),
                 ),
-                Obx(
-                  () =>
-                    AnimatedAlign(
-                      alignment: Alignment(0, toastController.toastAlignment.value),
-                      duration: const Duration(milliseconds: 1000),
-                      curve: Curves.easeInOutCubicEmphasized,
-                      child: Toast(currentType: toastController.currentType.value,)
-                    ),
-                )
+                Obx(() => AnimatedAlign(
+                  alignment: Alignment(0, toastController.toastAlignment.value),
+                  duration: const Duration(milliseconds: 1000),
+                  curve: Curves.easeInOutCubicEmphasized,
+                  child: Toast(currentType: toastController.currentType.value,)
+                ))
               ],
             ),
           )

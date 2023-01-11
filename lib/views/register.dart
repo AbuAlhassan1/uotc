@@ -21,7 +21,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
 
-  RegisterStateController registerStateController = Get.put(RegisterStateController());
+  RegisterStateController registerStateController = Get.find();
   ToastStateController toastController = Get.find();
   PageController registerationPageController = PageController(keepPage: true);
   int colorFactor = 150;
@@ -212,6 +212,7 @@ class _RegisterState extends State<Register> {
           ).tr(),
           onTap: () async {
             await registerStateController.registerWithGoogle();
+            Future.delayed(const Duration(seconds: 1), () => GoRouter.of(context).refresh(),);
           },
         ),
         // Register With Google -- E n d --
@@ -378,7 +379,7 @@ class _RegisterState extends State<Register> {
             screenHeight: height
           ).tr(),
           onTap: () async {
-            await registerStateController.registerWithGoogle();
+            await registerStateController.loginWithGoogle();
           },
         ),
         // Register With Google -- E n d --
@@ -444,6 +445,26 @@ class _RegisterState extends State<Register> {
             );
           }
         ),
+
+        // ButtonOne(
+        //   color: Colors.transparent,
+        //   margin: EdgeInsets.symmetric(vertical: 15.h),
+        //   padding: EdgeInsets.symmetric(vertical: 0.h),
+        //   height: 30.h,
+        //   shap: CustomText.createCustomTajawalText(
+        //     text: "تجربة",
+        //     align: TextAlign.center,
+        //     color: Colors.white,
+        //     fontSize: 18,
+        //     overflow: TextOverflow.visible,
+        //     weight: FontWeight.bold,
+        //     screenHeight: height
+        //   ).tr(),
+        //   onTap: () async {
+        //     // context.go('/lobby');
+        //     registerStateController.checkIfSignedIn();
+        //   }
+        // ),
 
         Padding(
           padding: EdgeInsets.only(bottom: height * 0.05),

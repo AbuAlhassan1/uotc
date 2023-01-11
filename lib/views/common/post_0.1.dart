@@ -72,24 +72,27 @@ class _PostOneState extends State<PostOne> {
                             onPageChanged: (index) => setState(() => imageIndex = index),
                             itemBuilder: (context, index) {
         
-                              return Container(
-                                width: width,
-                                padding: EdgeInsets.symmetric(horizontal: 0.w),
-                                margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.w),
-                                clipBehavior: Clip.antiAlias,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5.sp)
-                                ),
-                                child: ImageFade(
-                                  fit: BoxFit.cover,
-                                  image: const AssetImage('assets/jpg/275246698_643562353599990_4357863837767632622_n.jpg'),
-                                  loadingBuilder: (context, progress, chunkEvent) => Center(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(20.sp),
-                                      child: const CircularProgressIndicator(color: Colors.grey),
-                                    )
+                              return GestureDetector(
+                                // onTap: () => SecureStorage.deleteAll(),
+                                child: Container(
+                                  width: width,
+                                  padding: EdgeInsets.symmetric(horizontal: 0.w),
+                                  margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.w),
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5.sp)
                                   ),
-                                )
+                                  child: ImageFade(
+                                    fit: BoxFit.cover,
+                                    image: const AssetImage('assets/jpg/275246698_643562353599990_4357863837767632622_n.jpg'),
+                                    loadingBuilder: (context, progress, chunkEvent) => Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(20.sp),
+                                        child: const CircularProgressIndicator(color: Colors.grey),
+                                      )
+                                    ),
+                                  )
+                                ),
                               );
                             },
                           ),
