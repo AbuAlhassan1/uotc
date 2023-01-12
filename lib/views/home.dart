@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,7 +36,8 @@ class _HomeState extends State<Home> {
     //   }
     // });
     log('home init asdasdasd');
-    Future.delayed(const Duration(seconds: 1), () => setState(() => toastController.showStories(-75.h)),);
+    Future.delayed(const Duration(seconds: 1), () => toastController.showStories(-75.h));
+    Future.delayed(const Duration(seconds: 1), () => toastController.showHome());
   }
 
   @override
@@ -55,20 +55,25 @@ class _HomeState extends State<Home> {
         height: height,
         child: Stack(
           children: [
-            Positioned(
-              child: SizedBox(
-                height: height, width: width,
-                child: PageView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  controller: postController,
-                  scrollDirection: Axis.vertical,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return PostOne(postIndex: index,);
-                  },
+            Obx(() => Positioned(
+              child: AnimatedOpacity(
+                duration: const Duration(seconds: 1),
+                curve: Curves.easeIn,
+                opacity: toastController.homeOpacity.value,
+                child: SizedBox(
+                  height: height, width: width,
+                  child: PageView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    controller: postController,
+                    scrollDirection: Axis.vertical,
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return PostOne(postIndex: index,);
+                    },
+                  ),
                 ),
               ),
-            ),
+            ),),
 
             // Stories -- S t a r t  --
             Obx(

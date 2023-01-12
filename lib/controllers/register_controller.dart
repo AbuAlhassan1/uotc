@@ -338,4 +338,5 @@ class RegisterStateController extends GetxController{
       );
     }
   }
+
 }

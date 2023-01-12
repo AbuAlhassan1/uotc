@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -55,6 +54,9 @@ class ToastStateController extends GetxController{
   RxDouble storiesPosition = 0.0.obs;
   RxDouble navMenuButtonPosition = 0.0.obs;
   RxBool isStoriesHidden = false.obs;
+
+  RxDouble statusBarPosition = (25.0 * ( -1 )).obs;
+  RxDouble homeOpacity = 0.0.obs;
   // Special -- E n d --
 
   @override
@@ -107,5 +109,9 @@ class ToastStateController extends GetxController{
     navMenuButtonPosition.value = position * (-1);
     isStoriesHidden.value = false;
   }
+
+  void showStatusBar() => statusBarPosition.value = 0;
+
+  void showHome() => homeOpacity.value = 1;
 
 }

@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uotc/views/common/colors.dart';
-
 import '../controllers/toast_controller.dart';
 import 'common/custom_text.dart';
 
@@ -45,7 +44,7 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
     sAnimation = Tween<double>(begin: 1, end: 0.9).animate(controller);
     borderRadiusAnimation = Tween<double>(begin: 5, end: 20).animate(CurvedAnimation(parent: controller, curve: Curves.linear));
     toastController.alignNavBtn(75.h);
-    Future.delayed(const Duration(milliseconds: 1000), () => setState(() => statusBarPosition = 0),);
+    Future.delayed(const Duration(seconds: 1), () => toastController.showStatusBar());
   }
 
   @override
@@ -157,10 +156,10 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
         ),
 
         // User Status Bar -- S t a r t --
-        AnimatedPositioned(
+        Obx(() => AnimatedPositioned(
           duration: const Duration(milliseconds: 2800),
           curve: Curves.easeInOutCubicEmphasized,
-          bottom: statusBarPosition,
+          bottom: toastController.statusBarPosition.value,
           child: FittedBox(
             child: Container(
               height: 15.h, width: width,
@@ -254,7 +253,7 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
               ),
             ),
           ),
-        )
+        ),)
         // User Status Bar -- E n d --
       ],
     );

@@ -438,7 +438,6 @@ class _RegisterState extends State<Register> {
             screenHeight: height
           ).tr(),
           onTap: () async {
-            // context.go('/lobby');
             await registerStateController.loginAsGuest(
               emailOrUsername: loginEmailController.text,
               password: loginPasswordController.text
@@ -446,25 +445,24 @@ class _RegisterState extends State<Register> {
           }
         ),
 
-        // ButtonOne(
-        //   color: Colors.transparent,
-        //   margin: EdgeInsets.symmetric(vertical: 15.h),
-        //   padding: EdgeInsets.symmetric(vertical: 0.h),
-        //   height: 30.h,
-        //   shap: CustomText.createCustomTajawalText(
-        //     text: "تجربة",
-        //     align: TextAlign.center,
-        //     color: Colors.white,
-        //     fontSize: 18,
-        //     overflow: TextOverflow.visible,
-        //     weight: FontWeight.bold,
-        //     screenHeight: height
-        //   ).tr(),
-        //   onTap: () async {
-        //     // context.go('/lobby');
-        //     registerStateController.checkIfSignedIn();
-        //   }
-        // ),
+        ButtonOne(
+          color: Colors.transparent,
+          margin: EdgeInsets.symmetric(vertical: 15.h),
+          padding: EdgeInsets.symmetric(vertical: 0.h),
+          height: 30.h,
+          shap: CustomText.createCustomTajawalText(
+            text: "تجربة",
+            align: TextAlign.center,
+            color: Colors.white,
+            fontSize: 18,
+            overflow: TextOverflow.visible,
+            weight: FontWeight.bold,
+            screenHeight: height
+          ).tr(),
+          onTap: () async {
+            context.go('/lobby');
+          }
+        ),
 
         Padding(
           padding: EdgeInsets.only(bottom: height * 0.05),
