@@ -9,12 +9,8 @@ import '../controllers/toast_controller.dart';
 import 'common/custom_text.dart';
 
 class HiddenDrawer extends StatefulWidget {
-  const HiddenDrawer({
-    Key? key,
-    required this.myChild
-  }) : super(key: key);
-
-  final Widget myChild;
+  const HiddenDrawer({Key? key, required this.myChild}) : super(key: key);
+  final Widget? myChild;
 
   @override
   State<HiddenDrawer> createState() => _HiddenDrawerState();
@@ -43,8 +39,12 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
     animation = Tween<Offset>(begin: Offset.zero, end: const Offset(0.5, 0)).animate(CurvedAnimation(parent: controller, curve: Curves.easeInOutSine));
     sAnimation = Tween<double>(begin: 1, end: 0.9).animate(controller);
     borderRadiusAnimation = Tween<double>(begin: 5, end: 20).animate(CurvedAnimation(parent: controller, curve: Curves.linear));
-    toastController.alignNavBtn(75.h);
+
+    // Preparing Home Page -- S t a r t --
     Future.delayed(const Duration(seconds: 1), () => toastController.showStatusBar());
+    toastController.navMenuButtonPosition.value = -12.h;
+    toastController.storiesPosition.value = -80.h;
+    // Preparing Home Page -- E n d --
   }
 
   @override
@@ -55,6 +55,7 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
       clipBehavior: Clip.antiAlias,
       alignment: Alignment.center,
       children: [
+        // Drawer -- S t a r t --
         Container(
           height: height,
           width: width,
@@ -94,6 +95,9 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
             ],
           ),
         ),
+        // Drawer -- E n d --
+
+        // Main Content -- S t a r t --
         ScaleTransition(
           scale: sAnimation,
           child: SlideTransition(
@@ -117,34 +121,35 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
                       backgroundColor: Colors.black.withOpacity(1),
                       body: Stack(
                         children: [
+                          // Main Lobby Page -- S t a r t --
                           IgnorePointer(
                             ignoring: ignoringPointer,
                             child: widget.myChild
                           ),
-                          // Show Menu Button -- S t a r t --
-                          Obx(
-                            () => AnimatedPositioned(
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeInOutCubicEmphasized,
-                              top: toastController.navMenuButtonPosition.value,
-                              child: SizedBox(
-                                width: width,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        controller.forward();
-                                        setState(() => ignoringPointer = true);
-                                      },
-                                      icon: const Icon(Icons.menu_rounded, color: Colors.white)
-                                    ),
-                                  ],
-                                ),
+                          // Main Lobby Page -- E n d --
+
+                          // Show Drawer Button -- S t a r t --
+                          Obx(() => AnimatedPositioned(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOutCubicEmphasized,
+                            top: toastController.navMenuButtonPosition.value,
+                            child: SizedBox(
+                              width: width,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      controller.forward();
+                                      setState(() => ignoringPointer = true);
+                                    },
+                                    icon: const Icon(Icons.menu_rounded, color: Colors.white)
+                                  ),
+                                ],
                               ),
                             ),
-                          )
-                          // Show Menu Button -- E n d --
+                          )),
+                          // Show Drawer Button -- E n d --
                         ],
                       ),
                     ),
@@ -154,6 +159,7 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
             ),
           ),
         ),
+        // Main Content -- E n d --
 
         // User Status Bar -- S t a r t --
         Obx(() => AnimatedPositioned(

@@ -1,9 +1,8 @@
-import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'controllers/register_controller.dart';
+import 'package:uotc/controllers/register_controller.dart';
 import 'controllers/toast_controller.dart';
 import 'views/common/scroll_behavior.dart';
 import 'views/common/toast_widget.dart';
@@ -19,6 +18,77 @@ import 'firebase_options.dart';
 
 // Use This Command To Generate Transitions
 // flutter pub run easy_localization:generate -S "assets/translations" -O "lib/translations" -o "locale_keys.g.dart" -f keys
+
+class Route {
+  static GoRouter routerConfig = GoRouter(
+    initialLocation: '/welcome',
+    routes: [
+      GoRoute(
+        path: '/welcome',
+        pageBuilder: (context, state) => MaterialPage(
+          key: state.pageKey,
+          child: const WelcomeScreenContainer()
+        ),
+      ),
+      GoRoute(
+        path: '/register',
+        pageBuilder: (context, state) => MaterialPage(
+          key: state.pageKey,
+          child: const Register()
+        ),
+      ),
+      ShellRoute(
+        pageBuilder: (BuildContext context, GoRouterState state, Widget myChild) {
+          return MaterialPage(
+            key: state.pageKey,
+            child: HiddenDrawer(
+              myChild: myChild,
+            )
+          );
+        },
+        routes: <RouteBase>[
+          GoRoute(
+            path: '/lobby',
+            pageBuilder: (context, state) => MaterialPage(
+              key: state.pageKey,
+              child: const Home()
+            ),
+          ),
+          GoRoute(
+            path: '/details',
+            builder: (BuildContext context, GoRouterState state) {
+              return const Scaffold(
+                backgroundColor: Colors.red,
+              );
+            },
+          ),
+          GoRoute(
+            path: '/bb',
+            builder: (BuildContext context, GoRouterState state) {
+              return const Scaffold(
+                backgroundColor: Colors.orange,
+              );
+            },
+          ),
+          GoRoute(
+            path: '/settings',
+            pageBuilder: (context, state) => MaterialPage(
+              key: state.pageKey,
+              child: const Scaffold(backgroundColor: Colors.blue,)
+            ),
+          ),
+        ],
+      ),
+    ],
+    errorPageBuilder: (context, state) => MaterialPage(
+      child: Scaffold(
+        body: Center(
+          child: Text(state.error.toString()),
+        ),
+      )
+    ),
+  );
+}
 
 void main() async {
 
@@ -49,90 +119,74 @@ class MyApp extends StatelessWidget {
   final ToastStateController toastController = Get.put(ToastStateController());
   final RegisterStateController registerStateController = Get.put(RegisterStateController());
 
-  GoRouter buildRouter() {
-    return GoRouter(
-      initialLocation: '/welcome',
-      // redirect: (context, state) {
-      //   log("heheheheheheheheheh");
-      //   return null;
-      //   // bool isSignedIn = registerStateController.isSignedIn.value;
-      //   // bool isSigningIn;
-      //   // if( state.location == "/register" ||state.location == "/welcome" ){ isSigningIn = true; }
-      //   // else{ isSigningIn = false; }
-      //   // log("Is Signing In $isSigningIn");
-      //   // log("Is Signed In State ${registerStateController.isSignedIn.value}");
-      //   // toastController.showToast(desc: "isSignedIn: $isSignedIn || isSigningIn: $isSigningIn", type: 'error', seconds: 10);
-      //   // if( isSignedIn && isSigningIn ) {return "/lobby";}
-      //   // if( !isSignedIn && !isSigningIn ) {return "/welcome";}
-      //   // return null;
-      // },
-      routes: [
-        GoRoute(
-          path: '/welcome',
-          pageBuilder: (context, state) => MaterialPage(
-            key: state.pageKey,
-            child: const WelcomeScreenContainer()
-          ),
+  final router = GoRouter(
+    initialLocation: '/welcome',
+    routes: [
+      GoRoute(
+        path: '/welcome',
+        pageBuilder: (context, state) => MaterialPage(
+          key: state.pageKey,
+          child: const WelcomeScreenContainer()
         ),
-        GoRoute(
-          path: '/register',
-          pageBuilder: (context, state) => MaterialPage(
-            key: state.pageKey,
-            child: const Register()
-          ),
-        ),
-        ShellRoute(
-          pageBuilder: (BuildContext context, GoRouterState state, Widget myChild) {
-            return MaterialPage(
-              key: state.pageKey,
-              child: HiddenDrawer(
-                myChild: myChild,
-              )
-            );
-          },
-          routes: <RouteBase>[
-            GoRoute(
-              path: '/lobby',
-              pageBuilder: (context, state) => MaterialPage(
-                key: state.pageKey,
-                child: const Home()
-              ),
-            ),
-            GoRoute(
-              path: '/details',
-              builder: (BuildContext context, GoRouterState state) {
-                return const Scaffold(
-                  backgroundColor: Colors.red,
-                );
-              },
-            ),
-            GoRoute(
-              path: '/bb',
-              builder: (BuildContext context, GoRouterState state) {
-                return const Scaffold(
-                  backgroundColor: Colors.orange,
-                );
-              },
-            ),
-            GoRoute(
-              path: '/settings',
-              pageBuilder: (context, state) => MaterialPage(
-                key: state.pageKey,
-                child: const Scaffold(backgroundColor: Colors.blue,)
-              ),
-            ),
-          ],
-        ),
-      ],
-      errorPageBuilder: (context, state) => MaterialPage(
-        child: Scaffold(
-          body: Center(
-            child: Text(state.error.toString()),
-          ),
-        )
       ),
-    );
-  }
+      GoRoute(
+        path: '/register',
+        pageBuilder: (context, state) => MaterialPage(
+          key: state.pageKey,
+          child: const Register()
+        ),
+      ),
+      ShellRoute(
+        pageBuilder: (BuildContext context, GoRouterState state, Widget myChild) {
+          return MaterialPage(
+            key: state.pageKey,
+            child: HiddenDrawer(
+              myChild: myChild,
+            )
+          );
+        },
+        routes: <RouteBase>[
+          GoRoute(
+            path: '/lobby',
+            pageBuilder: (context, state) => MaterialPage(
+              key: state.pageKey,
+              child: const Home()
+            ),
+          ),
+          GoRoute(
+            path: '/details',
+            builder: (BuildContext context, GoRouterState state) {
+              return const Scaffold(
+                backgroundColor: Colors.red,
+              );
+            },
+          ),
+          GoRoute(
+            path: '/bb',
+            builder: (BuildContext context, GoRouterState state) {
+              return const Scaffold(
+                backgroundColor: Colors.orange,
+              );
+            },
+          ),
+          GoRoute(
+            path: '/settings',
+            pageBuilder: (context, state) => MaterialPage(
+              key: state.pageKey,
+              child: const Scaffold(backgroundColor: Colors.blue,)
+            ),
+          ),
+        ],
+      ),
+    ],
+    errorPageBuilder: (context, state) => MaterialPage(
+      child: Scaffold(
+        body: Center(
+          child: Text(state.error.toString()),
+        ),
+      )
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +196,7 @@ class MyApp extends StatelessWidget {
     
     return 
     ScreenUtilInit(
-      designSize: const Size(360, 690),
+      designSize: const Size(400, 860),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
@@ -157,81 +211,17 @@ class MyApp extends StatelessWidget {
                   localizationsDelegates: context.localizationDelegates,
                   debugShowCheckedModeBanner: false,
                   locale: context.locale,
-                  routerConfig: GoRouter(
-                    initialLocation: '/welcome',
-                    routes: [
-                      GoRoute(
-                        path: '/welcome',
-                        pageBuilder: (context, state) => MaterialPage(
-                          key: state.pageKey,
-                          child: const WelcomeScreenContainer()
-                        ),
-                      ),
-                      GoRoute(
-                        path: '/register',
-                        pageBuilder: (context, state) => MaterialPage(
-                          key: state.pageKey,
-                          child: const Register()
-                        ),
-                      ),
-                      ShellRoute(
-                        pageBuilder: (BuildContext context, GoRouterState state, Widget myChild) {
-                          return MaterialPage(
-                            key: state.pageKey,
-                            child: HiddenDrawer(
-                              myChild: myChild,
-                            )
-                          );
-                        },
-                        routes: <RouteBase>[
-                          GoRoute(
-                            path: '/lobby',
-                            pageBuilder: (context, state) => MaterialPage(
-                              key: state.pageKey,
-                              child: const Home()
-                            ),
-                          ),
-                          GoRoute(
-                            path: '/details',
-                            builder: (BuildContext context, GoRouterState state) {
-                              return const Scaffold(
-                                backgroundColor: Colors.red,
-                              );
-                            },
-                          ),
-                          GoRoute(
-                            path: '/bb',
-                            builder: (BuildContext context, GoRouterState state) {
-                              return const Scaffold(
-                                backgroundColor: Colors.orange,
-                              );
-                            },
-                          ),
-                          GoRoute(
-                            path: '/settings',
-                            pageBuilder: (context, state) => MaterialPage(
-                              key: state.pageKey,
-                              child: const Scaffold(backgroundColor: Colors.blue,)
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                    errorPageBuilder: (context, state) => MaterialPage(
-                      child: Scaffold(
-                        body: Center(
-                          child: Text(state.error.toString()),
-                        ),
-                      )
-                    ),
-                  ),
+                  routerConfig: Route.routerConfig,
                 ),
-                Obx(() => AnimatedAlign(
-                  alignment: Alignment(0, toastController.toastAlignment.value),
-                  duration: const Duration(milliseconds: 1000),
-                  curve: Curves.easeInOutCubicEmphasized,
-                  child: Toast(currentType: toastController.currentType.value,)
-                ))
+                Obx(
+                  () =>
+                    AnimatedAlign(
+                      alignment: Alignment(0, toastController.toastAlignment.value),
+                      duration: const Duration(milliseconds: 1000),
+                      curve: Curves.easeInOutCubicEmphasized,
+                      child: Toast(currentType: toastController.currentType.value,)
+                    ),
+                )
               ],
             ),
           )

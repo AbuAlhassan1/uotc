@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ToastStateController extends GetxController{
@@ -53,18 +54,11 @@ class ToastStateController extends GetxController{
   // Special -- S t a r t --
   RxDouble storiesPosition = 0.0.obs;
   RxDouble navMenuButtonPosition = 0.0.obs;
-  RxBool isStoriesHidden = false.obs;
+  RxBool isStoriesHidden = true.obs;
 
   RxDouble statusBarPosition = (25.0 * ( -1 )).obs;
   RxDouble homeOpacity = 0.0.obs;
   // Special -- E n d --
-
-  @override
-  void onInit() {
-    super.onInit();
-    storiesPosition.value = -140;
-    navMenuButtonPosition.value = -140;
-  }
 
   void showToast({ required String desc, required String type, required int seconds }) async {
     if(!isToastOnScreen.value){
@@ -85,28 +79,26 @@ class ToastStateController extends GetxController{
   }
 
   void hideShowStories(double position){
-    log('clicked');
     if (isStoriesHidden.value){
       storiesPosition.value = 0;
-      navMenuButtonPosition.value = position * (-1);
+      navMenuButtonPosition.value = (position * (-1)) - 12.h;
       isStoriesHidden.value = !isStoriesHidden.value;
     }else{
       storiesPosition.value = position;
-      navMenuButtonPosition.value = 0;
+      navMenuButtonPosition.value = -12.h;
       isStoriesHidden.value = !isStoriesHidden.value;
     }
-    log(storiesPosition.value.toString());
   }
 
   void hideStories(double position){
     storiesPosition.value = position;
-    navMenuButtonPosition.value = 0;
+    navMenuButtonPosition.value = -8;
     isStoriesHidden.value = true;
   }
 
   void showStories(double position){
     storiesPosition.value = 0;
-    navMenuButtonPosition.value = position * (-1);
+    navMenuButtonPosition.value = (position + 8.h) * (-1) ;
     isStoriesHidden.value = false;
   }
 

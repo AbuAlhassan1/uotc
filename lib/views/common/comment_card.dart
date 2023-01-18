@@ -19,7 +19,7 @@ class CommentCard extends StatelessWidget {
 
     return Container(
       width: width - 60.w,
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+      padding: EdgeInsets.only(left: 8.w, right: 8.w, top: 8.h, bottom: 5.h),
       margin: EdgeInsetsDirectional.only(start: 20.w),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
@@ -95,7 +95,7 @@ class CommentCard extends StatelessWidget {
 
                 // Comment Text -- S t a r t --
                 Padding(
-                  padding: EdgeInsets.only(bottom: 10.h),
+                  padding: EdgeInsets.only(bottom: 0.h),
                   child: CustomText.createCustomTajawalText(
                     text: "هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى",
                     align: TextAlign.start,

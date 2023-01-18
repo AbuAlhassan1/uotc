@@ -347,7 +347,7 @@ class _RegisterState extends State<Register> {
       mainAxisAlignment: !isTyping ? MainAxisAlignment.end : MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-
+        // Image.network('https://storage.googleapis.com/uotc-20.appspot.com/uotc/images/post/2023-01-16_06-46-44_120.gif'),
         // Header Text -- S t a r t --
         !isTyping ?
         Padding(
