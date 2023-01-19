@@ -20,7 +20,7 @@ class CommentCard extends StatelessWidget {
     return Container(
       width: width - 60.w,
       padding: EdgeInsets.only(left: 8.w, right: 8.w, top: 8.h, bottom: 5.h),
-      margin: EdgeInsetsDirectional.only(start: 20.w),
+      margin: EdgeInsetsDirectional.only(start: 15.w),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: UotcColors.offBlack,
@@ -39,7 +39,7 @@ class CommentCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  width: 55.sp,
+                  width: 40.sp,
                   clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
                     color: Colors.transparent,
@@ -71,22 +71,21 @@ class CommentCard extends StatelessWidget {
                           text: 'حيدر يوسف ',
                           align: TextAlign.start,
                           color: Colors.white,
-                          fontSize: 14,
+                          fontSize: 12,
                           overflow: TextOverflow.ellipsis,
                           weight: FontWeight.bold,
-                          maxLines: 3,
                           screenHeight: height
-                        ).tr(),
+                        ),
                         CustomText.createCustomTajawalText(
                           text: '. قبل 5 دقائق',
                           align: TextAlign.start,
                           color: Colors.white,
-                          fontSize: 14,
+                          fontSize: 12,
                           overflow: TextOverflow.ellipsis,
                           weight: FontWeight.normal,
                           maxLines: 3,
                           screenHeight: height
-                        ).tr(),
+                        ),
                       ],
                     ),
                   ),
@@ -100,12 +99,12 @@ class CommentCard extends StatelessWidget {
                     text: "هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى",
                     align: TextAlign.start,
                     color: Colors.white,
-                    fontSize: 12,
+                    fontSize: 10,
                     overflow: TextOverflow.ellipsis,
                     weight: FontWeight.w400,
-                    maxLines: 2,
+                    maxLines: 1,
                     screenHeight: height
-                  ).tr(),
+                  ),
                 ),
                 // Comment Text -- E n d --
 
@@ -120,12 +119,12 @@ class CommentCard extends StatelessWidget {
                         text: "الردود  ( 16 )",
                         align: TextAlign.start,
                         color: Colors.white.withOpacity(0.8),
-                        fontSize: 14,
+                        fontSize: 12,
                         overflow: TextOverflow.ellipsis,
                         weight: FontWeight.w400,
                         maxLines: 3,
                         screenHeight: height
-                      ).tr(),
+                      ),
                     ),
                     Row(
                       children: [
@@ -135,12 +134,12 @@ class CommentCard extends StatelessWidget {
                             text: "( 21 )",
                             align: TextAlign.center,
                             color: Colors.white.withOpacity(0.8),
-                            fontSize: 14,
+                            fontSize: 12,
                             overflow: TextOverflow.ellipsis,
                             weight: FontWeight.w400,
                             maxLines: 1,
                             screenHeight: height
-                          ).tr(),
+                          ),
                         ),
                         SizedBox(width: 10.w,),
                         SizedBox(

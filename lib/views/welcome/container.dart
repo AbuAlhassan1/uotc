@@ -162,7 +162,8 @@ class _WelcomeScreenContainerState extends State<WelcomeScreenContainer> {
                   children: [
                     InkWell(
                       borderRadius: BorderRadius.circular(50.sp),
-                      onTap: () => pageViewController.animateToPage(4, duration: const Duration(milliseconds: 800), curve: Curves.easeInOutCubicEmphasized),
+                      // onTap: () => pageViewController.animateToPage(4, duration: const Duration(milliseconds: 800), curve: Curves.easeInOutCubicEmphasized),
+                      onTap: () => context.push('/register'),
                       child: Container(
                         padding: EdgeInsets.all(15.sp),
                         child: CustomText.createCustomElMessiriText(

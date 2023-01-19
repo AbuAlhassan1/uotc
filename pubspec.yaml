@@ -30,6 +30,8 @@ dependencies:
   firebase_auth: ^4.2.5
   google_sign_in: ^5.4.2
   jwt_decoder: ^2.0.1
+  video_player: ^2.4.10
+  # native_video_player: ^1.2.0+3
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +50,7 @@ flutter:
     - assets/jpg/
     - assets/gif/
     - assets/rive/
+    - assets/videos/
 
   # fonts:
   #   - family: Schyler

@@ -26,9 +26,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [
-      SystemUiOverlay.bottom
-    ]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.bottom]);
     postController.addListener(() {
       if( postController.offset < 10 ){
         toastController.showStories(-80.h);
@@ -37,6 +35,7 @@ class _HomeState extends State<Home> {
       }
     });
     Future.delayed(const Duration(milliseconds: 800), () => setState(() => homeOpacity = 1));
+    Future.delayed(const Duration(seconds: 1), () => toastController.hideStories(-80.h));
   }
 
   @override
@@ -127,7 +126,7 @@ class _HomeState extends State<Home> {
                                 weight: FontWeight.bold,
                                 maxLines: 3,
                                 screenHeight: height
-                              ).tr(),
+                              ),
                             ],
                           )
                         ),

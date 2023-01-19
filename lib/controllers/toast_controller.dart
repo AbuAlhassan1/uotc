@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -74,9 +73,9 @@ class ToastStateController extends GetxController{
     }
   }
 
-  void alignNavBtn(double position){
-    navMenuButtonPosition.value = position;
-  }
+  void alignNavBtnForProfilePage() => navMenuButtonPosition.value = -3.h;
+
+  void alignNavBtnForHomePage() => navMenuButtonPosition.value = -8.h;
 
   void hideShowStories(double position){
     if (isStoriesHidden.value){

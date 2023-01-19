@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:uotc/controllers/register_controller.dart';
+import 'package:uotc/views/profile.dart';
 import 'controllers/toast_controller.dart';
 import 'views/common/scroll_behavior.dart';
 import 'views/common/toast_widget.dart';
@@ -18,77 +19,6 @@ import 'firebase_options.dart';
 
 // Use This Command To Generate Transitions
 // flutter pub run easy_localization:generate -S "assets/translations" -O "lib/translations" -o "locale_keys.g.dart" -f keys
-
-class Route {
-  static GoRouter routerConfig = GoRouter(
-    initialLocation: '/welcome',
-    routes: [
-      GoRoute(
-        path: '/welcome',
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: const WelcomeScreenContainer()
-        ),
-      ),
-      GoRoute(
-        path: '/register',
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: const Register()
-        ),
-      ),
-      ShellRoute(
-        pageBuilder: (BuildContext context, GoRouterState state, Widget myChild) {
-          return MaterialPage(
-            key: state.pageKey,
-            child: HiddenDrawer(
-              myChild: myChild,
-            )
-          );
-        },
-        routes: <RouteBase>[
-          GoRoute(
-            path: '/lobby',
-            pageBuilder: (context, state) => MaterialPage(
-              key: state.pageKey,
-              child: const Home()
-            ),
-          ),
-          GoRoute(
-            path: '/details',
-            builder: (BuildContext context, GoRouterState state) {
-              return const Scaffold(
-                backgroundColor: Colors.red,
-              );
-            },
-          ),
-          GoRoute(
-            path: '/bb',
-            builder: (BuildContext context, GoRouterState state) {
-              return const Scaffold(
-                backgroundColor: Colors.orange,
-              );
-            },
-          ),
-          GoRoute(
-            path: '/settings',
-            pageBuilder: (context, state) => MaterialPage(
-              key: state.pageKey,
-              child: const Scaffold(backgroundColor: Colors.blue,)
-            ),
-          ),
-        ],
-      ),
-    ],
-    errorPageBuilder: (context, state) => MaterialPage(
-      child: Scaffold(
-        body: Center(
-          child: Text(state.error.toString()),
-        ),
-      )
-    ),
-  );
-}
 
 void main() async {
 
@@ -154,19 +84,9 @@ class MyApp extends StatelessWidget {
             ),
           ),
           GoRoute(
-            path: '/details',
+            path: '/profile',
             builder: (BuildContext context, GoRouterState state) {
-              return const Scaffold(
-                backgroundColor: Colors.red,
-              );
-            },
-          ),
-          GoRoute(
-            path: '/bb',
-            builder: (BuildContext context, GoRouterState state) {
-              return const Scaffold(
-                backgroundColor: Colors.orange,
-              );
+              return const Profile();
             },
           ),
           GoRoute(
@@ -211,7 +131,7 @@ class MyApp extends StatelessWidget {
                   localizationsDelegates: context.localizationDelegates,
                   debugShowCheckedModeBanner: false,
                   locale: context.locale,
-                  routerConfig: Route.routerConfig,
+                  routerConfig: router,
                 ),
                 Obx(
                   () =>

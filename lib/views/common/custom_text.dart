@@ -13,7 +13,8 @@ class CustomText {
       TextOverflow overflow = TextOverflow.visible,
       TextAlign align = TextAlign.start,
       FontWeight weight = FontWeight.normal,
-      int? maxLines
+      int? maxLines,
+      TextDecoration decoration = TextDecoration.none
     }
   ){
     final maxL = maxLines ?? 1;
@@ -24,6 +25,7 @@ class CustomText {
       textScaleFactor: 1,
       style: GoogleFonts.elMessiri(
         textStyle: TextStyle(
+          decoration: decoration,
           color: color,
           fontSize: screenHeight < 600 ? fontSize.sp * 0.8 : fontSize.sp,
           overflow: overflow,
@@ -42,7 +44,8 @@ class CustomText {
       TextOverflow overflow = TextOverflow.visible,
       TextAlign align = TextAlign.start,
       FontWeight weight = FontWeight.normal,
-      int? maxLines
+      int? maxLines,
+      TextDecoration decoration = TextDecoration.none
     }
   ){
     final maxL = maxLines ?? 1;
@@ -53,6 +56,7 @@ class CustomText {
       textScaleFactor: 1,
       style: GoogleFonts.tajawal(
         textStyle: TextStyle(
+          decoration: decoration,
           color: color,
           fontSize: screenHeight < 600 ? fontSize.sp * 0.8 : fontSize.sp,
           overflow: overflow,
