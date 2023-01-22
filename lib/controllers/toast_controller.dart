@@ -75,29 +75,29 @@ class ToastStateController extends GetxController{
 
   void alignNavBtnForProfilePage() => navMenuButtonPosition.value = -3.h;
 
-  void alignNavBtnForHomePage() => navMenuButtonPosition.value = -8.h;
+  void alignNavBtnForHomePage() => navMenuButtonPosition.value = -3.h;
 
   void hideShowStories(double position){
     if (isStoriesHidden.value){
       storiesPosition.value = 0;
-      navMenuButtonPosition.value = (position * (-1)) - 12.h;
+      navMenuButtonPosition.value = (position * (-1));
       isStoriesHidden.value = !isStoriesHidden.value;
     }else{
       storiesPosition.value = position;
-      navMenuButtonPosition.value = -12.h;
+      navMenuButtonPosition.value = -3.h;
       isStoriesHidden.value = !isStoriesHidden.value;
     }
   }
 
   void hideStories(double position){
     storiesPosition.value = position;
-    navMenuButtonPosition.value = -8;
+    navMenuButtonPosition.value = -3.h;
     isStoriesHidden.value = true;
   }
 
   void showStories(double position){
     storiesPosition.value = 0;
-    navMenuButtonPosition.value = (position + 8.h) * (-1) ;
+    navMenuButtonPosition.value = (position ) * (-1);
     isStoriesHidden.value = false;
   }
 

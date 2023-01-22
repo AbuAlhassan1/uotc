@@ -198,8 +198,9 @@ class _RegisterState extends State<Register> {
 
         // Register With Google -- S t a r t --
         ButtonOne(
-          height: 30.h,
+          height: 35.h,
           margin: EdgeInsets.symmetric(vertical: 15.h),
+          // padding: EdgeInsets.symmetric(vertical: 5.h),
           borderColor: Colors.red,
           shap: CustomText.createCustomTajawalText(
             text: 'Google',
@@ -272,10 +273,10 @@ class _RegisterState extends State<Register> {
 
         // Register Button -- S t a r t --
         ButtonOne(
+          height: 35.h,
           color: Colors.transparent,
           margin: EdgeInsets.symmetric(vertical: 15.h),
           padding: EdgeInsets.symmetric(vertical: 0.h),
-          height: 30.h,
           shap: CustomText.createCustomTajawalText(
             text: LocaleKeys.register,
             align: TextAlign.center,
@@ -424,10 +425,10 @@ class _RegisterState extends State<Register> {
         ),
     
         ButtonOne(
+          height: 35.h,
           color: Colors.transparent,
           margin: EdgeInsets.symmetric(vertical: 15.h),
           padding: EdgeInsets.symmetric(vertical: 0.h),
-          height: 30.h,
           shap: CustomText.createCustomTajawalText(
             text: LocaleKeys.login,
             align: TextAlign.center,
@@ -446,10 +447,10 @@ class _RegisterState extends State<Register> {
         ),
 
         ButtonOne(
+          height: 35.h,
           color: Colors.transparent,
           margin: EdgeInsets.symmetric(vertical: 15.h),
           padding: EdgeInsets.symmetric(vertical: 0.h),
-          height: 30.h,
           shap: CustomText.createCustomTajawalText(
             text: "تجربة",
             align: TextAlign.center,

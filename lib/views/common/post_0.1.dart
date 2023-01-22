@@ -1,14 +1,15 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
+import 'package:image_fade/image_fade.dart';
 import 'package:uotc/views/common/colors.dart';
-import 'package:uotc/views/common/text_fields_and_buttons.dart';
+import 'package:uotc/views/common/comments_bottom_sheet.dart';
 import 'comment_card.dart';
 import 'custom_text.dart';
 import 'index_pointer.dart';
-import 'package:image_fade/image_fade.dart';
+import 'package:optimized_image_loader/optimized_image_loader.dart';
+
+// showModalBottomSheet(context: context, builder: builder);
 
 class PostOne extends StatefulWidget {
   const PostOne({
@@ -30,9 +31,9 @@ class _PostOneState extends State<PostOne> {
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   setState(() => imageIndex = imageSliderController.page!.round());
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() => imageIndex = imageSliderController.page!.round());
+    });
   }
 
 
@@ -67,48 +68,51 @@ class _PostOneState extends State<PostOne> {
                     child: Row(
                       children: [
                         // User Image -- S t a r t --
-                        SizedBox(
-                          height: 45.sp, width: 45.sp,
-                          child: Stack(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.circular(45)
-                                ),
-                              ),
-                              Center(
-                                child: Container(
-                                  height: 40.sp, width: 40.sp,
-                                  clipBehavior: Clip.antiAlias,
+                        GestureDetector(
+                          onTap: () => buildSmallProfileBottomSheet(context, height),
+                          child: SizedBox(
+                            height: 45.sp, width: 45.sp,
+                            child: Stack(
+                              children: [
+                                Container(
                                   decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(100)
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(45)
                                   ),
-                                  child: Image.asset('assets/jpg/223138735_4167662076620280_7307821253933789535_n (2).jpg', fit: BoxFit.cover),
                                 ),
-                              ),
-
-                              // User Role -- S t a r t --
-                              Align(
-                                alignment: const AlignmentDirectional(1.2, 1.2),
-                                child: Container(
-                                  height: 17.sp, width: 17.sp,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.5),
-                                        blurRadius: 5,
-                                        spreadRadius: -3
-                                      )
-                                    ]
+                                Center(
+                                  child: Container(
+                                    height: 40.sp, width: 40.sp,
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(100)
+                                    ),
+                                    child: Image.asset('assets/jpg/1.jpg', fit: BoxFit.cover),
                                   ),
-                                  child: Image.asset('assets/png/check.png'),
                                 ),
-                              )
-                              // User Role -- E n d --
-                            ],
+                        
+                                // User Role -- S t a r t --
+                                Align(
+                                  alignment: const AlignmentDirectional(1.2, 1.2),
+                                  child: Container(
+                                    height: 17.sp, width: 17.sp,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.5),
+                                          blurRadius: 5,
+                                          spreadRadius: -3
+                                        )
+                                      ]
+                                    ),
+                                    child: Image.asset('assets/png/check.png'),
+                                  ),
+                                )
+                                // User Role -- E n d --
+                              ],
+                            ),
                           ),
                         ),
                         // User Image -- E n d --
@@ -156,15 +160,27 @@ class _PostOneState extends State<PostOne> {
                         clipBehavior: Clip.antiAlias,
                         // margin: const EdgeInsets.all(5),
                         decoration: const BoxDecoration(color: Colors.black),
-                        // child: Image.asset('assets/jpg/275246698_643562353599990_4357863837767632622_n.jpg'),
+                        // child: Image.asset("assets/jpg/${widget.postIndex+1}.jpg", fit: BoxFit.cover),
+                        // child: OptimizedImageLoader(
+                        //   loadingIndicator: CircularProgressIndicator(color: UotcColors.blueLight1,),
+                        //   url: "https://storage.googleapis.com/uotc-20.appspot.com/uotc/images/post/2023-01-20_04-36-05_154.gif",
+                        //   imageHeight: 0,
+                        //   imageWidth: 0,
+                        //   spinnerHeight: 30.sp,
+                        //   spinnerWidth: 30.sp,
+                        // ),
                         child: ImageFade(
                           fit: BoxFit.cover,
-                          image: const AssetImage('assets/jpg/275246698_643562353599990_4357863837767632622_n.jpg'),
+                          // image: AssetImage("assets/jpg/${widget.postIndex+1}.jpg"),
+                          image: const NetworkImage("https://images.unsplash.com/photo-1674284623748-e2d3f89241ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"),
                           loadingBuilder: (context, progress, chunkEvent) => Center(
                             child: Padding(
                               padding: EdgeInsets.all(20.sp),
                               child: const CircularProgressIndicator(color: Colors.grey),
-                            )
+                            ),
+                          ),
+                          errorBuilder: (context, exception) => const Center(
+                            child: Text("Something went wrong, Try again"),
                           ),
                         )
                       );
@@ -177,7 +193,7 @@ class _PostOneState extends State<PostOne> {
                     child: Container(
                       height: 20.sp, width: 20.sp,
                       margin: EdgeInsets.all(10.sp),
-                      child: SvgPicture.asset('assets/svg/layers.svg', color: Colors.white)
+                      child: SvgPicture.asset('assets/svg/layers.svg', color: Colors.white.withOpacity(0.8))
                     ),
                   ),
                   // Layers Icon -- E n d --
@@ -215,49 +231,50 @@ class _PostOneState extends State<PostOne> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Tag[s] Section -- S t a r t --
-                  Container(
-                    width: width,
-                    padding: EdgeInsets.only(bottom: 8.h, top: 8.h),
-                    margin: EdgeInsets.only(bottom: 10.h,),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: UotcColors.blueBold2,
-                          width: 2.h
-                        ),
-                      )
-                    ),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      child: Row(
-                        children: List.generate(
-                          25,
-                          (index) => Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10.w),
-                            margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 2.h),
-                              child: CustomText.createCustomElMessiriText(
-                                text: ' $indexسفرة',
-                                color: Colors.white,
-                                fontSize: 13,
-                                screenHeight: height,
-                                decoration: TextDecoration.underline
-                              ),
-                            ),
-                          )
-                        ),
-                      ),
-                    ),
-                  ),
-                  // Tag[s] Section -- E n d --
+                  // // Tag[s] Section -- S t a r t --
+                  // Container(
+                  //   width: width,
+                  //   padding: EdgeInsets.only(bottom: 8.h, top: 8.h),
+                  //   margin: EdgeInsets.only(bottom: 10.h,),
+                  //   decoration: BoxDecoration(
+                  //     border: Border(
+                  //       bottom: BorderSide(
+                  //         color: UotcColors.blueBold2,
+                  //         width: 2.h
+                  //       ),
+                  //     )
+                  //   ),
+                  //   child: SingleChildScrollView(
+                  //     scrollDirection: Axis.horizontal,
+                  //     physics: const BouncingScrollPhysics(),
+                  //     child: Row(
+                  //       children: List.generate(
+                  //         25,
+                  //         (index) => Container(
+                  //           padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  //           margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
+                  //           child: Padding(
+                  //             padding: EdgeInsets.only(top: 2.h),
+                  //             child: CustomText.createCustomElMessiriText(
+                  //               text: ' $indexسفرة',
+                  //               color: Colors.white,
+                  //               fontSize: 13,
+                  //               screenHeight: height,
+                  //               decoration: TextDecoration.underline
+                  //             ),
+                  //           ),
+                  //         )
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // // Tag[s] Section -- E n d --
 
                   // Accessbility Bar -- S t a r t --
                   Container(
                     height: 30.h,
-                    padding: EdgeInsetsDirectional.only(start: 15.w, end: 15.w, bottom: 10.h),
+                    padding: EdgeInsetsDirectional.only(start: 15.w, end: 15.w, bottom: 10.h,),
+                    margin: EdgeInsetsDirectional.only(top: 10.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -269,7 +286,10 @@ class _PostOneState extends State<PostOne> {
                             SizedBox(width: 10.w,),
                             SvgPicture.asset('assets/svg/paper-plane.svg', color: Colors.white),
                             SizedBox(width: 10.w,),
-                            SvgPicture.asset('assets/svg/comment.svg', color: Colors.white),
+                            GestureDetector(
+                              onTap: () => buildCommentsAsBottomSheet(context),
+                              child: SvgPicture.asset('assets/svg/comment.svg', color: Colors.white),
+                            ),
                           ],
                         ),
 
@@ -306,7 +326,10 @@ class _PostOneState extends State<PostOne> {
                         (index) => FittedBox(
                           child: Padding(
                             padding: EdgeInsetsDirectional.only(end: index == 9 ? 15.w : 0,),
-                            child: const CommentCard(),
+                            child: GestureDetector(
+                              onTap: () => buildCommentsAsBottomSheet(context),
+                              child: CommentCard(margin: EdgeInsetsDirectional.only(start: 15.w),)
+                            ),
                           )
                         )
                       ),

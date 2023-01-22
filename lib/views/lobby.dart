@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,7 +44,7 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
     super.initState();
     controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 300), reverseDuration: const Duration(milliseconds: 300));
     animation = Tween<Offset>(begin: Offset.zero, end: const Offset(0.5, 0)).animate(CurvedAnimation(parent: controller, curve: Curves.easeInOutSine));
-    sAnimation = Tween<double>(begin: 1, end: 0.9).animate(controller);
+    sAnimation = Tween<double>(begin: 1, end: 0.98).animate(controller);
     borderRadiusAnimation = Tween<double>(begin: 5, end: 20).animate(CurvedAnimation(parent: controller, curve: Curves.linear));
 
     // Preparing Home Page -- S t a r t --

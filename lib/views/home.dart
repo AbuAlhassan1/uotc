@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:uotc/views/common/colors.dart';
+import 'package:uotc/views/common/story_coin.dart';
 import '../controllers/toast_controller.dart';
 import 'common/custom_text.dart';
 import 'common/post_0.1.dart';
@@ -29,13 +30,13 @@ class _HomeState extends State<Home> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.bottom]);
     postController.addListener(() {
       if( postController.offset < 10 ){
-        toastController.showStories(-80.h);
+        toastController.showStories(-90.h);
       }else{
-        toastController.hideStories(-80.h);
+        toastController.hideStories(-90.h);
       }
     });
     Future.delayed(const Duration(milliseconds: 800), () => setState(() => homeOpacity = 1));
-    Future.delayed(const Duration(seconds: 1), () => toastController.hideStories(-80.h));
+    Future.delayed(const Duration(seconds: 1), () => toastController.hideStories(-90.h));
   }
 
   @override
@@ -64,7 +65,8 @@ class _HomeState extends State<Home> {
                   physics: const BouncingScrollPhysics(),
                   controller: postController,
                   itemCount: 10,
-                  itemBuilder: (context, index) => index == 0 ? SizedBox(height: 45.h) : PostOne(postIndex: index),
+                  itemBuilder: (context, index) => index == 0 ? SizedBox(height: 50.h)
+                  : PostOne(postIndex: index),
                 ),
               ),
             ),
@@ -79,35 +81,30 @@ class _HomeState extends State<Home> {
                 child: Container(
                   width: width,
                   color: Colors.black,
-                  padding: EdgeInsetsDirectional.only(top: 0.h, bottom: 5.h, end: 0.w),
+                  padding: EdgeInsetsDirectional.only(top: 5.h, bottom: 5.h),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        height: 70.sp,
+                        height: 80.sp,
                         color: Colors.black,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           physics: const BouncingScrollPhysics(),
                           itemCount: 10,
-                          itemBuilder: (context, index) => Container(
-                            height: 70.sp, width: 70.sp,
-                            margin: EdgeInsetsDirectional.only(start: 10.w),
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(50)
-                            ),
-                          ),
+                          itemBuilder: (context, index) => const StoryCoin()
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => toastController.hideShowStories(-85.h),
+                        onTap: () => toastController.hideShowStories(-90.h),
                         child: Container(
                           width: width,
                           padding: EdgeInsetsDirectional.only(top: 10.h, start: 10.w),
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SizedBox(
+                              Container(
+                                color: Colors.transparent,
                                 width: 50.sp,
                                 child: Icon(
                                   toastController.isStoriesHidden.value ?
@@ -117,15 +114,18 @@ class _HomeState extends State<Home> {
                                   size: 30.sp,
                                 ),
                               ),
-                              CustomText.createCustomElMessiriText(
-                                text: "اليوميات",
-                                align: TextAlign.start,
-                                color: Colors.white,
-                                fontSize: 16,
-                                overflow: TextOverflow.visible,
-                                weight: FontWeight.bold,
-                                maxLines: 3,
-                                screenHeight: height
+                              Padding(
+                                padding: EdgeInsets.only(top: 5.h),
+                                child: CustomText.createCustomElMessiriText(
+                                  text: "اليوميات",
+                                  align: TextAlign.start,
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  overflow: TextOverflow.visible,
+                                  weight: FontWeight.bold,
+                                  maxLines: 3,
+                                  screenHeight: height
+                                ),
                               ),
                             ],
                           )
