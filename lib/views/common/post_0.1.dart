@@ -12,8 +12,6 @@ import 'index_pointer.dart';
 import 'package:pinch_zoom/pinch_zoom.dart';
 import 'package:optimized_image_loader/optimized_image_loader.dart';
 
-// showModalBottomSheet(context: context, builder: builder);
-
 class PostOne extends StatefulWidget {
   const PostOne({
     super.key,
