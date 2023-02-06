@@ -10,7 +10,7 @@ class StoryCoin extends StatelessWidget {
 
     // Variables -- S t a r t --
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    // double width = MediaQuery.of(context).size.width;
     // Variables -- E n d --
 
     return Container(

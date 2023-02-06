@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 import 'dart:developer';
+// ignore: depend_on_referenced_packages
 import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

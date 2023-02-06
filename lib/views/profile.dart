@@ -446,7 +446,6 @@ class _ProfileState extends State<Profile> {
                   onPageChanged: (index) => setState(() => pageIndex = index),
                   physics: const BouncingScrollPhysics(),
                   children: [
-                    
                     ScrollConfiguration(
                       behavior: MyBehavior(),
                       child: GridView.builder(
@@ -475,16 +474,14 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                     ),
-                    
                     ScrollConfiguration(
                       behavior: MyBehavior(),
                       child: ListView.builder(
                         // physics: const BouncingScrollPhysics(),
                         itemCount: 11,
-                        itemBuilder: (context, index) => index == 0 ? SizedBox(height: 10.h) : PostOne(postIndex: index - 1)
+                        itemBuilder: (context, index) => index == 0 ? SizedBox(height: 10.h) : const PostOne(postData: {})
                       ),
                     ),
-
                     ScrollConfiguration(
                       behavior: MyBehavior(),
                       child: Padding(
@@ -493,7 +490,7 @@ class _ProfileState extends State<Profile> {
                           // physics: const BouncingScrollPhysics(),
                           itemCount: 100,
                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 5,
+                            crossAxisCount: 2,
                             childAspectRatio: 1,
                             crossAxisSpacing: 2.sp,
                             mainAxisSpacing: 2.sp
@@ -509,14 +506,13 @@ class _ProfileState extends State<Profile> {
                             );
 
                             Widget dragedStar = SizedBox(
-                              height: (width/5) - 5.sp, width: (width/5) - 5.sp,
+                              height: (width/2) - 5.sp, width: (width/2) - 5.sp,
                               child: SvgPicture.asset('assets/svg/star-solid.svg', color: Colors.yellow,),
                             );
 
 
                             return LongPressDraggable(
                               data: index,
-                              // onDragStarted: () => setState(() => baseStar = const SizedBox()),
                               childWhenDragging: Container(
                                 height: 30.sp, width: 30.sp,
                                 margin: EdgeInsetsDirectional.only(end: 5.w),
@@ -528,39 +524,6 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                     ),
-
-                    // Container(
-                    //   color: Colors.black,
-                    //   child: Wrap(
-                    //     children: List.generate(9, (index) {
-                    //       Widget baseStar = DragTarget(
-                    //         onAccept: (int data) => log((data + index).toString()),
-                    //         builder: (context, candidateData, rejectedData) => Container(
-                    //           height: 30.sp, width: 30.sp,
-                    //           margin: EdgeInsetsDirectional.only(end: 5.w),
-                    //           child: SvgPicture.asset('assets/svg/star-solid.svg', color: Colors.yellow,),
-                    //         ),
-                    //       );
-
-                    //       Widget dragedStar = SizedBox(
-                    //         height: 30.sp, width: 30.sp,
-                    //         child: SvgPicture.asset('assets/svg/star-solid.svg', color: Colors.yellow,),
-                    //       );
-
-
-                    //       return LongPressDraggable(
-                    //         data: index,
-                    //         // onDragStarted: () => setState(() => baseStar = const SizedBox()),
-                    //         childWhenDragging: Container(
-                    //           height: 30.sp, width: 30.sp,
-                    //           margin: EdgeInsetsDirectional.only(end: 5.w),
-                    //         ),
-                    //         feedback: dragedStar,
-                    //         child: baseStar,
-                    //       );
-                    //     }),
-                    //   ),
-                    // )
                   ],
                 )
               ),
@@ -612,7 +575,7 @@ class MyVideoStatePlayer extends State<MyVideoPlayer> {
   Widget build(BuildContext context) {
 
     // Variables -- S t a r t --
-    double height = MediaQuery.of(context).size.height;
+    // double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     // Variables -- E n d --
 

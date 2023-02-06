@@ -367,7 +367,7 @@ class _RegisterState extends State<Register> {
 
         // Register With Google -- S t a r t --
         ButtonOne(
-          height: 30.h,
+          height: 35.h,
           margin: EdgeInsets.symmetric(vertical: 15.h),
           borderColor: Colors.red,
           shap: CustomText.createCustomTajawalText(

@@ -1,5 +1,7 @@
-import 'dart:ui';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:uotc/views/common/colors.dart';
@@ -9,6 +11,7 @@ import 'package:uotc/views/profile.dart';
 
 dynamic buildCommentsAsBottomSheet(BuildContext context){
   return showModalBottomSheet(
+    isScrollControlled: true,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(topLeft: Radius.circular(10.sp), topRight: Radius.circular(10.sp)),
     ),
@@ -20,6 +23,7 @@ dynamic buildCommentsAsBottomSheet(BuildContext context){
       height: double.infinity, width: double.infinity,
       decoration: BoxDecoration(
         color: UotcColors.blueBold3,
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(10.sp), topRight: Radius.circular(10.sp)),
       ),
       child: Column(
         children: [

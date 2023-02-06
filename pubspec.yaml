@@ -31,6 +31,7 @@ dependencies:
   google_sign_in: ^5.4.2
   jwt_decoder: ^2.0.1
   video_player: ^2.4.10
+  pinch_zoom: ^1.0.0
   optimized_image_loader: ^0.0.3
 
 dev_dependencies:
