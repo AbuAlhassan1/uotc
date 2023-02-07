@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ToastStateController extends GetxController{
@@ -54,15 +53,11 @@ class ToastStateController extends GetxController{
   // Special -- S t a r t --
   RxDouble storiesPosition = 0.0.obs;
   RxDouble navMenuButtonPosition = 0.0.obs;
-  RxBool isStoriesHidden = false.obs;
-  // Special -- E n d --
+  RxBool isStoriesHidden = true.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    storiesPosition.value = -140;
-    navMenuButtonPosition.value = -140;
-  }
+  RxDouble statusBarPosition = (25.0 * ( -1 )).obs;
+  RxDouble homeOpacity = 0.0.obs;
+  // Special -- E n d --
 
   void showToast({ required String desc, required String type, required int seconds }) async {
     if(!isToastOnScreen.value){
@@ -78,34 +73,36 @@ class ToastStateController extends GetxController{
     }
   }
 
-  void alignNavBtn(double position){
-    navMenuButtonPosition.value = position;
-  }
+  void alignNavBtnForProfilePage() => navMenuButtonPosition.value = -3.h;
+
+  void alignNavBtnForHomePage() => navMenuButtonPosition.value = -3.h;
 
   void hideShowStories(double position){
-    log('clicked');
     if (isStoriesHidden.value){
       storiesPosition.value = 0;
-      navMenuButtonPosition.value = position * (-1);
+      navMenuButtonPosition.value = (position * (-1));
       isStoriesHidden.value = !isStoriesHidden.value;
     }else{
       storiesPosition.value = position;
-      navMenuButtonPosition.value = 0;
+      navMenuButtonPosition.value = -3.h;
       isStoriesHidden.value = !isStoriesHidden.value;
     }
-    log(storiesPosition.value.toString());
   }
 
   void hideStories(double position){
     storiesPosition.value = position;
-    navMenuButtonPosition.value = 0;
+    navMenuButtonPosition.value = -3.h;
     isStoriesHidden.value = true;
   }
 
   void showStories(double position){
     storiesPosition.value = 0;
-    navMenuButtonPosition.value = position * (-1);
+    navMenuButtonPosition.value = (position ) * (-1);
     isStoriesHidden.value = false;
   }
+
+  void showStatusBar() => statusBarPosition.value = 0;
+
+  void showHome() => homeOpacity.value = 1;
 
 }

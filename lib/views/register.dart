@@ -198,8 +198,9 @@ class _RegisterState extends State<Register> {
 
         // Register With Google -- S t a r t --
         ButtonOne(
-          height: 30.h,
+          height: 35.h,
           margin: EdgeInsets.symmetric(vertical: 15.h),
+          // padding: EdgeInsets.symmetric(vertical: 5.h),
           borderColor: Colors.red,
           shap: CustomText.createCustomTajawalText(
             text: 'Google',
@@ -272,10 +273,10 @@ class _RegisterState extends State<Register> {
 
         // Register Button -- S t a r t --
         ButtonOne(
+          height: 35.h,
           color: Colors.transparent,
           margin: EdgeInsets.symmetric(vertical: 15.h),
           padding: EdgeInsets.symmetric(vertical: 0.h),
-          height: 30.h,
           shap: CustomText.createCustomTajawalText(
             text: LocaleKeys.register,
             align: TextAlign.center,
@@ -347,7 +348,7 @@ class _RegisterState extends State<Register> {
       mainAxisAlignment: !isTyping ? MainAxisAlignment.end : MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-
+        // Image.network('https://storage.googleapis.com/uotc-20.appspot.com/uotc/images/post/2023-01-16_06-46-44_120.gif'),
         // Header Text -- S t a r t --
         !isTyping ?
         Padding(
@@ -366,7 +367,7 @@ class _RegisterState extends State<Register> {
 
         // Register With Google -- S t a r t --
         ButtonOne(
-          height: 30.h,
+          height: 35.h,
           margin: EdgeInsets.symmetric(vertical: 15.h),
           borderColor: Colors.red,
           shap: CustomText.createCustomTajawalText(
@@ -424,10 +425,10 @@ class _RegisterState extends State<Register> {
         ),
     
         ButtonOne(
+          height: 35.h,
           color: Colors.transparent,
           margin: EdgeInsets.symmetric(vertical: 15.h),
           padding: EdgeInsets.symmetric(vertical: 0.h),
-          height: 30.h,
           shap: CustomText.createCustomTajawalText(
             text: LocaleKeys.login,
             align: TextAlign.center,
@@ -438,7 +439,6 @@ class _RegisterState extends State<Register> {
             screenHeight: height
           ).tr(),
           onTap: () async {
-            // context.go('/lobby');
             await registerStateController.loginAsGuest(
               emailOrUsername: loginEmailController.text,
               password: loginPasswordController.text
@@ -446,25 +446,24 @@ class _RegisterState extends State<Register> {
           }
         ),
 
-        // ButtonOne(
-        //   color: Colors.transparent,
-        //   margin: EdgeInsets.symmetric(vertical: 15.h),
-        //   padding: EdgeInsets.symmetric(vertical: 0.h),
-        //   height: 30.h,
-        //   shap: CustomText.createCustomTajawalText(
-        //     text: "تجربة",
-        //     align: TextAlign.center,
-        //     color: Colors.white,
-        //     fontSize: 18,
-        //     overflow: TextOverflow.visible,
-        //     weight: FontWeight.bold,
-        //     screenHeight: height
-        //   ).tr(),
-        //   onTap: () async {
-        //     // context.go('/lobby');
-        //     registerStateController.checkIfSignedIn();
-        //   }
-        // ),
+        ButtonOne(
+          height: 35.h,
+          color: Colors.transparent,
+          margin: EdgeInsets.symmetric(vertical: 15.h),
+          padding: EdgeInsets.symmetric(vertical: 0.h),
+          shap: CustomText.createCustomTajawalText(
+            text: "تجربة",
+            align: TextAlign.center,
+            color: Colors.white,
+            fontSize: 18,
+            overflow: TextOverflow.visible,
+            weight: FontWeight.bold,
+            screenHeight: height
+          ).tr(),
+          onTap: () async {
+            context.go('/lobby');
+          }
+        ),
 
         Padding(
           padding: EdgeInsets.only(bottom: height * 0.05),

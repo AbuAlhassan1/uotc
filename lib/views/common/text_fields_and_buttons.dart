@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 import 'dart:developer';
+// ignore: depend_on_referenced_packages
 import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -47,56 +48,59 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
     return Container(
       width: width/1.5,
       margin: widget.margin,
-      child: TextField(
-        focusNode: widget.focusNode,
-        controller: widget.controller,
-        autofocus: false,
-        obscureText: obscureText,
-        style: CustomText.createCustomTajawalTextStyle(
-          color: Colors.white,
-          fontSize: 14,
-          overflow: TextOverflow.visible,
-          weight: FontWeight.normal
-        ),
-        decoration: InputDecoration(
-          hintText: widget.hint,
-          hintStyle: CustomText.createCustomTajawalTextStyle(
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        child: TextField(
+          focusNode: widget.focusNode,
+          controller: widget.controller,
+          autofocus: false,
+          obscureText: obscureText,
+          style: CustomText.createCustomTajawalTextStyle(
             color: Colors.white,
             fontSize: 14,
             overflow: TextOverflow.visible,
             weight: FontWeight.normal
           ),
-          enabledBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.white
-            )
-          ),
-          focusedBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.white
-            )
-          ),
-          suffixIcon: widget.isPassword != null && widget.isPassword == true ?
-          InkWell(
-            borderRadius: BorderRadius.circular(50),
-            onTap: (){
-              setState(() {
-                obscureText = !obscureText;
-              });
-            },
-            child: Container(
-              height: 0, width: 0,
-              padding: EdgeInsets.all(13.sp),
-              child: SvgPicture.asset(
-                obscureText ?
-                'assets/svg/fi-sr-eye.svg'
-                : 'assets/svg/fi-sr-eye-crossed.svg',
-                color: Colors.white.withOpacity(0.9),
-                width: 20
-              ),
+          decoration: InputDecoration(
+            hintText: widget.hint,
+            hintStyle: CustomText.createCustomTajawalTextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              overflow: TextOverflow.visible,
+              weight: FontWeight.normal
             ),
-          )
-          : const SizedBox()
+            enabledBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.white
+              )
+            ),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.white
+              )
+            ),
+            suffixIcon: widget.isPassword != null && widget.isPassword == true ?
+            InkWell(
+              borderRadius: BorderRadius.circular(50),
+              onTap: (){
+                setState(() {
+                  obscureText = !obscureText;
+                });
+              },
+              child: Container(
+                height: 0, width: 0,
+                padding: EdgeInsets.all(13.sp),
+                child: SvgPicture.asset(
+                  obscureText ?
+                  'assets/svg/fi-sr-eye.svg'
+                  : 'assets/svg/fi-sr-eye-crossed.svg',
+                  color: Colors.white.withOpacity(0.9),
+                  width: 20
+                ),
+              ),
+            )
+            : const SizedBox()
+          ),
         ),
       ),
     );
@@ -211,12 +215,12 @@ class PostCommentTextField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.focusNode,
-    this.margin = const EdgeInsets.all(0)
+    this.margin = const EdgeInsetsDirectional.all(0)
   });
 
   final TextEditingController controller;
   final FocusNode focusNode;
-  final EdgeInsets margin;
+  final EdgeInsetsDirectional margin;
   
   @override
   Widget build(BuildContext context) {
@@ -229,24 +233,31 @@ class PostCommentTextField extends StatelessWidget {
           color: Colors.white.withOpacity(0.1),
           width: 0.5
         ),
-        borderRadius: BorderRadius.circular(8.sp)
+        borderRadius: BorderRadius.circular(5.sp),
+        // borderRadius: BorderRadiusDirectional.only(
+        //   topStart: Radius.circular(10.sp),
+        //   bottomStart: Radius.circular(10.sp),
+        // )
       ),
-      child: TextField(
-        controller: controller,
-        focusNode: focusNode,
-        style: CustomText.createCustomTajawalTextStyle(
-          fontSize: 14,
-          color: Colors.white,
-          weight: FontWeight.w300
-        ),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintStyle: CustomText.createCustomElMessiriTextStyle(
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        child: TextField(
+          controller: controller,
+          focusNode: focusNode,
+          style: CustomText.createCustomTajawalTextStyle(
             fontSize: 14,
-            color: Colors.white.withOpacity(0.6),
+            color: Colors.white,
             weight: FontWeight.w300
           ),
-          hintText: LocaleKeys.writeAComment.tr(),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintStyle: CustomText.createCustomElMessiriTextStyle(
+              fontSize: 14,
+              color: Colors.white.withOpacity(0.6),
+              weight: FontWeight.w300
+            ),
+            hintText: LocaleKeys.writeAComment.tr(),
+          ),
         ),
       ),
     );

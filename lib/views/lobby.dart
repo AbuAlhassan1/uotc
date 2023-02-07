@@ -4,18 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uotc/translations/locale_keys.g.dart';
 import 'package:uotc/views/common/colors.dart';
-
 import '../controllers/toast_controller.dart';
 import 'common/custom_text.dart';
 
 class HiddenDrawer extends StatefulWidget {
-  const HiddenDrawer({
-    Key? key,
-    required this.myChild
-  }) : super(key: key);
-
-  final Widget myChild;
+  const HiddenDrawer({Key? key, required this.myChild}) : super(key: key);
+  final Widget? myChild;
 
   @override
   State<HiddenDrawer> createState() => _HiddenDrawerState();
@@ -37,15 +33,25 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
   bool ignoringPointer = false;
   double statusBarPosition = -15.h;
 
+  // Navigation Stuff -- S t a r t --
+  bool isPageHome = true;
+  bool isPageProfile = false;
+  bool isPageSettings = false;
+  // Navigation Stuff -- E n d --
+
   @override
   void initState(){
     super.initState();
     controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 300), reverseDuration: const Duration(milliseconds: 300));
     animation = Tween<Offset>(begin: Offset.zero, end: const Offset(0.5, 0)).animate(CurvedAnimation(parent: controller, curve: Curves.easeInOutSine));
-    sAnimation = Tween<double>(begin: 1, end: 0.9).animate(controller);
+    sAnimation = Tween<double>(begin: 1, end: 0.98).animate(controller);
     borderRadiusAnimation = Tween<double>(begin: 5, end: 20).animate(CurvedAnimation(parent: controller, curve: Curves.linear));
-    toastController.alignNavBtn(75.h);
-    Future.delayed(const Duration(milliseconds: 1000), () => setState(() => statusBarPosition = 0),);
+
+    // Preparing Home Page -- S t a r t --
+    Future.delayed(const Duration(seconds: 1), () => toastController.showStatusBar());
+    toastController.navMenuButtonPosition.value = -12.h;
+    toastController.storiesPosition.value = -80.h;
+    // Preparing Home Page -- E n d --
   }
 
   @override
@@ -56,45 +62,168 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
       clipBehavior: Clip.antiAlias,
       alignment: Alignment.center,
       children: [
+        // Drawer -- S t a r t --
         Container(
           height: height,
           width: width,
-          color: UotcColors.blueBold3,
-          child: Column( crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.center,
+          decoration: BoxDecoration(
+            color: Colors.black,
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                UotcColors.blueBold1.withOpacity(0.2),
+                UotcColors.blueBold2.withOpacity(0.2),
+              ]
+            )
+          ),
+          child: Stack(
             children: [
-              TextButton(
-                onPressed: (){
-                  setState(() {
-                    context.push('/lobby');
-                    ignoringPointer = false;
-                  });
-                  controller.reverse();
-                },
-                child: const Text("h o m e", style: TextStyle(color: Colors.white),),
+
+              // Drawer Content -- S t a r t --
+              Positioned(
+                left: 0,
+                child: SizedBox(
+                  width: width / 2, height: height,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Home Navigation Button -- S t a r t --
+                      GestureDetector(
+                        onTap: (){
+                          if( !isPageHome ){
+                            context.push('/lobby');
+                          }
+                          setState(() {
+                            ignoringPointer = false;
+                            isPageHome = true;
+                            isPageProfile = false;
+                            isPageSettings = false;
+                          });
+                          controller.reverse();
+                        },
+                        child: Container(
+                          width: width/2,
+                          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                      
+                              SizedBox(
+                                height: 20.sp, width: 20.sp,
+                                child: SvgPicture.asset(isPageHome ? 'assets/svg/house-blank-solid.svg' : 'assets/svg/house-blank.svg', color: Colors.white)
+                              ),
+                      
+                              SizedBox(width: 10.w),
+                              
+                              CustomText.createCustomElMessiriText(
+                                text: LocaleKeys.home,
+                                color: Colors.white,
+                                align: TextAlign.center,
+                                fontSize: 16,
+                                screenHeight: height,
+                              ).tr(),
+                            ],
+                          )
+                        ),
+                      ),
+                      // Home Navigation Button -- E n d --
+                      
+                      // Profile Navigation Button -- S t a r t --
+                      GestureDetector(
+                        onTap: (){
+                          if( !isPageProfile ){
+                            context.push('/profile');
+                          }
+                          setState(() {
+                            ignoringPointer = false;
+                            isPageHome = false;
+                            isPageProfile = true;
+                            isPageSettings = false;
+                          });
+                          controller.reverse();
+                        },
+                        child: Container(
+                          width: width/2,
+                          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                      
+                              SizedBox(
+                                height: 20.sp, width: 20.sp,
+                                child: SvgPicture.asset(isPageProfile ? 'assets/svg/user-solid.svg' : 'assets/svg/user.svg', color: Colors.white)
+                              ),
+                      
+                              SizedBox(width: 10.w),
+                              
+                              CustomText.createCustomElMessiriText(
+                                text: LocaleKeys.profile,
+                                color: Colors.white,
+                                align: TextAlign.center,
+                                fontSize: 16,
+                                screenHeight: height,
+                              ).tr(),
+                            ],
+                          )
+                        ),
+                      ),
+                      // Profile Navigation Button -- E n d --
+
+                      // Setting Navigation Button -- S t a r t --
+                      GestureDetector(
+                        onTap: (){
+                          if( !isPageSettings ){
+                            context.push('/settings');
+                          }
+                          setState(() {
+                            ignoringPointer = false;
+                            isPageHome = false;
+                            isPageProfile = false;
+                            isPageSettings = true;
+                          });
+                          controller.reverse();
+                        },
+                        child: Container(
+                          width: width/2,
+                          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                      
+                              SizedBox(
+                                height: 20.sp, width: 20.sp,
+                                child: SvgPicture.asset(isPageSettings ? 'assets/svg/settings-sliders-solid.svg' : 'assets/svg/settings-sliders.svg', color: Colors.white)
+                              ),
+                      
+                              SizedBox(width: 10.w),
+                              
+                              CustomText.createCustomElMessiriText(
+                                text: LocaleKeys.settings,
+                                color: Colors.white,
+                                align: TextAlign.center,
+                                fontSize: 16,
+                                screenHeight: height,
+                              ).tr(),
+                            ],
+                          )
+                        ),
+                      ),
+                      // Setting Navigation Button -- E n d --
+                    ],
+                  ),
+                ),
               ),
-              TextButton(
-                onPressed: (){
-                  setState(() {
-                    context.push('/settings');
-                    ignoringPointer = false;
-                  });
-                  controller.reverse();
-                },
-                child: const Text("s e t t i n g s", style: TextStyle(color: Colors.white),),
-              ),
-              TextButton(
-                onPressed: (){
-                  setState(() {
-                    context.push('/details');
-                    ignoringPointer = false;
-                  });
-                  controller.reverse();
-                },
-                child: const Text("d e t a i l s", style: TextStyle(color: Colors.white),),
-              ),
+              // Drawer Content -- E n d --
             ],
           ),
         ),
+        // Drawer -- E n d --
+
+        // Main Content -- S t a r t --
         ScaleTransition(
           scale: sAnimation,
           child: SlideTransition(
@@ -118,34 +247,35 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
                       backgroundColor: Colors.black.withOpacity(1),
                       body: Stack(
                         children: [
+                          // Main Lobby Page -- S t a r t --
                           IgnorePointer(
                             ignoring: ignoringPointer,
                             child: widget.myChild
                           ),
-                          // Show Menu Button -- S t a r t --
-                          Obx(
-                            () => AnimatedPositioned(
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeInOutCubicEmphasized,
-                              top: toastController.navMenuButtonPosition.value,
-                              child: SizedBox(
-                                width: width,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        controller.forward();
-                                        setState(() => ignoringPointer = true);
-                                      },
-                                      icon: const Icon(Icons.menu_rounded, color: Colors.white)
-                                    ),
-                                  ],
-                                ),
+                          // Main Lobby Page -- E n d --
+
+                          // Show Drawer Button -- S t a r t --
+                          Obx(() => AnimatedPositioned(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOutCubicEmphasized,
+                            top: toastController.navMenuButtonPosition.value,
+                            child: SizedBox(
+                              width: width,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      controller.forward();
+                                      setState(() => ignoringPointer = true);
+                                    },
+                                    icon: const Icon(Icons.menu_rounded, color: Colors.white)
+                                  ),
+                                ],
                               ),
                             ),
-                          )
-                          // Show Menu Button -- E n d --
+                          )),
+                          // Show Drawer Button -- E n d --
                         ],
                       ),
                     ),
@@ -155,12 +285,13 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
             ),
           ),
         ),
+        // Main Content -- E n d --
 
         // User Status Bar -- S t a r t --
-        AnimatedPositioned(
+        Obx(() => AnimatedPositioned(
           duration: const Duration(milliseconds: 2800),
           curve: Curves.easeInOutCubicEmphasized,
-          bottom: statusBarPosition,
+          bottom: toastController.statusBarPosition.value,
           child: FittedBox(
             child: Container(
               height: 15.h, width: width,
@@ -180,7 +311,7 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
                         fontSize: 12,
                         weight: FontWeight.bold,
                         screenHeight: height
-                      ).tr(),
+                      ),
                     ),
                   ])),
                   // Messages -- E n d --
@@ -254,7 +385,7 @@ class _HiddenDrawerState extends State<HiddenDrawer> with TickerProviderStateMix
               ),
             ),
           ),
-        )
+        ),)
         // User Status Bar -- E n d --
       ],
     );

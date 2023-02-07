@@ -28,5 +28,8 @@
     "username": "اسم المستخدم",
     "confirmPassword": "تأكيد كلمة المرور",
     "skip": "تخطي",
-    "writeAComment": "اكتب تعليقاً"
+    "writeAComment": "اكتب تعليقاً",
+    "home": "الرئيسية",
+    "profile": "الصفحة الشخصية",
+    "settings": "الاعدادات"
 }

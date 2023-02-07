@@ -7,13 +7,14 @@ class CustomText {
   static Text createCustomElMessiriText(
     {
       required String text,
-      required Color color,
       required double fontSize,
-      required TextOverflow overflow,
-      required TextAlign align,
-      required FontWeight weight,
       required double screenHeight,
-      int? maxLines
+      Color color = Colors.black,
+      TextOverflow overflow = TextOverflow.visible,
+      TextAlign align = TextAlign.start,
+      FontWeight weight = FontWeight.normal,
+      int? maxLines,
+      TextDecoration decoration = TextDecoration.none
     }
   ){
     final maxL = maxLines ?? 1;
@@ -21,8 +22,10 @@ class CustomText {
       text,
       textAlign: align,
       maxLines: maxL,
+      textScaleFactor: 1,
       style: GoogleFonts.elMessiri(
         textStyle: TextStyle(
+          decoration: decoration,
           color: color,
           fontSize: screenHeight < 600 ? fontSize.sp * 0.8 : fontSize.sp,
           overflow: overflow,
@@ -36,12 +39,13 @@ class CustomText {
     {
       required String text,
       required double fontSize,
+      required double screenHeight,
       Color color = Colors.black,
       TextOverflow overflow = TextOverflow.visible,
       TextAlign align = TextAlign.start,
       FontWeight weight = FontWeight.normal,
-      required double screenHeight,
-      int? maxLines
+      int? maxLines,
+      TextDecoration decoration = TextDecoration.none
     }
   ){
     final maxL = maxLines ?? 1;
@@ -49,8 +53,10 @@ class CustomText {
       text,
       textAlign: align,
       maxLines: maxL,
+      textScaleFactor: 1,
       style: GoogleFonts.tajawal(
         textStyle: TextStyle(
+          decoration: decoration,
           color: color,
           fontSize: screenHeight < 600 ? fontSize.sp * 0.8 : fontSize.sp,
           overflow: overflow,

@@ -27,5 +27,8 @@
     "username": "Username",
     "confirmPassword": "Confirm password",
     "skip": "Skip",
-    "writeAComment": "Write a comment"
+    "writeAComment": "Write a comment",
+    "home": "Home",
+    "profile": "Profile",
+    "settings": "settings"
 }
