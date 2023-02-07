@@ -32,7 +32,6 @@ class _HomeState extends State<Home> {
     super.initState();
     if(mounted){
       log("x"*100);
-      postsController.loadInitPosts();
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.bottom]);
       postController.addListener(() async {
         if( postController.offset < 10 ){
@@ -47,6 +46,8 @@ class _HomeState extends State<Home> {
     }
   }
 
+  VideoPlayerController controller = VideoPlayerController.network("https://player.vimeo.com/external/551718299.sd.mp4?s=7fac688f051f8fa55660df3d9b14f1943a11651e&profile_id=164&oauth2_token_id=57447761");
+
   @override
   Widget build(BuildContext context) {
 
@@ -56,11 +57,16 @@ class _HomeState extends State<Home> {
     // Variables -- E n d --
 
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     log(postsController.posts.length.toString());
-      //   },
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          // log(postsController.posts.length.toString());
+          // await controller.initialize()
+          // // await Future.delayed(const Duration(seconds: 5))
+          // .timeout(const Duration(seconds: 1), onTimeout: () => log("wtf"),);
+          var gg = await postsController.getVideo("https://player.vimeo.com/external/551718299.sd.mp4?s=7fac688f051f8fa55660df3d9b14f1943a11651e&profile_id=164&oauth2_token_id=57447761");
+          log(gg.toString());
+        },
+      ),
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       body: SizedBox(
@@ -82,12 +88,11 @@ class _HomeState extends State<Home> {
                 child: SizedBox(
                   height: height, width: width,
                   child: ListView(
-                    // physics: const BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     controller: postController,
                     children: List.generate(postsController.posts.length + 1, (index) =>
                       index == 0 ? SizedBox(height: 50.h)
                       : PostOne(postData: postsController.posts[index-1]),
-                      // : Postt(controller: postsController.posts[index-1],),
                     ) + [
                       postsController.isScrollLoading.value ? Center(
                         child: Padding(

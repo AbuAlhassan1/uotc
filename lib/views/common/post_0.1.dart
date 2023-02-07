@@ -79,6 +79,7 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
 
     // Variables -- S t a r t --
     double height = MediaQuery.of(context).size.height;
@@ -88,9 +89,7 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Container(
-        // key: PageStorageKey<int>(widget.postIndex),
         margin: EdgeInsets.only(bottom: 15.h),
-        // clipBehavior: Clip.antiAlias,
         decoration: const BoxDecoration(
           color: Colors.transparent,
         ),
@@ -218,30 +217,14 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
                 Future.delayed(const Duration(seconds: 2), () => setState(() => playPauseButtonOpacity = 0));
               },
               child: SizedBox(
-                height: height - 100.h, width: width,
+                height: videoHeight >= (height - 100.h) ? height - 100.h : videoHeight, width: width,
                 child: Stack(
                   children: [
-                    // Loading Indicator -- S t a r t --
-                    Container(
-                      color: const Color(0xFF101010),
-                      child: Center(
-                        child: videoHeight == 0 ? CircularProgressIndicator(color: Colors.white, strokeWidth: 1.sp) : const SizedBox(),
-                      ),
-                    ),
-                    // Loading Indicator -- E n d --
 
                     // Video Player -- S t a r t --
                     PinchZoom(
                       maxScale: 4,
                       zoomEnabled: true,
-                      // child: FittedBox(
-                      //             fit: BoxFit.cover,
-                      //             child: SizedBox(
-                      //               height: videoHeight,
-                      //               width: videoWidth,
-                      //               child: VideoPlayer(widget.postData["video"][0])
-                      //             ),
-                      //           ),
                       child: PageView(
                         onPageChanged: (index) => setState(() => videoIndex = index),
                         children: List.generate(widget.postData["video"].length, (index) =>
@@ -250,8 +233,7 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
                             child: AnimatedOpacity(
                               duration: const Duration(milliseconds: 500),
                               curve: Curves.easeInOutCubic,
-                              // opacity: videoHeight == 0 ? 0 : 1,
-                              opacity: 1,
+                              opacity: videoHeight == 0 ? 0 : 1,
                               child: AnimatedContainer(
                                 duration: const Duration(milliseconds: 300),
                                 curve: Curves.easeInOutCubic,
@@ -259,9 +241,9 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
                                 height: videoHeight == 0 ? width : videoHeight > height - 100.h ? height - 100.h : videoHeight,
                                 decoration: const BoxDecoration(color: Colors.red),
                                 child:
-                                // videoHeight == 0 ? 
-                                // const Center(child: CircularProgressIndicator(color: Colors.white, strokeWidth: 1))
-                                FittedBox(
+                                videoHeight == 0 ? 
+                                const Center(child: CircularProgressIndicator(color: Colors.white, strokeWidth: 1))
+                                : FittedBox(
                                   fit: BoxFit.cover,
                                   child: SizedBox(
                                     height: widget.postData["video"][index].value.size.height,
