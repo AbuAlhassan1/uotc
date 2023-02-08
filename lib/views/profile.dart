@@ -1,18 +1,14 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_fade/image_fade.dart';
-// import 'package:native_video_player/native_video_player.dart';
-// import 'package:rive/rive.dart';
 import 'package:uotc/controllers/toast_controller.dart';
 import 'package:uotc/views/common/colors.dart';
 import 'package:uotc/views/common/custom_text.dart';
 import 'package:uotc/views/common/post_0.1.dart';
 import 'package:uotc/views/common/scroll_behavior.dart';
-import 'package:video_player/video_player.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -545,31 +541,8 @@ class MyVideoPlayer extends StatefulWidget {
 }
 class MyVideoStatePlayer extends State<MyVideoPlayer> {
 
-  late VideoPlayerController videoController;
   double videoOpacity = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    videoController = VideoPlayerController.asset('assets/videos/uotc1.mp4',
-    videoPlayerOptions: VideoPlayerOptions(
-      allowBackgroundPlayback: false,
-      mixWithOthers: false
-    ),);
-    videoController.initialize().then((value) => setState(() {
-      videoController.setVolume(0);
-      Future.delayed(const Duration(seconds: 1),() => setState(() => videoOpacity = 1));
-      videoController.setLooping(true);
-      videoController.play();
-    }));
-  }
-
-  @override
-  void dispose() {
-    videoController.dispose();
-    log("disssssssssssssssssssss");
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -579,7 +552,7 @@ class MyVideoStatePlayer extends State<MyVideoPlayer> {
     double width = MediaQuery.of(context).size.width;
     // Variables -- E n d --
 
-    return videoController.value.isInitialized ?
+    return
       AnimatedOpacity(
         duration: const Duration(milliseconds: 800),
         curve: Curves.easeInOutCubic,
@@ -588,14 +561,8 @@ class MyVideoStatePlayer extends State<MyVideoPlayer> {
           width: width,
           child: FittedBox(
             fit: BoxFit.cover,
-            child: SizedBox(
-              width: videoController.value.size.width,
-              height: videoController.value.size.height,
-              child: VideoPlayer(videoController)
-            ),
           ),
         ),
-      )
-      : const SizedBox();
+      );
   }
 }

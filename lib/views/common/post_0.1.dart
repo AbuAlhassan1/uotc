@@ -1,11 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:native_video_player/native_video_player.dart';
 import 'package:uotc/controllers/post_controller.dart';
 import 'package:uotc/views/common/colors.dart';
 import 'package:uotc/views/common/comments_bottom_sheet.dart';
-import 'package:video_player/video_player.dart';
 import 'comment_card.dart';
 import 'custom_text.dart';
 import 'index_pointer.dart';
@@ -34,29 +36,13 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
   double videoWidth = 0;
   bool isVideoPlaying = false;
   double playPauseButtonOpacity = 0;
+  NativeVideoPlayerController? videoController;
 
   @override
   void initState() {
     super.initState();
     if(widget.postData["type"][0] == "video"){
-      if(mounted){
-        for(VideoPlayerController videoController in widget.postData["video"]){
-          setState(() {
-            videoController.play();
-            isVideoPlaying = true;
-            isVideoLoading = false;
-            videoHeight = videoController.value.size.height;
-            videoWidth = videoController.value.size.width;
-            playPauseButtonOpacity = 1;
-          });
-          Future.delayed(const Duration(seconds: 1), () => videoController.play());
-          videoController.addListener(() {
-            if( !widget.postData["video"][0].value.isPlaying ){
-              setState(() => playPauseButtonOpacity = 1);
-            }
-          });
-        }
-      }
+      if(mounted){}
     }
     else{
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -68,10 +54,7 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
   @override
   void dispose() {
     if(widget.postData["type"][0] == "video"){
-      for(VideoPlayerController videoController in widget.postData["video"]){
-        videoController.pause();
-        videoController.removeListener(() {});
-      }
+      videoController!.pause();
     }
     super.dispose();
   }
@@ -87,7 +70,10 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
     // Variables -- E n d --
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+        log(widget.postData["video"][0]);
+      },
       child: Container(
         margin: EdgeInsets.only(bottom: 15.h),
         decoration: const BoxDecoration(
@@ -217,7 +203,8 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
                 Future.delayed(const Duration(seconds: 2), () => setState(() => playPauseButtonOpacity = 0));
               },
               child: SizedBox(
-                height: videoHeight >= (height - 100.h) ? height - 100.h : videoHeight, width: width,
+                height: videoHeight == 0 ? 400.h : videoHeight >= (height - 100.h) ? height - 100.h : videoHeight,
+                width: width,
                 child: Stack(
                   children: [
 
@@ -228,32 +215,34 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
                       child: PageView(
                         onPageChanged: (index) => setState(() => videoIndex = index),
                         children: List.generate(widget.postData["video"].length, (index) =>
-                          Align(
-                            alignment: Alignment.center,
-                            child: AnimatedOpacity(
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeInOutCubic,
-                              opacity: videoHeight == 0 ? 0 : 1,
-                              child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeInOutCubic,
-                                width: width,
-                                height: videoHeight == 0 ? width : videoHeight > height - 100.h ? height - 100.h : videoHeight,
-                                decoration: const BoxDecoration(color: Colors.red),
-                                child:
-                                videoHeight == 0 ? 
-                                const Center(child: CircularProgressIndicator(color: Colors.white, strokeWidth: 1))
-                                : FittedBox(
-                                  fit: BoxFit.cover,
-                                  child: SizedBox(
-                                    height: widget.postData["video"][index].value.size.height,
-                                    width: widget.postData["video"][index].value.size.width,
-                                    child: VideoPlayer(widget.postData["video"][index])
-                                  ),
+                          Container(
+                            height: videoHeight > height - 100.h ? height - 100.h : videoHeight, width: width,
+                            color: Colors.orange,
+                            child: FittedBox(
+                              fit: BoxFit.cover,
+                              child: Container(
+                                height: 200, width: width,
+                                color: Colors.red,
+                                child: NativeVideoPlayerView(
+                                  onViewReady: (controller) async {
+                                    await controller.loadVideoSource(
+                                      VideoSource(
+                                        path: widget.postData["video"][0],
+                                        type: VideoSourceType.network
+                                      )
+                                    );
+                                    controller.onPlaybackReady.addListener(() async{
+                                      setState(() {
+                                        videoHeight = controller.videoInfo!.height * 1.0;
+                                      });
+                                      controller.play();
+                                    });
+                                    videoController = controller;
+                                  },
                                 ),
                               ),
                             ),
-                          ),
+                          )
                         ),
                       ),
                     ),
@@ -283,9 +272,9 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
                               color: Colors.black.withOpacity(0.8),
                               borderRadius: BorderRadius.circular(50.sp)
                             ),
-                            child: Center(
-                              child: Icon(widget.postData["video"][videoIndex].value.isPlaying ? Icons.pause_outlined : Icons.play_arrow_rounded, color: Colors.white),
-                            ),
+                            // child: Center(
+                            //   child: Icon(widget.postData["video"][videoIndex].value.isPlaying ? Icons.pause_outlined : Icons.play_arrow_rounded, color: Colors.white),
+                            // ),
                           ),
                         ),
                       ),
@@ -317,9 +306,9 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
                               color: Colors.black.withOpacity(0.8),
                               borderRadius: BorderRadius.circular(50.sp)
                             ),
-                            child: Center(
-                              child: Icon(widget.postData["video"][videoIndex].value.volume == 1 ? Icons.volume_up_rounded : Icons.volume_off_rounded, color: Colors.white, size: 18.sp,),
-                            ),
+                            // child: Center(
+                            //   child: Icon(widget.postData["video"][videoIndex].value.volume == 1 ? Icons.volume_up_rounded : Icons.volume_off_rounded, color: Colors.white, size: 18.sp,),
+                            // ),
                           ),
                         ),
                       ),

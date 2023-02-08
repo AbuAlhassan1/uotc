@@ -2,14 +2,13 @@ import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:video_player/video_player.dart';
+import 'package:native_video_player/native_video_player.dart';
 
 class PostController extends GetxController{
   RxList posts = [].obs;
   RxBool isLoading = true.obs;
   RxBool isScrollLoading = false.obs;
-  String videoURL = "se";
-  List<String> videosURLs = [
+  static List<String> videosURLs = [
     "https://player.vimeo.com/external/551718299.sd.mp4?s=7fac688f051f8fa55660df3d9b14f1943a11651e&profile_id=164&oauth2_token_id=57447761",
     "https://player.vimeo.com/external/551718299.sd.mp4?s=7fac688f051f8fa55660df3d9b14f1943a11651e&profile_id=164&oauth2_token_id=57447761",
     "https://player.vimeo.com/progressive_redirect/playback/734982219/rendition/360p/file.mp4?loc=external&oauth2_token_id=57447761&signature=9a285546ec881a86ca55830637cb41fd85155b092402bed1bbf9ceef16f83971",
@@ -31,7 +30,7 @@ class PostController extends GetxController{
     "https://player.vimeo.com/external/515035289.sd.mp4?s=22eb8452ea6692a819752c114d5c355f27af3b27&profile_id=165&oauth2_token_id=57447761",
     "https://player.vimeo.com/progressive_redirect/playback/723688128/rendition/540p/file.mp4?loc=external&oauth2_token_id=57447761&signature=fc6c75b0da793efb1a97c087aee465ac7d9d83604d41f7b1e9348c13d487906c"
   ];
-  // List videosURLs = List.generate(20, (index) => "https://player.vimeo.com/progressive_redirect/playback/723688128/rendition/540p/file.mp4?loc=external&oauth2_token_id=57447761&signature=fc6c75b0da793efb1a97c087aee465ac7d9d83604d41f7b1e9348c13d487906c");
+  // List videosURLss = List.generate(20, (index) => VideoSource(path: videosURLs[index], type: VideoSourceType.network));
   int index = 0;
   int count = 0;
 
@@ -41,34 +40,24 @@ class PostController extends GetxController{
     loadInitPosts();
   }
 
-  Future<VideoPlayerController?> getVideo(String videoUrl) async {
-    VideoPlayerController videoController = VideoPlayerController.network(videoUrl);
-    bool isOk = true;
-    print("Video Started initializing $count");
-    // print("Video Started initializing $count");
-    try{
-      await videoController.initialize().timeout(const Duration(seconds: 5), onTimeout: () {
-        isOk = false;
-        print("Something went wrong 1");
-      });
-    }catch(e){
-      isOk = false;
+  Future<String?> getVideo(String videoSource) async {
+    final String source;
+
+    try{ source = videoSource; }
+    catch( e ){
       print(e);
+      return null;
     }
-    print("Video Done initializing $count");
-    if(!isOk){
-      print("Something went wrong wtf");
-      getVideo(videoUrl);
-    }
-    count++;
-    return isOk ? videoController : null;
+    index++;
+
+    return source;
   }
 
   int count2 = 0;
   Future loadInitPosts() async {
     isLoading.value = true;
     for(int i = 0; i < 2; i++){
-      VideoPlayerController? video = await getVideo(videosURLs[index]);
+      String? video = await getVideo(videosURLs[index]);
       if(video != null){
         posts.add({ "video": [video], "type": ["video"] });
         index++;
@@ -76,7 +65,6 @@ class PostController extends GetxController{
         count2++;
       }else{
         print("Something went wrong");
-        await loadInitPosts();
       }
     }
     isLoading.value = false;
@@ -94,7 +82,7 @@ class PostController extends GetxController{
 
           print("adding post ...");
 
-          VideoPlayerController? video = await getVideo(videosURLs[index])
+          String? video = await getVideo(videosURLs[index])
           .timeout(const Duration(seconds: 5), onTimeout: () async {
             print("asdasdasd");
             return null;
@@ -111,7 +99,6 @@ class PostController extends GetxController{
           else{
             isScrollLoading.value = false;
             print("Something Went Wrong !!!!!!!!!");
-            // Future.delayed(const Duration(seconds: 1), () => loadPostWithScrollEnd(controller));
           }
         }
       }

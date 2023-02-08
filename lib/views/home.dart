@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:native_video_player/native_video_player.dart';
 import 'package:uotc/controllers/post_controller.dart';
-import 'package:uotc/views/common/colors.dart';
 import 'package:uotc/views/common/story_coin.dart';
-import 'package:video_player/video_player.dart';
 import '../controllers/toast_controller.dart';
 import 'common/custom_text.dart';
 import 'common/post_0.1.dart';
@@ -46,7 +45,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-  VideoPlayerController controller = VideoPlayerController.network("https://player.vimeo.com/external/551718299.sd.mp4?s=7fac688f051f8fa55660df3d9b14f1943a11651e&profile_id=164&oauth2_token_id=57447761");
 
   @override
   Widget build(BuildContext context) {
@@ -59,12 +57,9 @@ class _HomeState extends State<Home> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          // log(postsController.posts.length.toString());
-          // await controller.initialize()
-          // // await Future.delayed(const Duration(seconds: 5))
-          // .timeout(const Duration(seconds: 1), onTimeout: () => log("wtf"),);
-          var gg = await postsController.getVideo("https://player.vimeo.com/external/551718299.sd.mp4?s=7fac688f051f8fa55660df3d9b14f1943a11651e&profile_id=164&oauth2_token_id=57447761");
-          log(gg.toString());
+          setState(() {
+            
+          });
         },
       ),
       resizeToAvoidBottomInset: false,
@@ -90,9 +85,10 @@ class _HomeState extends State<Home> {
                   child: ListView(
                     physics: const BouncingScrollPhysics(),
                     controller: postController,
-                    children: List.generate(postsController.posts.length + 1, (index) =>
+                    children: List.generate(postsController.posts.length, (index) =>
                       index == 0 ? SizedBox(height: 50.h)
                       : PostOne(postData: postsController.posts[index-1]),
+                      // : Postt(videoController: postsController.posts[index-1])
                     ) + [
                       postsController.isScrollLoading.value ? Center(
                         child: Padding(
@@ -187,8 +183,8 @@ class _HomeState extends State<Home> {
 
 
 class Postt extends StatefulWidget {
-  const Postt({super.key, required this.controller});
-  final Map controller;
+  const Postt({super.key, required this.videoController});
+  final Map videoController;
 
   @override
   State<Postt> createState() => _PosttState();
@@ -196,11 +192,17 @@ class Postt extends StatefulWidget {
 
 class _PosttState extends State<Postt> {
 
+  NativeVideoPlayerController? videoController;
+
   @override
   void initState() {
     super.initState();
-    widget.controller["video"].play();
+    // widget.controller["video"][0].play();
+    
   }
+
+  double videoHeigth = 200.h;
+  double videoWidth = 200.h;
   @override
   Widget build(BuildContext context) {
 
@@ -210,10 +212,32 @@ class _PosttState extends State<Postt> {
     // Variables -- E n d --
 
     return Container(
-      height: width, width: width,
-      color: Colors.red,
-      margin: EdgeInsets.only(bottom: 20.h),
-      child: VideoPlayer(widget.controller["video"]),
+      height: videoHeigth > height - 100.h ? height - 100.h : videoHeigth, width: width,
+      color: Colors.orange,
+      child: FittedBox(
+        fit: BoxFit.cover,
+        child: Container(
+          height: 200, width: width,
+          color: Colors.red,
+          child: NativeVideoPlayerView(
+            onViewReady: (controller) async {
+              await controller.loadVideoSource(
+                VideoSource(
+                  path: widget.videoController["video"][0],
+                  type: VideoSourceType.network
+                )
+              );
+              controller.onPlaybackReady.addListener(() async{
+                setState(() {
+                  videoHeigth = videoController!.videoInfo!.height * 1.0;
+                });
+                controller.play();
+              });
+              videoController = controller;
+            },
+          ),
+        ),
+      ),
     );
   }
 }
