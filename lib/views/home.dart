@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:native_video_player/native_video_player.dart';
 import 'package:uotc/controllers/post_controller.dart';
 import 'package:uotc/views/common/story_coin.dart';
 import '../controllers/toast_controller.dart';
 import 'common/custom_text.dart';
 import 'common/post_0.1.dart';
+import 'package:chewie/chewie.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -57,9 +57,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          setState(() {
-            
-          });
+          log(postsController.posts.length.toString());
         },
       ),
       resizeToAvoidBottomInset: false,
@@ -85,10 +83,13 @@ class _HomeState extends State<Home> {
                   child: ListView(
                     physics: const BouncingScrollPhysics(),
                     controller: postController,
-                    children: List.generate(postsController.posts.length, (index) =>
-                      index == 0 ? SizedBox(height: 50.h)
-                      : PostOne(postData: postsController.posts[index-1]),
-                      // : Postt(videoController: postsController.posts[index-1])
+                    children: List.generate(
+                      postsController.posts.length + 1,
+                      // 3,
+                      (index) =>
+                        index == 0 ? SizedBox(height: 50.h)
+                        : PostOne(postData: postsController.posts[index-1]),
+                        // : Postt(videoController: postsController.posts[index-1])
                     ) + [
                       postsController.isScrollLoading.value ? Center(
                         child: Padding(
@@ -192,13 +193,11 @@ class Postt extends StatefulWidget {
 
 class _PosttState extends State<Postt> {
 
-  NativeVideoPlayerController? videoController;
+  // https://player.vimeo.com/external/551718299.sd.mp4?s=7fac688f051f8fa55660df3d9b14f1943a11651e&profile_id=164&oauth2_token_id=57447761
 
   @override
   void initState() {
     super.initState();
-    // widget.controller["video"][0].play();
-    
   }
 
   double videoHeigth = 200.h;
@@ -219,23 +218,6 @@ class _PosttState extends State<Postt> {
         child: Container(
           height: 200, width: width,
           color: Colors.red,
-          child: NativeVideoPlayerView(
-            onViewReady: (controller) async {
-              await controller.loadVideoSource(
-                VideoSource(
-                  path: widget.videoController["video"][0],
-                  type: VideoSourceType.network
-                )
-              );
-              controller.onPlaybackReady.addListener(() async{
-                setState(() {
-                  videoHeigth = videoController!.videoInfo!.height * 1.0;
-                });
-                controller.play();
-              });
-              videoController = controller;
-            },
-          ),
         ),
       ),
     );

@@ -1,10 +1,9 @@
 import 'dart:developer';
-
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:native_video_player/native_video_player.dart';
 import 'package:uotc/controllers/post_controller.dart';
 import 'package:uotc/views/common/colors.dart';
 import 'package:uotc/views/common/comments_bottom_sheet.dart';
@@ -30,19 +29,35 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
   final PageController imageSliderController = PageController();
   int? imageIndex;
   int videoIndex = 0;
-  final FocusNode commentFocusNode = FocusNode();
   bool isVideoLoading = true;
   double videoHeight = 0;
   double videoWidth = 0;
   bool isVideoPlaying = false;
   double playPauseButtonOpacity = 0;
-  NativeVideoPlayerController? videoController;
+  late ChewieController chewieController;
+
+  Future<void> initVideo()async{
+    await chewieController.videoPlayerController.initialize();
+    setState(() {
+      videoHeight = chewieController.videoPlayerController.value.size.height;
+      videoWidth = chewieController.videoPlayerController.value.size.width;
+    });
+  }
 
   @override
   void initState() {
+    chewieController = widget.postData["video"][0];
+
     super.initState();
+
     if(widget.postData["type"][0] == "video"){
-      if(mounted){}
+      if(mounted){
+        // initVideo();
+        setState(() {
+          videoHeight = chewieController.videoPlayerController.value.size.height;
+          videoWidth = chewieController.videoPlayerController.value.size.width;
+        });
+      }
     }
     else{
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -54,7 +69,7 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
   @override
   void dispose() {
     if(widget.postData["type"][0] == "video"){
-      videoController!.pause();
+      chewieController.pause();
     }
     super.dispose();
   }
@@ -72,7 +87,7 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
-        log(widget.postData["video"][0]);
+        log(videoHeight.toString());
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 15.h),
@@ -198,12 +213,12 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
             // Images Slider || Video -- S t a r t --
             widget.postData["type"][0] == "video" ?
             GestureDetector(
-              onTap: () {
-                setState(() => playPauseButtonOpacity = 1);
-                Future.delayed(const Duration(seconds: 2), () => setState(() => playPauseButtonOpacity = 0));
-              },
+              // onTap: () {
+              //   setState(() => playPauseButtonOpacity = 1);
+              //   Future.delayed(const Duration(seconds: 2), () => setState(() => playPauseButtonOpacity = 0));
+              // },
               child: SizedBox(
-                height: videoHeight == 0 ? 400.h : videoHeight >= (height - 100.h) ? height - 100.h : videoHeight,
+                height: videoHeight == 0 ? width : videoHeight > height - 100.h ? height - 100.h : videoHeight,
                 width: width,
                 child: Stack(
                   children: [
@@ -216,31 +231,10 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
                         onPageChanged: (index) => setState(() => videoIndex = index),
                         children: List.generate(widget.postData["video"].length, (index) =>
                           Container(
-                            height: videoHeight > height - 100.h ? height - 100.h : videoHeight, width: width,
-                            color: Colors.orange,
-                            child: FittedBox(
-                              fit: BoxFit.cover,
-                              child: Container(
-                                height: 200, width: width,
-                                color: Colors.red,
-                                child: NativeVideoPlayerView(
-                                  onViewReady: (controller) async {
-                                    await controller.loadVideoSource(
-                                      VideoSource(
-                                        path: widget.postData["video"][0],
-                                        type: VideoSourceType.network
-                                      )
-                                    );
-                                    controller.onPlaybackReady.addListener(() async{
-                                      setState(() {
-                                        videoHeight = controller.videoInfo!.height * 1.0;
-                                      });
-                                      controller.play();
-                                    });
-                                    videoController = controller;
-                                  },
-                                ),
-                              ),
+                            // height: 460.h, width: width,
+                            color: const Color.fromARGB(255, 20, 20, 20),
+                            child: Chewie(
+                              controller: chewieController,
                             ),
                           )
                         ),
@@ -248,85 +242,85 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
                     ),
                     // Video Player -- E n d --
             
-                    // Play - Pause Button -- S t a r t --
-                    videoHeight == 0 ? const SizedBox() :
-                    AnimatedOpacity(
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeInOutCubic,
-                      opacity: playPauseButtonOpacity,
-                      child: Center(
-                        child: InkWell(
-                          onTap: () async {
-                            if(isVideoPlaying){ widget.postData["video"][videoIndex].pause();}
-                              else{ 
-                              widget.postData["video"][videoIndex].play();
-                              await Future.delayed(const Duration(milliseconds: 100), () => widget.postData["video"][videoIndex].play(),);
-                            }
-                            isVideoPlaying = !isVideoPlaying;
-                            await Future.delayed(const Duration(seconds: 2), () => playPauseButtonOpacity = 0);
-                            setState((){});
-                          },
-                          child: Container(
-                            height: 50.sp, width: 50.sp,
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.8),
-                              borderRadius: BorderRadius.circular(50.sp)
-                            ),
-                            // child: Center(
-                            //   child: Icon(widget.postData["video"][videoIndex].value.isPlaying ? Icons.pause_outlined : Icons.play_arrow_rounded, color: Colors.white),
-                            // ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // Play - Pause Button -- E n d --
+                    // // Play - Pause Button -- S t a r t --
+                    // videoHeight == 0 ? const SizedBox() :
+                    // AnimatedOpacity(
+                    //   duration: const Duration(milliseconds: 500),
+                    //   curve: Curves.easeInOutCubic,
+                    //   opacity: playPauseButtonOpacity,
+                    //   child: Center(
+                    //     child: InkWell(
+                    //       onTap: () async {
+                    //         if(isVideoPlaying){ widget.postData["video"][videoIndex].pause();}
+                    //           else{ 
+                    //           widget.postData["video"][videoIndex].play();
+                    //           await Future.delayed(const Duration(milliseconds: 100), () => widget.postData["video"][videoIndex].play(),);
+                    //         }
+                    //         isVideoPlaying = !isVideoPlaying;
+                    //         await Future.delayed(const Duration(seconds: 2), () => playPauseButtonOpacity = 0);
+                    //         setState((){});
+                    //       },
+                    //       child: Container(
+                    //         height: 50.sp, width: 50.sp,
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.black.withOpacity(0.8),
+                    //           borderRadius: BorderRadius.circular(50.sp)
+                    //         ),
+                    //         // child: Center(
+                    //         //   child: Icon(widget.postData["video"][videoIndex].value.isPlaying ? Icons.pause_outlined : Icons.play_arrow_rounded, color: Colors.white),
+                    //         // ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // // Play - Pause Button -- E n d --
 
-                    // Mute - Unmute Button -- S t a r t --
-                    videoHeight == 0 ? const SizedBox() :
-                    AnimatedOpacity(
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeInOutCubic,
-                      opacity: 1,
-                      child: Align(
-                        alignment: AlignmentDirectional.bottomEnd,
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              if(widget.postData["video"][videoIndex].value.volume == 0){
-                                widget.postData["video"][videoIndex].setVolume(1.0);
-                              }else if(widget.postData["video"][videoIndex].value.volume == 1){
-                                widget.postData["video"][videoIndex].setVolume(0.0);
-                              }
-                            });
-                          },
-                          child: Container(
-                            height: 30.sp, width: 30.sp,
-                            margin: EdgeInsets.all(10.sp),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.8),
-                              borderRadius: BorderRadius.circular(50.sp)
-                            ),
-                            // child: Center(
-                            //   child: Icon(widget.postData["video"][videoIndex].value.volume == 1 ? Icons.volume_up_rounded : Icons.volume_off_rounded, color: Colors.white, size: 18.sp,),
-                            // ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // Mute - Unmute Button -- E n d --
+                    // // Mute - Unmute Button -- S t a r t --
+                    // videoHeight == 0 ? const SizedBox() :
+                    // AnimatedOpacity(
+                    //   duration: const Duration(milliseconds: 500),
+                    //   curve: Curves.easeInOutCubic,
+                    //   opacity: 1,
+                    //   child: Align(
+                    //     alignment: AlignmentDirectional.bottomEnd,
+                    //     child: InkWell(
+                    //       onTap: () {
+                    //         setState(() {
+                    //           if(widget.postData["video"][videoIndex].value.volume == 0){
+                    //             widget.postData["video"][videoIndex].setVolume(1.0);
+                    //           }else if(widget.postData["video"][videoIndex].value.volume == 1){
+                    //             widget.postData["video"][videoIndex].setVolume(0.0);
+                    //           }
+                    //         });
+                    //       },
+                    //       child: Container(
+                    //         height: 30.sp, width: 30.sp,
+                    //         margin: EdgeInsets.all(10.sp),
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.black.withOpacity(0.8),
+                    //           borderRadius: BorderRadius.circular(50.sp)
+                    //         ),
+                    //         // child: Center(
+                    //         //   child: Icon(widget.postData["video"][videoIndex].value.volume == 1 ? Icons.volume_up_rounded : Icons.volume_off_rounded, color: Colors.white, size: 18.sp,),
+                    //         // ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // // Mute - Unmute Button -- E n d --
 
-                    // Index Inicator -- S t a r t --
-                    Align(
-                      alignment: const Alignment(0, 0.95),
-                      child: sliderIndex(
-                        index: videoIndex,
-                        indexColor: Colors.white,
-                        otherColor: UotcColors.blueBold1,
-                        numOfPages: widget.postData["video"].length,
-                        size: 5.sp
-                      ),
-                    ),
-                    // Index Inicator -- E n d --
+                    // // Index Inicator -- S t a r t --
+                    // Align(
+                    //   alignment: const Alignment(0, 0.95),
+                    //   child: sliderIndex(
+                    //     index: videoIndex,
+                    //     indexColor: Colors.white,
+                    //     otherColor: UotcColors.blueBold1,
+                    //     numOfPages: widget.postData["video"].length,
+                    //     size: 5.sp
+                    //   ),
+                    // ),
+                    // // Index Inicator -- E n d --
                   ],
                 ),
               ),

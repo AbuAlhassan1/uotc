@@ -32,7 +32,8 @@ dependencies:
   jwt_decoder: ^2.0.1
   pinch_zoom: ^1.0.0
   optimized_image_loader: ^0.0.3
-  native_video_player: ^1.2.0+3
+  chewie: ^1.4.0
+  video_player: ^2.5.1
 
 dev_dependencies:
   flutter_test:
@@ -65,3 +66,6 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+
+module:
+  androidX: true

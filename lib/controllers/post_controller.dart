@@ -2,10 +2,11 @@ import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:native_video_player/native_video_player.dart';
+import 'package:chewie/chewie.dart';
+import 'package:video_player/video_player.dart';
 
 class PostController extends GetxController{
-  RxList posts = [].obs;
+  RxList posts = <Map<String, dynamic>>[].obs;
   RxBool isLoading = true.obs;
   RxBool isScrollLoading = false.obs;
   static List<String> videosURLs = [
@@ -30,7 +31,6 @@ class PostController extends GetxController{
     "https://player.vimeo.com/external/515035289.sd.mp4?s=22eb8452ea6692a819752c114d5c355f27af3b27&profile_id=165&oauth2_token_id=57447761",
     "https://player.vimeo.com/progressive_redirect/playback/723688128/rendition/540p/file.mp4?loc=external&oauth2_token_id=57447761&signature=fc6c75b0da793efb1a97c087aee465ac7d9d83604d41f7b1e9348c13d487906c"
   ];
-  // List videosURLss = List.generate(20, (index) => VideoSource(path: videosURLs[index], type: VideoSourceType.network));
   int index = 0;
   int count = 0;
 
@@ -40,24 +40,51 @@ class PostController extends GetxController{
     loadInitPosts();
   }
 
-  Future<String?> getVideo(String videoSource) async {
-    final String source;
+  Future<ChewieController?> getVideo(String videoSource) async {
+    final VideoPlayerController videoController;
+    final ChewieController chewieController;
 
-    try{ source = videoSource; }
-    catch( e ){
-      print(e);
+    // Trying To Initializing The VideoController -- S t a r t --
+    try{
+      videoController = VideoPlayerController.network(
+        "https://player.vimeo.com/progressive_redirect/playback/784449954/rendition/540p/file.mp4?loc=external&oauth2_token_id=57447761&signature=11d28733eb7e8fa61fc6a8ecacfc35e03ec3c1a972bcc66fd2ce1964d773e648"
+      );
+      await videoController.initialize();
+    }
+    // Trying To Initializing The VideoController -- E n d --
+
+    // If The Initialization Failed Return Null -- S t a r t --
+    catch( error ){
+      dev.log(error.toString());
+      print(error.toString());
+      return null;
+    }
+    // If The Initialization Failed Return Null -- E n d --
+
+    // If The Initialization Run Seccessfully -- S t a r t --
+    try{
+      chewieController = ChewieController(
+        videoPlayerController: videoController,
+        allowFullScreen: false,
+        allowMuting: true,
+        autoPlay: true,
+      );
+    }
+    catch( error ){
+      dev.log(error.toString());
+      print(error.toString());
       return null;
     }
     index++;
-
-    return source;
+    return chewieController;
+    // If The Initialization Run Seccessfully -- E n d --
   }
 
   int count2 = 0;
   Future loadInitPosts() async {
     isLoading.value = true;
     for(int i = 0; i < 2; i++){
-      String? video = await getVideo(videosURLs[index]);
+      ChewieController? video = await getVideo(videosURLs[index]);
       if(video != null){
         posts.add({ "video": [video], "type": ["video"] });
         index++;
@@ -82,7 +109,7 @@ class PostController extends GetxController{
 
           print("adding post ...");
 
-          String? video = await getVideo(videosURLs[index])
+          ChewieController? video = await getVideo(videosURLs[index])
           .timeout(const Duration(seconds: 5), onTimeout: () async {
             print("asdasdasd");
             return null;
