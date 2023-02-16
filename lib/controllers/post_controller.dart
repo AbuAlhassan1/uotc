@@ -1,6 +1,5 @@
 import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
@@ -46,17 +45,20 @@ class PostController extends GetxController{
 
     // Trying To Initializing The VideoController -- S t a r t --
     try{
-      videoController = VideoPlayerController.network(
-        "https://player.vimeo.com/progressive_redirect/playback/784449954/rendition/540p/file.mp4?loc=external&oauth2_token_id=57447761&signature=11d28733eb7e8fa61fc6a8ecacfc35e03ec3c1a972bcc66fd2ce1964d773e648"
+      // videoController = VideoPlayerController.network(
+      //   "https://player.vimeo.com/progressive_redirect/playback/784449954/rendition/540p/file.mp4?loc=external&oauth2_token_id=57447761&signature=11d28733eb7e8fa61fc6a8ecacfc35e03ec3c1a972bcc66fd2ce1964d773e648"
+      // );
+      videoController = VideoPlayerController.asset(
+        "assets/videos/uotc1.mp4"
       );
-      await videoController.initialize();
+      // await videoController.initialize();
     }
     // Trying To Initializing The VideoController -- E n d --
 
     // If The Initialization Failed Return Null -- S t a r t --
     catch( error ){
       dev.log(error.toString());
-      print(error.toString());
+      print("${error.toString()} From VideoController");
       return null;
     }
     // If The Initialization Failed Return Null -- E n d --
@@ -67,12 +69,12 @@ class PostController extends GetxController{
         videoPlayerController: videoController,
         allowFullScreen: false,
         allowMuting: true,
-        autoPlay: true,
+        autoPlay: false,
       );
     }
     catch( error ){
       dev.log(error.toString());
-      print(error.toString());
+      print("${error.toString()} From ChewieController");
       return null;
     }
     index++;
@@ -100,10 +102,10 @@ class PostController extends GetxController{
 
   loadPostWithScrollEnd(ScrollController controller) {
     controller.addListener(() async {
-      print("whaaaaaaaaaaaaaaaaaaaaaaaaat");
       if( !isScrollLoading.value ){
-        print("whaaaaaaaaaaaaaaaaaaaaaaaaat  222222222222222");
-        if( controller.offset >= controller.positions.last.pixels - 100.h ){
+        print("Not Loading");
+        // if( controller.offset >= controller.positions.last.pixels - 100.h ){
+        if( controller.position.atEdge && controller.offset != 0 ){
           
           isScrollLoading.value = true;
 
