@@ -52,11 +52,12 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
 
     if(widget.postData["type"][0] == "video"){
       if(mounted){
-        // initVideo();
-        setState(() {
-          videoHeight = chewieController.videoPlayerController.value.size.height;
-          videoWidth = chewieController.videoPlayerController.value.size.width;
-        });
+        initVideo();
+        // setState(() {
+        //   videoHeight = chewieController.videoPlayerController.value.size.height;
+        //   videoWidth = chewieController.videoPlayerController.value.size.width;
+        //   chewieController.play();
+        // });
       }
     }
     else{
@@ -69,7 +70,7 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
   @override
   void dispose() {
     if(widget.postData["type"][0] == "video"){
-      chewieController.pause();
+      chewieController.dispose();
     }
     super.dispose();
   }

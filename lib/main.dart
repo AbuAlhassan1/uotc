@@ -132,6 +132,9 @@ class MyApp extends StatelessWidget {
                   debugShowCheckedModeBanner: false,
                   locale: context.locale,
                   routerConfig: router,
+                  theme: ThemeData(
+                    useMaterial3: true
+                  ),
                 ),
                 Obx(
                   () =>
