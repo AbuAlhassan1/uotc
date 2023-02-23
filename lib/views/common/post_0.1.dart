@@ -1,3 +1,5 @@
+import 'dart:developer';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,12 +30,20 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
   final PageController imageSliderController = PageController();
   int? imageIndex;
   int videoIndex = 0;
-  final FocusNode commentFocusNode = FocusNode();
   bool isVideoLoading = true;
   double videoHeight = 0;
   double videoWidth = 0;
   bool isVideoPlaying = false;
   double playPauseButtonOpacity = 0;
+  late ChewieController chewieController;
+
+  Future<void> initVideo()async{
+    await chewieController.videoPlayerController.initialize();
+    setState(() {
+      videoHeight = chewieController.videoPlayerController.value.size.height;
+      videoWidth = chewieController.videoPlayerController.value.size.width;
+    });
+  }
 
   @override
   void initState() {
@@ -41,13 +51,15 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
     if(widget.postData["type"][0] == "video"){
       if(mounted){
         for(VideoPlayerController videoController in widget.postData["video"]){
-          setState(() {
-            videoController.play();
-            isVideoPlaying = true;
-            isVideoLoading = false;
-            videoHeight = videoController.value.size.height;
-            videoWidth = videoController.value.size.width;
-            playPauseButtonOpacity = 1;
+          videoController.initialize().then((value) {
+            setState(() {
+              videoController.play();
+              isVideoPlaying = true;
+              isVideoLoading = false;
+              videoHeight = videoController.value.size.height;
+              videoWidth = videoController.value.size.width;
+              playPauseButtonOpacity = 1;
+            });
           });
           Future.delayed(const Duration(seconds: 1), () => videoController.play());
           videoController.addListener(() {
@@ -71,6 +83,7 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
       for(VideoPlayerController videoController in widget.postData["video"]){
         videoController.pause();
         videoController.removeListener(() {});
+        videoController.dispose();
       }
     }
     super.dispose();
@@ -79,6 +92,7 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
 
     // Variables -- S t a r t --
     double height = MediaQuery.of(context).size.height;
@@ -86,11 +100,12 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
     // Variables -- E n d --
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+        log(videoHeight.toString());
+      },
       child: Container(
-        // key: PageStorageKey<int>(widget.postIndex),
         margin: EdgeInsets.only(bottom: 15.h),
-        // clipBehavior: Clip.antiAlias,
         decoration: const BoxDecoration(
           color: Colors.transparent,
         ),
@@ -213,22 +228,15 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
             // Images Slider || Video -- S t a r t --
             widget.postData["type"][0] == "video" ?
             GestureDetector(
-              onTap: () {
-                setState(() => playPauseButtonOpacity = 1);
-                Future.delayed(const Duration(seconds: 2), () => setState(() => playPauseButtonOpacity = 0));
-              },
+              // onTap: () {
+              //   setState(() => playPauseButtonOpacity = 1);
+              //   Future.delayed(const Duration(seconds: 2), () => setState(() => playPauseButtonOpacity = 0));
+              // },
               child: SizedBox(
-                height: height - 100.h, width: width,
+                height: videoHeight == 0 ? width : videoHeight > height - 100.h ? height - 100.h : videoHeight,
+                width: width,
                 child: Stack(
                   children: [
-                    // Loading Indicator -- S t a r t --
-                    Container(
-                      color: const Color(0xFF101010),
-                      child: Center(
-                        child: videoHeight == 0 ? CircularProgressIndicator(color: Colors.white, strokeWidth: 1.sp) : const SizedBox(),
-                      ),
-                    ),
-                    // Loading Indicator -- E n d --
 
                     // Video Player -- S t a r t --
                     PinchZoom(
@@ -277,85 +285,85 @@ class _PostOneState extends State<PostOne> with AutomaticKeepAliveClientMixin {
                     ),
                     // Video Player -- E n d --
             
-                    // Play - Pause Button -- S t a r t --
-                    videoHeight == 0 ? const SizedBox() :
-                    AnimatedOpacity(
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeInOutCubic,
-                      opacity: playPauseButtonOpacity,
-                      child: Center(
-                        child: InkWell(
-                          onTap: () async {
-                            if(isVideoPlaying){ widget.postData["video"][videoIndex].pause();}
-                              else{ 
-                              widget.postData["video"][videoIndex].play();
-                              await Future.delayed(const Duration(milliseconds: 100), () => widget.postData["video"][videoIndex].play(),);
-                            }
-                            isVideoPlaying = !isVideoPlaying;
-                            await Future.delayed(const Duration(seconds: 2), () => playPauseButtonOpacity = 0);
-                            setState((){});
-                          },
-                          child: Container(
-                            height: 50.sp, width: 50.sp,
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.8),
-                              borderRadius: BorderRadius.circular(50.sp)
-                            ),
-                            child: Center(
-                              child: Icon(widget.postData["video"][videoIndex].value.isPlaying ? Icons.pause_outlined : Icons.play_arrow_rounded, color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // Play - Pause Button -- E n d --
+                    // // Play - Pause Button -- S t a r t --
+                    // videoHeight == 0 ? const SizedBox() :
+                    // AnimatedOpacity(
+                    //   duration: const Duration(milliseconds: 500),
+                    //   curve: Curves.easeInOutCubic,
+                    //   opacity: playPauseButtonOpacity,
+                    //   child: Center(
+                    //     child: InkWell(
+                    //       onTap: () async {
+                    //         if(isVideoPlaying){ widget.postData["video"][videoIndex].pause();}
+                    //           else{ 
+                    //           widget.postData["video"][videoIndex].play();
+                    //           await Future.delayed(const Duration(milliseconds: 100), () => widget.postData["video"][videoIndex].play(),);
+                    //         }
+                    //         isVideoPlaying = !isVideoPlaying;
+                    //         await Future.delayed(const Duration(seconds: 2), () => playPauseButtonOpacity = 0);
+                    //         setState((){});
+                    //       },
+                    //       child: Container(
+                    //         height: 50.sp, width: 50.sp,
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.black.withOpacity(0.8),
+                    //           borderRadius: BorderRadius.circular(50.sp)
+                    //         ),
+                    //         // child: Center(
+                    //         //   child: Icon(widget.postData["video"][videoIndex].value.isPlaying ? Icons.pause_outlined : Icons.play_arrow_rounded, color: Colors.white),
+                    //         // ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // // Play - Pause Button -- E n d --
 
-                    // Mute - Unmute Button -- S t a r t --
-                    videoHeight == 0 ? const SizedBox() :
-                    AnimatedOpacity(
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeInOutCubic,
-                      opacity: 1,
-                      child: Align(
-                        alignment: AlignmentDirectional.bottomEnd,
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              if(widget.postData["video"][videoIndex].value.volume == 0){
-                                widget.postData["video"][videoIndex].setVolume(1.0);
-                              }else if(widget.postData["video"][videoIndex].value.volume == 1){
-                                widget.postData["video"][videoIndex].setVolume(0.0);
-                              }
-                            });
-                          },
-                          child: Container(
-                            height: 30.sp, width: 30.sp,
-                            margin: EdgeInsets.all(10.sp),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.8),
-                              borderRadius: BorderRadius.circular(50.sp)
-                            ),
-                            child: Center(
-                              child: Icon(widget.postData["video"][videoIndex].value.volume == 1 ? Icons.volume_up_rounded : Icons.volume_off_rounded, color: Colors.white, size: 18.sp,),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // Mute - Unmute Button -- E n d --
+                    // // Mute - Unmute Button -- S t a r t --
+                    // videoHeight == 0 ? const SizedBox() :
+                    // AnimatedOpacity(
+                    //   duration: const Duration(milliseconds: 500),
+                    //   curve: Curves.easeInOutCubic,
+                    //   opacity: 1,
+                    //   child: Align(
+                    //     alignment: AlignmentDirectional.bottomEnd,
+                    //     child: InkWell(
+                    //       onTap: () {
+                    //         setState(() {
+                    //           if(widget.postData["video"][videoIndex].value.volume == 0){
+                    //             widget.postData["video"][videoIndex].setVolume(1.0);
+                    //           }else if(widget.postData["video"][videoIndex].value.volume == 1){
+                    //             widget.postData["video"][videoIndex].setVolume(0.0);
+                    //           }
+                    //         });
+                    //       },
+                    //       child: Container(
+                    //         height: 30.sp, width: 30.sp,
+                    //         margin: EdgeInsets.all(10.sp),
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.black.withOpacity(0.8),
+                    //           borderRadius: BorderRadius.circular(50.sp)
+                    //         ),
+                    //         // child: Center(
+                    //         //   child: Icon(widget.postData["video"][videoIndex].value.volume == 1 ? Icons.volume_up_rounded : Icons.volume_off_rounded, color: Colors.white, size: 18.sp,),
+                    //         // ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // // Mute - Unmute Button -- E n d --
 
-                    // Index Inicator -- S t a r t --
-                    Align(
-                      alignment: const Alignment(0, 0.95),
-                      child: sliderIndex(
-                        index: videoIndex,
-                        indexColor: Colors.white,
-                        otherColor: UotcColors.blueBold1,
-                        numOfPages: widget.postData["video"].length,
-                        size: 5.sp
-                      ),
-                    ),
-                    // Index Inicator -- E n d --
+                    // // Index Inicator -- S t a r t --
+                    // Align(
+                    //   alignment: const Alignment(0, 0.95),
+                    //   child: sliderIndex(
+                    //     index: videoIndex,
+                    //     indexColor: Colors.white,
+                    //     otherColor: UotcColors.blueBold1,
+                    //     numOfPages: widget.postData["video"].length,
+                    //     size: 5.sp
+                    //   ),
+                    // ),
+                    // // Index Inicator -- E n d --
                   ],
                 ),
               ),
