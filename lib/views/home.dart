@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:uotc/controllers/post_controller.dart';
 import 'package:uotc/views/common/story_coin.dart';
+import 'package:video_player/video_player.dart';
 import '../controllers/toast_controller.dart';
 import 'common/custom_text.dart';
 import 'common/post_0.1.dart';
@@ -24,7 +25,8 @@ class _HomeState extends State<Home> {
   final ScrollController postController = ScrollController();
   bool isStoriesHidden = false;
   double homeOpacity = 0;
-  // late List videos;
+  List videos = [1, 2, 3];
+  int index = 3;
 
   @override
   void initState(){
@@ -41,7 +43,14 @@ class _HomeState extends State<Home> {
       });
       Future.delayed(const Duration(milliseconds: 800), () => setState(() => homeOpacity = 1));
       Future.delayed(const Duration(seconds: 1), () => toastController.hideStories(-90.h));
-      postsController.loadPostWithScrollEnd(postController);
+      postController.addListener(() {
+        if(postController.position.atEdge && postController.offset != 0){
+          videos.add(index);
+          log("Video Added");
+          setState(() {});
+          index++;
+        }
+      });
     }
   }
 
@@ -67,44 +76,21 @@ class _HomeState extends State<Home> {
         child: Stack(
           children: [
             // Home Page Main Content -- S t a r t --
-            Obx(() =>
-              postsController.isLoading.value ? Center(
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 1.sp,
-                ),
-              ) :
-              AnimatedOpacity(
-                duration: const Duration(milliseconds: 800),
-                curve: Curves.easeIn,
-                opacity: homeOpacity,
-                child: SizedBox(
-                  height: height, width: width,
-                  child: ListView(
-                    physics: const BouncingScrollPhysics(),
-                    controller: postController,
-                    children: List.generate(
-                      postsController.posts.length + 1,
-                      // 3,
-                      (index) =>
-                        index == 0 ? SizedBox(height: 50.h)
-                        : PostOne(postData: postsController.posts[index-1]),
-                        // : Postt(videoController: postsController.posts[index-1])
-                    ) + [
-                      postsController.isScrollLoading.value ? Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: 50.h),
-                          child: SizedBox(
-                            height: 20.sp, width: 20.sp,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 1.sp,
-                            ),
-                          ),
-                        ),
-                      ) : const SizedBox()
-                    ],
-                  ),
+            AnimatedOpacity(
+              duration: const Duration(milliseconds: 800),
+              curve: Curves.easeIn,
+              opacity: homeOpacity,
+              child: SizedBox(
+                height: height, width: width,
+                child: ListView(
+                  physics: const BouncingScrollPhysics(),
+                  controller: postController,
+                  children: List.generate(
+                    videos.length,
+                    (index) =>
+                      index == 0 ? SizedBox(height: 50.h)
+                      : Postt(index: index)
+                  )
                 ),
               ),
             ),
@@ -184,24 +170,34 @@ class _HomeState extends State<Home> {
 
 
 class Postt extends StatefulWidget {
-  const Postt({super.key, required this.videoController});
-  final Map videoController;
-
+  const Postt({super.key, required this.index});
+  final int index;
   @override
   State<Postt> createState() => _PosttState();
 }
 
 class _PosttState extends State<Postt> {
-
-  // https://player.vimeo.com/external/551718299.sd.mp4?s=7fac688f051f8fa55660df3d9b14f1943a11651e&profile_id=164&oauth2_token_id=57447761
-
+  late VideoPlayerController controller;
   @override
   void initState() {
     super.initState();
+    controller = VideoPlayerController.network("https://player.vimeo.com/external/457605632.sd.mp4?s=b9714bb7474ed44b097c9d5cb6614f07c9e6a6d7&profile_id=164&oauth2_token_id=57447761");
+    try{
+      controller.initialize().then((value) {
+        controller.play();
+      });
+    }
+    catch(error){
+      log(error.toString());
+    }
   }
 
-  double videoHeigth = 200.h;
-  double videoWidth = 200.h;
+  @override
+  void dispose() {
+    controller.pause();
+    controller.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -211,14 +207,21 @@ class _PosttState extends State<Postt> {
     // Variables -- E n d --
 
     return Container(
-      height: videoHeigth > height - 100.h ? height - 100.h : videoHeigth, width: width,
-      color: Colors.orange,
-      child: FittedBox(
-        fit: BoxFit.cover,
-        child: Container(
-          height: 200, width: width,
-          color: Colors.red,
-        ),
+      height: width, width: width,
+      color: Colors.red,
+      margin: EdgeInsets.only(bottom: 20.h),
+      child: Stack(
+        children: [
+          VideoPlayer(controller),
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            color: Colors.white.withOpacity(0.8),
+            child: Center(
+              child: Text(widget.index.toString()),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -9,7 +9,7 @@ class PostController extends GetxController{
   RxBool isLoading = true.obs;
   RxBool isScrollLoading = false.obs;
   static List<String> videosURLs = [
-    "https://player.vimeo.com/external/551718299.sd.mp4?s=7fac688f051f8fa55660df3d9b14f1943a11651e&profile_id=164&oauth2_token_id=57447761",
+    "https://player.vimeo.com/external/457605632.sd.mp4?s=b9714bb7474ed44b097c9d5cb6614f07c9e6a6d7&profile_id=164&oauth2_token_id=57447761",
     "https://player.vimeo.com/external/551718299.sd.mp4?s=7fac688f051f8fa55660df3d9b14f1943a11651e&profile_id=164&oauth2_token_id=57447761",
     "https://player.vimeo.com/progressive_redirect/playback/734982219/rendition/360p/file.mp4?loc=external&oauth2_token_id=57447761&signature=9a285546ec881a86ca55830637cb41fd85155b092402bed1bbf9ceef16f83971",
     "https://player.vimeo.com/progressive_redirect/playback/769576744/rendition/720p/file.mp4?loc=external&oauth2_token_id=57447761&signature=d6f6656f72a88450df65bbd196e74d812bb8d5b5e81f7210a1ca000f9a39c06b",
@@ -33,104 +33,59 @@ class PostController extends GetxController{
   int index = 0;
   int count = 0;
 
-  @override
-  void onInit() {
-    super.onInit();
-    loadInitPosts();
-  }
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   loadInitPosts();
+  // }
 
-  Future<ChewieController?> getVideo(String videoSource) async {
-    final VideoPlayerController videoController;
-    final ChewieController chewieController;
+  // Future<VideoPlayerController> getVideo(String videoUrl) async {
+  //   VideoPlayerController videoController = VideoPlayerController.network(videoUrl);
+  //   // await videoController.initialize();
+  //   dev.log("Video Done initializing $count");
+  //   count++;
+  //   return videoController;
+  // }
 
-    // Trying To Initializing The VideoController -- S t a r t --
-    try{
-      // videoController = VideoPlayerController.network(
-      //   "https://player.vimeo.com/progressive_redirect/playback/784449954/rendition/540p/file.mp4?loc=external&oauth2_token_id=57447761&signature=11d28733eb7e8fa61fc6a8ecacfc35e03ec3c1a972bcc66fd2ce1964d773e648"
-      // );
-      videoController = VideoPlayerController.asset(
-        "assets/videos/uotc1.mp4"
-      );
-      // await videoController.initialize();
-    }
-    // Trying To Initializing The VideoController -- E n d --
+  // int count2 = 0;
+  // Future loadInitPosts() async {
+  //   isLoading.value = true;
+  //   for(int i = 0; i < 2; i++){
+  //     posts.add({"video": [await getVideo(videosURLs[0]).timeout(const Duration(seconds: 5))], "type": ["video"]});
+  //     if(index >= 10){
+  //       index = 0;
+  //     }else{
+  //       index++;
+  //     }
+  //     // posts.add({
+  //     //   "data": [
+  //     //     await getVideo(videoUrl),
+  //     //   ],
+  //     //   "type": ["video"]
+  //     // });
+  //     dev.log("Video Added $count2");
+  //     count2++;
+  //   }
+  //   isLoading.value = false;
+  //   dev.log("Init Load Done ...");
+  // }
 
-    // If The Initialization Failed Return Null -- S t a r t --
-    catch( error ){
-      dev.log(error.toString());
-      print("${error.toString()} From VideoController");
-      return null;
-    }
-    // If The Initialization Failed Return Null -- E n d --
-
-    // If The Initialization Run Seccessfully -- S t a r t --
-    try{
-      chewieController = ChewieController(
-        videoPlayerController: videoController,
-        allowFullScreen: false,
-        allowMuting: true,
-        autoPlay: false,
-      );
-    }
-    catch( error ){
-      dev.log(error.toString());
-      print("${error.toString()} From ChewieController");
-      return null;
-    }
-    index++;
-    return chewieController;
-    // If The Initialization Run Seccessfully -- E n d --
-  }
-
-  int count2 = 0;
-  Future loadInitPosts() async {
-    isLoading.value = true;
-    for(int i = 0; i < 2; i++){
-      ChewieController? video = await getVideo(videosURLs[index]);
-      if(video != null){
-        posts.add({ "video": [video], "type": ["video"] });
-        index++;
-        print("Video Added $count2");
-        count2++;
-      }else{
-        print("Something went wrong");
-      }
-    }
-    isLoading.value = false;
-    print("Init Load Done ...");
-  }
-
-  loadPostWithScrollEnd(ScrollController controller) {
-    controller.addListener(() async {
-      if( !isScrollLoading.value ){
-        print("Not Loading");
-        // if( controller.offset >= controller.positions.last.pixels - 100.h ){
-        if( controller.position.atEdge && controller.offset != 0 ){
-          
-          isScrollLoading.value = true;
-
-          print("adding post ...");
-
-          ChewieController? video = await getVideo(videosURLs[index])
-          .timeout(const Duration(seconds: 5), onTimeout: () async {
-            print("asdasdasd");
-            return null;
-          });
-
-          if(video != null){
-            posts.add({ "video": [video], "type": ["video"] });
-            if( index == 19 ){ index = 0;}
-            else{ index++; }
-            print("Video Added $count2");
-            count2++;
-            isScrollLoading.value = false;
-          }
-          else{
-            isScrollLoading.value = false;
-            print("Something Went Wrong !!!!!!!!!");
-          }
-        }
-      }
-    });
-  }
+  // loadPostWithScrollEnd(ScrollController controller) {
+  //   controller.addListener(() async {
+  //     if( !isScrollLoading.value ){
+  //       if( controller.position.atEdge && controller.offset != 0 ){
+  //         isScrollLoading.value = true;
+  //         dev.log("adding post ...");
+  //         posts.add({"video": [await getVideo(videosURLs[0]).timeout(const Duration(seconds: 5))], "type": ["video"]});
+  //         if(index >= 10){
+  //           index = 0;
+  //         }else{
+  //           index++;
+  //         }
+  //         dev.log("post added ...");
+  //         isScrollLoading.value = false;
+  //       }
+  //     }
+  //   });
+  // }
 }

@@ -19,7 +19,7 @@ class StoryCoin extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: 60.sp, width: 60.sp,
+            height: 55.sp, width: 60.sp,
             child: Stack(
               children: [
                 Container(
